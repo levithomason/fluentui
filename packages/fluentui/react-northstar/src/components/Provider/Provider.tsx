@@ -88,6 +88,14 @@ const renderStaticStyles = (renderer: Renderer, theme: ThemeInput, siteVariables
 
 export const providerClassName = 'ui-provider';
 
+const siteVariablesToCSSVariables = siteVariables => {
+  return Object.entries(siteVariables)
+    .map(([key, val]) => {
+      return `--fui-${_.kebabCase(key)}: ${val};`;
+    })
+    .join('\n');
+};
+
 /**
  * The Provider passes the CSS-in-JS renderer, theme styles and other settings to Fluent UI components.
  */
@@ -190,6 +198,11 @@ const Provider: React.FC<WithAsProp<ProviderProps>> & {
     >
       <ThemeProvider theme={outgoingContext} overwrite>
         <PortalBoxContext.Provider value={element}>
+          <style>{`
+            :root {
+              ${siteVariablesToCSSVariables(outgoingContext.theme.siteVariables)}
+            }
+          `}</style>
           <ElementType {...elementProps}>{children}</ElementType>
         </PortalBoxContext.Provider>
       </ThemeProvider>

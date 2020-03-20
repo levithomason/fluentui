@@ -23,7 +23,8 @@ class App extends React.Component<any, ThemeContextData> {
   };
 
   render() {
-    const { themeName } = this.state;
+    // const { themeName } = this.state
+    const themeName = 'fluentBase';
     return (
       <ThemeContext.Provider value={this.state}>
         <Provider
