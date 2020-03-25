@@ -6,6 +6,7 @@ import { createRenderer, felaRenderer } from './felaRenderer';
 import isBrowser from './isBrowser';
 
 const registeredRenderers = new WeakMap<Document, Renderer>();
+const registeredStyles = new WeakMap<Document, Map<string, boolean>>();
 
 export const mergeRenderers = (current: Renderer, next?: Renderer, target?: Document): Renderer => {
   if (next) {

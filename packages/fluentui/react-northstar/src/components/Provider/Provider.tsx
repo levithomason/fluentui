@@ -118,6 +118,8 @@ const Provider: React.FC<WithAsProp<ProviderProps>> & {
     renderer: props.renderer,
     target: props.target,
     telemetry,
+    // TODO: test RTL, fix it
+    registerStyles,
   };
 
   const consumedContext: ProviderContextPrepared = React.useContext(ThemeContext);
@@ -180,6 +182,11 @@ const Provider: React.FC<WithAsProp<ProviderProps>> & {
           ...unhandledProps,
         };
 
+  const [loadedStyles, setLoadedStyles] = React.useState([]);
+  const loadStyles = cssString => {
+    const style = outgoingContext.target.createElement('style');
+  };
+
   // rehydration disabled to avoid leaking styles between renderers
   // https://github.com/rofrischmann/fela/blob/master/docs/api/fela-dom/rehydrate.md
   return (
@@ -189,7 +196,10 @@ const Provider: React.FC<WithAsProp<ProviderProps>> & {
     >
       <ThemeProvider theme={outgoingContext} overwrite>
         <PortalBoxContext.Provider value={element}>
-          <ElementType {...elementProps}>{children}</ElementType>
+          <ElementType {...elementProps}>
+            <style>{loadedStyles}</style>
+            {children}
+          </ElementType>
         </PortalBoxContext.Provider>
       </ThemeProvider>
     </RendererProvider>

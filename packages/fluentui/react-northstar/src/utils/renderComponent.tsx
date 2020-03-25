@@ -73,6 +73,7 @@ const renderComponent = <P extends {}>(
     rtl,
     actionHandlers,
   );
+  context.registerStyles(`.ui-button { color: red; }`);
   const { classes, variables, styles, theme } = getStyles({
     className,
     disableAnimations: context.disableAnimations || false,
