@@ -16,6 +16,7 @@ import ColorPalette from './views/ColorPalette';
 import CategoryColorPalette from './views/CategoryColorPalette';
 import ColorSchemes from './views/ColorSchemes';
 import CategoryColorSchemes from './views/CategoryColorSchemes';
+import Themes from './views/Themes';
 
 import FAQ from './views/FAQ';
 import Performance from './views/Performance';
@@ -58,6 +59,7 @@ const Routes = () => (
   // Remove trailing slash
   <BrowserRouter basename={__BASENAME__ === '/' ? __BASENAME__ : __BASENAME__.slice(0, -1)}>
     <Switch>
+      <Route exact path="/themes" component={Themes} />
       <Route exact path="/maximize/:exampleName/:rtl?" component={ExternalExampleLayout} />
       <DocsLayout>
         <PerfDataProvider>

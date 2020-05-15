@@ -434,7 +434,7 @@ const ThemeExample: React.FC<{
   );
 };
 
-const ProviderExampleThemes: React.FC<any> = () => {
+const Themes: React.FC<any> = () => {
   return (
     <ThemeExample themeName="base">
       <ThemeExample themeName="m365Base">
@@ -453,4 +453,4 @@ const ProviderExampleThemes: React.FC<any> = () => {
   );
 };
 
-export default ProviderExampleThemes;
+export default Themes;
