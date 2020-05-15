@@ -42,6 +42,8 @@ const fluentBaseTheme: ThemeInput = createTheme(
       Button: siteVars => {
         const textFontSize = '14px';
 
+        // TODO: Ask Travis about how variants are being handled e.g. "buttonNeutralBackgroundFill"
+
         return {
           density: siteVars?.density,
 
@@ -71,11 +73,11 @@ const fluentBaseTheme: ThemeInput = createTheme(
           rootFillColorDisabled: '#DDD',
 
           // ROOT: Stroke
-          rootRootStrokeColorRest: '#333',
-          rootRootStrokeColorHover: '#444',
-          rootRootStrokeColorPressed: '#000',
-          rootRootStrokeColorDisabled: '#666',
-          rootRootStrokeWidth: '',
+          rootStrokeColorRest: '#333',
+          rootStrokeColorHover: '#444',
+          rootStrokeColorPressed: '#000',
+          rootStrokeColorDisabled: '#666',
+          rootStrokeWidth: '',
 
           // ROOT: Layout - Wide Item
           rootLayoutWideMinWidth: '',
@@ -90,8 +92,8 @@ const fluentBaseTheme: ThemeInput = createTheme(
           // ROOT: Layout - Corner
           rootCornerRadius: '4px',
           // ROOT: Layout - Shadow
-          rootShadowHeightRest: '4px',
-          rootShadowHeightHover: '8px',
+          rootShadowHeightRest: '3px',
+          rootShadowHeightHover: '4px',
           rootShadowHeightPressed: '2px',
           rootShadowHeightDisabled: '0px',
 
@@ -120,22 +122,28 @@ const fluentBaseTheme: ThemeInput = createTheme(
           // TODO: Buttons that will go into a loading state should use v.loadingMinWidth
           minWidth: v.rootLayoutWideMinWidth,
           maxWidth: v.rootLayoutWideMaxWidth,
+          fontSize: v.textFontSize,
           lineHeight: v.textFontLineHeight,
           borderRadius: v.rootCornerRadius,
           color: v.textFillColorRest,
           background: v.rootFillColorRest,
+          // TODO: missing tokens or logic for X/Y, blur, and color
+          boxShadow: `0 ${v.rootShadowHeightRest} ${v.rootShadowHeightRest} rgba(0, 0, 0, 0.2)`,
           ':hover': {
             color: v.textFillColorHover,
             background: v.rootFillColorHover,
+            boxShadow: `0 ${v.rootShadowHeightHover} ${v.rootShadowHeightHover} rgba(0, 0, 0, 0.2)`,
           },
           ':active': {
             color: v.textFillColorPressed,
             background: v.rootFillColorPressed,
+            boxShadow: `0 ${v.rootShadowHeightPressed} ${v.rootShadowHeightPressed} rgba(0, 0, 0, 0.2)`,
           },
           ':focus': {
             // TODO: there are missing tokens here for focus
             color: v.textFillColorPressed,
             background: v.rootFillColorPressed,
+            boxShadow: `0 ${v.rootShadowHeightPressed} ${v.rootShadowHeightPressed} rgba(0, 0, 0, 0.2)`,
             outlineColor: v.focusOuterStrokeColor,
             outlineWidth: v.focusOuterStrokeWidth,
             // TODO: there is no outline radius, only border radius
@@ -144,6 +152,7 @@ const fluentBaseTheme: ThemeInput = createTheme(
           ...(p.disabled && {
             color: v.textFillColorDisabled,
             background: v.rootFillColorDisabled,
+            boxShadow: `0 ${v.rootShadowHeightDisabled} ${v.rootShadowHeightDisabled}`,
           }),
         }),
       },

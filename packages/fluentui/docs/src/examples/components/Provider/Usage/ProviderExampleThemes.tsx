@@ -106,13 +106,18 @@ const themes: { [K in ThemeNames]: ThemeInput } = {
   },
 };
 
-type TokenKinds = 'color' | 'range' | 'text';
+type TokenCategories = 'color' | 'range' | 'text';
 type TokenValues = string | number;
-const getTokenType: (name: string, val: string | number) => TokenKinds = (name, val) => {
-  if (/color/i.test(name) || /^#|rgb|hsl|hvs/.test(val)) return 'color';
-  if (/^\d/.test(val)) return 'range';
+const getTokenCategory: (name: string, val: string | number) => TokenCategories = (name, val) => {
+  if (/Font/i.test(name)) return 'font';
+  if (/Fill/i.test(name)) return 'fill';
+  if (/Stroke/i.test(name)) return 'stroke';
+  if (/Corner/i.test(name)) return 'corner';
+  if (/Shadow/i.test(name)) return 'shadow';
+  if (/Layout/i.test(name)) return 'layout';
+  if (/Motion/i.test(name)) return 'motion';
 
-  return 'text';
+  return 'UNKNOWN';
 };
 
 const TokenEditor: React.FC<{
@@ -123,11 +128,11 @@ const TokenEditor: React.FC<{
   const initialTokens = React.useRef(tokens);
   const [localTokens, setLocalTokens] = React.useState(tokens);
 
-  const tokensPairsGroupedByType: {
-    [key in TokenKinds]?: Array<[string, TokenValues]>;
+  const tokensPairsGroupedByCategory: {
+    [key in TokenCategories]?: Array<[string, TokenValues]>;
   } = Object.entries(localTokens).reduce((acc, [key, val]) => {
-    const type = getTokenType(key, val);
-    acc[type] = (acc[type] || []).concat([[key, val]]);
+    const category = getTokenCategory(key, val);
+    acc[category] = (acc[category] || []).concat([[key, val]]);
     return acc;
   }, {});
 
@@ -141,10 +146,13 @@ const TokenEditor: React.FC<{
     [onChange, localTokens, setLocalTokens],
   );
 
-  const getInputProps = React.useCallback(
+  const getInputProps = React.useCallback<
+    (tokenName: string, tokenValue: string | number) => React.HTMLProps<HTMLInputElement>
+  >(
     (tokenName, tokenValue) => {
       if (/color/i.test(tokenName) || /^#|rgb|hsl|hvs/.test(tokenValue)) {
         return {
+          name: tokenName,
           type: 'color',
           value: tokenValue,
           style: { border: 'none', background: 'transparent' },
@@ -154,12 +162,13 @@ const TokenEditor: React.FC<{
         };
       }
 
-      if (/^\d/.test(tokenValue)) {
+      if (/^\d/.test(tokenValue) || /width/i.test(tokenValue)) {
         const numberValue = parseFloat(tokenValue);
         const unitString = String(tokenValue).replace(String(numberValue), '');
         const hasDecimal = numberValue % 1 !== 0;
 
         return {
+          name: tokenName,
           type: 'range',
           step: hasDecimal ? 0.001 : 1,
           min: 0,
@@ -167,13 +176,20 @@ const TokenEditor: React.FC<{
           value: numberValue,
           style: { width: '100%' },
           onChange: e => {
-            // debugger;
             handleTokenChange(tokenName, e.target.value + unitString);
           },
         };
       }
 
-      return 'input';
+      return {
+        name: tokenName,
+        type: 'input',
+        value: tokenValue,
+        style: { border: 'none' },
+        onChange: e => {
+          handleTokenChange(tokenName, e.target.value);
+        },
+      };
     },
     [handleTokenChange],
   );
@@ -182,9 +198,16 @@ const TokenEditor: React.FC<{
 
   return (
     <div>
-      <h3>{label}</h3>
-      {Object.entries(tokensPairsGroupedByType).reduce((acc, [tokenKind, tokens]) => {
-        acc.push(<h4 style={{ borderBottom: '1px solid #888' }}>{tokenKind}</h4>);
+      <h3 style={{ position: 'sticky', top: '24px', background: '#333', zIndex: 2 }}>{label}</h3>
+      {Object.entries(tokensPairsGroupedByCategory).reduce((acc, [tokenKind, tokens]) => {
+        acc.push(
+          <h4
+            key={tokenKind}
+            style={{ position: 'sticky', top: '42px', background: '#333', borderBottom: '1px solid #888', zIndex: 1 }}
+          >
+            {tokenKind}
+          </h4>,
+        );
 
         tokens
           .filter(([key, val]) => {
@@ -195,7 +218,7 @@ const TokenEditor: React.FC<{
           })
           .forEach(([key, value]) => {
             const inputProps = getInputProps(key, value);
-            const isOverridden = value !== initialTokens.current[key];
+            const isOverridden = String(value) !== String(initialTokens.current[key]);
 
             acc.push(
               <div key={key} style={{ position: 'relative', display: 'block', padding: '4px' }}>
@@ -204,10 +227,15 @@ const TokenEditor: React.FC<{
                   <span style={{ padding: '0 4px', marginRight: 'auto' }}>{key}</span>
                   {isOverridden && (
                     <button
-                      style={{ marginLeft: 'auto', color: 'salmon', background: 'none', border: 'none' }}
+                      style={{
+                        marginLeft: 'auto',
+                        color: 'salmon',
+                        background: 'none',
+                        border: 'none',
+                        cursor: 'pointer',
+                      }}
                       onClick={() => {
-                        setLocalTokens({ ...localTokens, [key]: initialTokens.current[key] });
-                        onChange(localTokens);
+                        handleTokenChange(key, initialTokens.current[key]);
                       }}
                     >
                       &otimes;
@@ -224,9 +252,25 @@ const TokenEditor: React.FC<{
                     {initialTokens.current[key]}
                   </span>
                 </div>
-                <div style={{ display: 'flex' }}>
+                <div style={{ display: 'flex', flexWrap: 'wrap' }}>
                   {/* Input */}
-                  <input name={key} {...inputProps} />
+                  <input {...inputProps} />
+                  {inputProps.type === 'range' && (
+                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                      {_.times(Number(inputProps.max) - Number(inputProps.min) + 1, i => (
+                        <div
+                          key={i}
+                          style={{
+                            flex: '0 0 auto',
+                            margin: '0 auto',
+                            height: '8px',
+                            width: '1px',
+                            background: 'red',
+                          }}
+                        />
+                      ))}
+                    </div>
+                  )}
                 </div>
               </div>,
             );
@@ -252,53 +296,66 @@ const ThemeExample: React.FC<{
     setSiteVariables(newTokens);
   }, []);
 
-  const handleComponentVariablesChange = React.useCallback(newTokens => {
-    console.log('ThemeExample handleComponentVariablesChange', newTokens);
-    setComponentVariables(newTokens);
-  }, []);
+  const handleComponentVariablesChange = React.useCallback(
+    componentName => newTokens => {
+      console.log('ThemeExample handleComponentVariablesChange', componentName, newTokens);
+      setComponentVariables({ ...componentVariables, [componentName]: newTokens });
+    },
+    [setComponentVariables],
+  );
 
   console.log('ThemeExample render', { siteVariables, componentVariables });
 
   return (
     <Provider
-      styles={{ position: 'relative', border: '2px solid black', margin: '1rem 0' }}
+      styles={{ position: 'relative', display: 'flex', border: '2px solid black', margin: '1rem 0' }}
       theme={{
         siteVariables,
         componentVariables,
       }}
     >
-      <div
-        style={{
-          display: 'flex',
-          flexWrap: 'wrap',
-          background: '#333',
-          color: '#eee',
-          fontFamily: 'monospace',
-          padding: '1rem',
-          // margin: '-1rem -1rem 1rem',
-        }}
-      >
-        <div style={{ flex: '0 0 auto', top: 0, left: 0, width: '100%', color: 'salmon' }}>{themeName}</div>
-        <Provider.Consumer
-          render={theme => (
-            <div>
-              <TokenEditor label="siteVariables" tokens={theme.siteVariables} onChange={handleSiteVariablesChange} />
-              {Object.entries(theme.componentVariables).map(([componentName, componentTokens]) => {
-                return (
-                  <TokenEditor
-                    key={componentName}
-                    label={componentName}
-                    tokens={componentTokens(theme.siteVariables)}
-                    onChange={handleComponentVariablesChange}
-                  />
-                );
-              })}
-            </div>
-          )}
-        />
-      </div>
+      <Provider.Consumer
+        render={theme => (
+          <div
+            style={{
+              flex: '0 0 auto',
+              padding: '0 1rem 300px',
+              height: '300px',
+              fontFamily: 'monospace',
+              color: '#eee',
+              background: '#333',
+              overflowY: 'auto',
+            }}
+          >
+            <h2
+              style={{
+                position: 'sticky',
+                flex: '0 0 auto',
+                margin: 0,
+                top: 0,
+                color: 'salmon',
+                background: '#333',
+                zIndex: 3,
+              }}
+            >
+              {themeName}
+            </h2>
+            <TokenEditor label="siteVariables" tokens={theme.siteVariables} onChange={handleSiteVariablesChange} />
+            {Object.entries(theme.componentVariables).map(([componentName, componentTokens]) => {
+              return (
+                <TokenEditor
+                  key={componentName}
+                  label={componentName}
+                  tokens={componentTokens(theme.siteVariables)}
+                  onChange={handleComponentVariablesChange(componentName)}
+                />
+              );
+            })}
+          </div>
+        )}
+      />
 
-      <div style={{ padding: '1rem', margin: '1rem' }}>
+      <div style={{ flex: 1, padding: '1rem', margin: '1rem' }}>
         <Button content="Click Me" />
         <Dropdown items={['One', 'Two', 'Three']} />
         <Slider />
