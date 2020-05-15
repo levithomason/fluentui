@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Button, Checkbox, Dropdown, Input, Provider, Slider } from '@fluentui/react-northstar';
-import { ThemeInput } from '@fluentui/styles';
+// import { ThemeInput } from '@fluentui/styles';
+import { ButtonVariables } from 'src/themes/fluent-base/components/Button/buttonVariables';
 
 // import {
 //   BaseButton as BaseButtonReact,
@@ -44,71 +45,130 @@ type ThemeNames =
   | 'material';
 
 type Tokens = {
-  [key: string]: number | string;
+  [key: string]: string;
 };
 
-const themes: { [K in ThemeNames]: ThemeInput } = {
+type SiteVariables = {
+  componentHeight?: string;
+  cornerRadius?: string;
+
+  density?: string;
+  designUnit?: string;
+};
+
+const designUnit = '4';
+const density = '1';
+const cornerRadius = '2';
+
+const themes: {
+  [K in ThemeNames]: {
+    siteVariables: SiteVariables;
+    componentVariables: {
+      Button: (siteVariables: SiteVariables) => ButtonVariables;
+    };
+  };
+} = {
   // the missing user agent for web application components
   base: {
-    siteVariables: {},
-    componentVariables: {},
+    siteVariables: {
+      componentHeight: `${+designUnit * 8}px`,
+      cornerRadius,
+
+      density,
+      designUnit: `${designUnit}px`,
+    },
+
+    componentVariables: {
+      Button: sv => ({}),
+      Input: sv => ({}),
+    },
   },
 
   // m365ish by default, for our apps to build on
   m365Base: {
     siteVariables: {},
-    componentVariables: {},
+    componentVariables: {
+      Button: sv => ({}),
+      Input: sv => ({}),
+    },
   },
 
   odsp: {
     siteVariables: {},
-    componentVariables: {},
+    componentVariables: {
+      Button: sv => ({}),
+      Input: sv => ({}),
+    },
   },
 
   teamsShell20Base: {
     siteVariables: {},
-    componentVariables: {},
+    componentVariables: {
+      Button: sv => ({}),
+      Input: sv => ({}),
+    },
   },
 
   teamsShell20: {
     siteVariables: {},
-    componentVariables: {},
+    componentVariables: {
+      Button: sv => ({}),
+      Input: sv => ({}),
+    },
   },
 
   teamsCoke: {
     siteVariables: {},
-    componentVariables: {},
+    componentVariables: {
+      Button: sv => ({}),
+      Input: sv => ({}),
+    },
   },
 
   teamsIKEA: {
     siteVariables: {},
-    componentVariables: {},
+    componentVariables: {
+      Button: sv => ({}),
+      Input: sv => ({}),
+    },
   },
 
   github: {
     siteVariables: {},
-    componentVariables: {},
+    componentVariables: {
+      Button: sv => ({}),
+      Input: sv => ({}),
+    },
   },
 
   linkedin: {
     siteVariables: {},
-    componentVariables: {},
+    componentVariables: {
+      Button: sv => ({}),
+      Input: sv => ({}),
+    },
   },
 
   amazon: {
     siteVariables: {},
-    componentVariables: {},
+    componentVariables: {
+      Button: sv => ({}),
+      Input: sv => ({}),
+    },
   },
 
   material: {
     siteVariables: {},
-    componentVariables: {},
+    componentVariables: {
+      Button: sv => ({}),
+      Input: sv => ({}),
+    },
   },
 };
 
 type TokenCategories = 'color' | 'range' | 'text';
 type TokenValues = string | number;
-const getTokenCategory: (name: string, val: string | number) => TokenCategories = (name, val) => {
+const getTokenCategory: (name: string, val: string) => TokenCategories = (name, val) => {
   if (/Font/i.test(name)) return 'font';
   if (/Fill/i.test(name)) return 'fill';
   if (/Stroke/i.test(name)) return 'stroke';
@@ -146,9 +206,7 @@ const TokenEditor: React.FC<{
     [onChange, localTokens, setLocalTokens],
   );
 
-  const getInputProps = React.useCallback<
-    (tokenName: string, tokenValue: string | number) => React.HTMLProps<HTMLInputElement>
-  >(
+  const getInputProps = React.useCallback<(tokenName: string, tokenValue: string) => React.HTMLProps<HTMLInputElement>>(
     (tokenName, tokenValue) => {
       if (/color/i.test(tokenName) || /^#|rgb|hsl|hvs/.test(tokenValue)) {
         return {
@@ -172,7 +230,7 @@ const TokenEditor: React.FC<{
           type: 'range',
           step: hasDecimal ? 0.001 : 1,
           min: 0,
-          max: Math.max(4, parseInt(String(initialTokens.current[tokenName]), 10) * 4),
+          max: Math.max(4, parseInt(String(initialTokens.current[tokenName]), 10) * 2),
           value: numberValue,
           style: { width: '100%' },
           onChange: e => {
@@ -256,16 +314,15 @@ const TokenEditor: React.FC<{
                   {/* Input */}
                   <input {...inputProps} />
                   {inputProps.type === 'range' && (
-                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', padding: '0 10px' }}>
                       {_.times(Number(inputProps.max) - Number(inputProps.min) + 1, i => (
                         <div
                           key={i}
                           style={{
                             flex: '0 0 auto',
-                            margin: '0 auto',
-                            height: '8px',
+                            height: '4px',
                             width: '1px',
-                            background: 'red',
+                            background: '#777',
                           }}
                         />
                       ))}
@@ -319,7 +376,7 @@ const ThemeExample: React.FC<{
           <div
             style={{
               flex: '0 0 auto',
-              padding: '0 1rem 300px',
+              padding: '0 0 300px',
               height: '300px',
               fontFamily: 'monospace',
               color: '#eee',
