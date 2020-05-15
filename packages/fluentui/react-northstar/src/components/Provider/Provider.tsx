@@ -18,7 +18,6 @@ import {
   ThemeInput,
   SiteVariablesPrepared,
 } from '@fluentui/styles';
-import { Button } from '@fluentui/react-northstar';
 import * as PropTypes from 'prop-types';
 import * as React from 'react';
 // @ts-ignore

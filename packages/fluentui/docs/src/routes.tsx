@@ -16,7 +16,7 @@ import ColorPalette from './views/ColorPalette';
 import CategoryColorPalette from './views/CategoryColorPalette';
 import ColorSchemes from './views/ColorSchemes';
 import CategoryColorSchemes from './views/CategoryColorSchemes';
-import Themes from './views/Themes';
+import Themes from './views/Themes/index';
 
 import FAQ from './views/FAQ';
 import Performance from './views/Performance';
