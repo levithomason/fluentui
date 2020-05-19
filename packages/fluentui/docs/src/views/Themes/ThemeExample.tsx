@@ -25,6 +25,7 @@ const themes: {
 
       density,
       designUnit: `${designUnit}px`,
+      textFontSize: '14px',
     },
 
     componentVariables: {

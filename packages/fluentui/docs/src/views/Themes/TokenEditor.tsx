@@ -17,6 +17,9 @@ const getTokenCategory: (name: string, val: TokenValue) => TokenCategories = (na
 const TokenEditor: React.FC<{
   label: string;
   tokens: Tokens;
+  // TODO: separate defaultTokens and tokens?
+  //       so that we can properly accept parent updates as new defaults, but
+  //       not consider our own changes as updates to default...
   onChange: (tokens: Tokens) => void;
 }> = ({ label, tokens, onChange }) => {
   const initialTokens = React.useRef(tokens);
@@ -77,7 +80,7 @@ const TokenEditor: React.FC<{
 
       return {
         name: tokenName,
-        type: 'input',
+        type: 'text',
         value: tokenValue,
         style: { border: 'none' },
         onChange: (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -93,13 +96,13 @@ const TokenEditor: React.FC<{
   return (
     <div>
       <h3 style={{ position: 'sticky', top: '24px', background: '#333', zIndex: 2 }}>{label}</h3>
-      {Object.entries(tokensPairsGroupedByCategory).reduce((acc, [tokenKind, tokens]) => {
+      {Object.entries(tokensPairsGroupedByCategory).reduce((acc, [tokenCategory, tokens]) => {
         acc.push(
           <h4
-            key={tokenKind}
+            key={tokenCategory}
             style={{ position: 'sticky', top: '42px', background: '#333', borderBottom: '1px solid #888', zIndex: 1 }}
           >
-            {tokenKind}
+            {tokenCategory}
           </h4>,
         );
 
