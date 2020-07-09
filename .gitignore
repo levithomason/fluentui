@@ -64,6 +64,7 @@ dist
 dist-storybook
 screenshots
 
+*.tgz
 *.tar.gz
 
 # Drop Folder

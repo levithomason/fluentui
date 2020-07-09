@@ -1,4 +1,11 @@
-import { DebugData, ICSSInJSStyle, PropsWithVarsAndStyles, ThemeInput, ThemePrepared } from '@fluentui/styles';
+import {
+  ComponentStyleFunctionParam,
+  DebugData,
+  ICSSInJSStyle,
+  PropsWithVarsAndStyles,
+  ThemeInput,
+  ThemePrepared,
+} from '@fluentui/styles';
 import { IRenderer as FelaRenderer } from 'fela';
 
 import { Telemetry } from '../telemetry/types';
@@ -22,8 +29,7 @@ export type ComponentAnimationProp =
 export type ComponentSlotClasses = Record<string, string>;
 
 // Heads Up!
-// Keep in sync with packages/react-proptypes/src/index.ts
-export type ComponentDesignProp = {
+type DesignConfig = {
   display?: ICSSInJSStyle['display'];
   position?: ICSSInJSStyle['position'];
 
@@ -50,7 +56,18 @@ export type ComponentDesignProp = {
   maxWidth?: ICSSInJSStyle['maxWidth'];
   minHeight?: ICSSInJSStyle['minHeight'];
   maxHeight?: ICSSInJSStyle['maxHeight'];
+
+  backgroundColor?: ICSSInJSStyle['backgroundColor'];
+  borderRadius?: ICSSInJSStyle['borderRadius'];
+  cursor?: ICSSInJSStyle['cursor'];
+  overflow?: ICSSInJSStyle['overflow'];
 };
+export type ComponentDesignStyleFunction<TProps = {}, TVars = {}> = (
+  styleParam: ComponentStyleFunctionParam<TProps, TVars>,
+) => DesignConfig;
+
+// Keep in sync with packages/react-proptypes/src/index.ts
+export type ComponentDesignProp = DesignConfig | ComponentDesignStyleFunction;
 
 export type RendererParam = {
   theme: { direction: 'ltr' | 'rtl' };
