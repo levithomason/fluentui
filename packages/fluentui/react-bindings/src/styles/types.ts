@@ -29,7 +29,7 @@ export type ComponentAnimationProp =
 export type ComponentSlotClasses = Record<string, string>;
 
 // Heads Up!
-type DesignConfig = {
+export type DesignConfig = {
   display?: ICSSInJSStyle['display'];
   position?: ICSSInJSStyle['position'];
 
@@ -59,6 +59,8 @@ type DesignConfig = {
 
   backgroundColor?: ICSSInJSStyle['backgroundColor'];
   borderRadius?: ICSSInJSStyle['borderRadius'];
+  borderTopRightRadius?: ICSSInJSStyle['borderTopRightRadius'];
+  borderBottomRightRadius?: ICSSInJSStyle['borderBottomRightRadius'];
   cursor?: ICSSInJSStyle['cursor'];
   overflow?: ICSSInJSStyle['overflow'];
 };

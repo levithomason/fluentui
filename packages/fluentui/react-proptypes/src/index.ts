@@ -506,6 +506,8 @@ export const design = PropTypes.oneOfType([
 
     backgroundColor: PropTypes.string,
     borderRadius: PropTypes.string,
+    borderTopRightRadius: PropTypes.string,
+    borderBottomRightRadius: PropTypes.string,
     cursor: PropTypes.string,
     overflow: PropTypes.string,
   }),
