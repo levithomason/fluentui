@@ -1,9 +1,26 @@
 import { ComponentDesignStyleFunction } from '../styles/types';
 
+export const areArraysEqual = (arr1: any[], arr2: any[]): boolean => {
+  const length1 = arr1.length;
+  const length2 = arr2.length;
+
+  if (length1 !== length2) return false;
+
+  for (let i = length1; i >= 0; i -= 1) {
+    if (arr1[i] !== arr2[i]) return false;
+  }
+
+  return true;
+};
+
 const cache = new Map();
-const useDesign = (styleFunc: ComponentDesignStyleFunction, deps?: any[]) => {
+const useDesign = (styleFunc: ComponentDesignStyleFunction, deps: any[]) => {
   if (cache.has(styleFunc)) {
-    return cache.get(styleFunc);
+    const [cachedDesignConfig, cachedDeps] = cache.get(styleFunc);
+
+    if (areArraysEqual(deps, cachedDeps)) {
+      return cachedDesignConfig;
+    }
   }
 
   // TODO: get from context
@@ -26,7 +43,7 @@ const useDesign = (styleFunc: ComponentDesignStyleFunction, deps?: any[]) => {
   };
 
   const designConfig = styleFunc(styleParam);
-  cache.set(styleFunc, designConfig);
+  cache.set(styleFunc, [designConfig, deps]);
 
   return designConfig;
 };
