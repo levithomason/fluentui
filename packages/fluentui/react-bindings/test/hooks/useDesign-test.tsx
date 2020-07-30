@@ -90,12 +90,29 @@ describe('useDesign', () => {
       expect(ret1 === ret2).toBe(true);
     });
 
-    it('func is refer referentially stable and deps are equal', () => {
+    it('func is refer referentially stable and short deps are equal', () => {
+      const depsToTry = [undefined, null, true, false, 0, 1, 999, '', 'str'];
+
+      // we test many types of deps to be sure our comparison logic is solid
+      depsToTry.forEach(dep => {
+        const spy = jest.fn(() => ({ display: 'flex' }));
+
+        const ret1 = useDesign(spy, [dep]);
+        expect(spy).toHaveBeenCalledTimes(1);
+
+        const ret2 = useDesign(spy, [dep]);
+        expect(spy).toHaveBeenCalledTimes(1);
+
+        expect(ret1 === ret2).toBe(true);
+      });
+    });
+
+    it('func is refer referentially stable and long deps are equal', () => {
       const spy = jest.fn(() => ({ display: 'flex' }));
-      const ret1 = useDesign(spy, [true, false]);
+      const ret1 = useDesign(spy, [undefined, null, true, false, 0, 1, 999, '', 'str']);
       expect(spy).toHaveBeenCalledTimes(1);
 
-      const ret2 = useDesign(spy, [true, false]);
+      const ret2 = useDesign(spy, [undefined, null, true, false, 0, 1, 999, '', 'str']);
       expect(spy).toHaveBeenCalledTimes(1);
 
       expect(ret1 === ret2).toBe(true);
@@ -103,8 +120,37 @@ describe('useDesign', () => {
   });
 
   describe('cache size', () => {
-    it('is limited to the last 5 results', () => {
-      // call 5 times, 6th call removes 1st cache resulting in re-calling 1st call
+    it.only('is limited to the last 10 results', () => {
+      const spy = jest.fn(() => ({ display: 'flex' }));
+
+      // prime 10 cache hits
+      // for (let i = 1; i <= 10; i += 1) {
+      useDesign(spy, [0]);
+      useDesign(spy, [1]);
+      useDesign(spy, [2]);
+      useDesign(spy, [3]);
+      expect(spy).toHaveBeenCalledTimes(4);
+      // console.log('call A', i, spy.mock.calls.length);
+      // expect(spy).toHaveBeenCalledTimes(i);
+      // }
+
+      // validate 10 cache hits
+      // for (let i = 1; i <= 10; i += 1) {
+      useDesign(spy, [0]);
+      expect(spy).toHaveBeenCalledTimes(4);
+      useDesign(spy, [1]);
+      expect(spy).toHaveBeenCalledTimes(4);
+      useDesign(spy, [2]);
+      expect(spy).toHaveBeenCalledTimes(4);
+      useDesign(spy, [3]);
+      expect(spy).toHaveBeenCalledTimes(4);
+      // console.log('call B', i, spy.mock.calls.length);
+      // expect(spy).toHaveBeenCalledTimes(10);
+      // }
+
+      // an 11th cache result should result in executing the function again
+      // useDesign(spy, [999]);
+      // expect(spy).toHaveBeenCalledTimes(11);
     });
 
     it('can be configured', () => {
