@@ -1,3 +1,6 @@
+export { appLayoutVariables as AppLayout } from './components/AppLayout/appLayoutVariables';
+export { appLayoutAreaVariables as AppLayoutArea } from './components/AppLayout/appLayoutAreaVariables';
+
 export { accordionVariables as Accordion } from './components/Accordion/accordionVariables';
 export { accordionTitleVariables as AccordionTitle } from './components/Accordion/accordionTitleVariables';
 

@@ -1,3 +1,6 @@
+export { appLayoutStyles as AppLayout } from './components/AppLayout/appLayoutStyles';
+export { appLayoutAreaStyles as AppLayoutArea } from './components/AppLayout/appLayoutAreaStyles';
+
 export { accordionStyles as Accordion } from './components/Accordion/accordionStyles';
 export { accordionContentStyles as AccordionContent } from './components/Accordion/accordionContentStyles';
 export { accordionTitleStyles as AccordionTitle } from './components/Accordion/accordionTitleStyles';

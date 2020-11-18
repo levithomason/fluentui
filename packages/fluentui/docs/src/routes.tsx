@@ -38,6 +38,7 @@ import ButtonNameComputation from './views/ButtonNameComputation';
 import { LazyWithBabel } from './components/ComponentDoc/LazyWithBabel';
 import MenuList from './prototypes/menuList/';
 import TextAreaAutoSize from './prototypes/TextAreaAutoSize';
+import Transitions from './prototypes/Transitions';
 
 const ExternalExampleLayout = React.lazy(() =>
   import(/* webpackChunkName: "examples" */ './components/ExternalExampleLayout'),
@@ -148,6 +149,7 @@ const Routes = () => (
                 <Route exact path="/prototype-editor-toolbar" component={EditorToolbarPrototype} />
                 <Route exact path="/prototype-hexagonal-avatar" component={HexagonalAvatarPrototype} />
                 <Route exact path="/prototype-text-area-autosize" component={TextAreaAutoSize} />
+                <Route exact path="/prototype-transitions" component={Transitions} />
                 <Route exact path="/prototype-table" component={TablePrototype} />
                 <Route exact path="/prototype-nested-popups-and-dialogs" component={NestedPopupsAndDialogsPrototype} />
                 <Route exact path="/prototype-form-validation" component={FormValidationPrototype} />

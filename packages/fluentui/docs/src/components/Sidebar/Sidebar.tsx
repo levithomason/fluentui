@@ -185,6 +185,15 @@ const prototypesTreeItems: TreeProps['items'] = [
     public: true,
   },
   {
+    id: 'transitions',
+    title: {
+      content: 'Transitions',
+      as: NavLink,
+      to: '/prototype-transitions',
+    },
+    public: true,
+  },
+  {
     id: 'virtualized-table',
     title: { content: 'VirtualizedTable', as: NavLink, to: '/virtualized-table' },
     public: true,

@@ -23,6 +23,10 @@ export * from './themes/teams/types';
 //
 // Components
 //
+export * from './components/AppLayout/AppLayout';
+export * from './components/AppLayout/AppLayoutArea';
+export * from './components/AppLayout/BrowserWindow';
+
 export * from './components/Accordion/Accordion';
 export * from './components/Accordion/AccordionTitle';
 export * from './components/Accordion/AccordionContent';
