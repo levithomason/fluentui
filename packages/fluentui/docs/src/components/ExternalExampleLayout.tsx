@@ -44,7 +44,7 @@ const ExternalExampleLayout: React.FC<ExternalExampleLayoutProps> = props => {
   const theme = (themeName && themes[themeName]) || {};
 
   return (
-    <Provider key={renderId} theme={theme} rtl={rtl === 'true'}>
+    <Provider key={renderId} theme={theme} rtl={rtl === 'true'} data-external-layout-provider>
       <DocumentTitle title={`Fluent UI - ${exampleKebabNameToDisplayName(exampleName)}`} />
       <KnobProvider>
         <Example />

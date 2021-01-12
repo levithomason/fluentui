@@ -314,11 +314,35 @@ export class FiberNavigator {
     if (this.isHostComponent) {
       return this.__fiber.stateNode.constructor.name;
     }
+    if (this.isContextProvider) {
+      return this.__fiber.type.displayName || 'Context.Provider';
+    }
+    if (this.isContextConsumer) {
+      return this.__fiber.type.displayName || 'Context.Consumer';
+    }
+    if (this.isSuspense) {
+      return 'Suspense';
+    }
     return null;
+  }
+
+  get root(): FiberNavigator {
+    return this.find(
+      fiber => !fiber?.parent?.parent,
+      fiber => fiber.parent,
+    );
   }
 
   get parent(): FiberNavigator {
     return FiberNavigator.fromFiber(this.__fiber.return);
+  }
+
+  get child(): FiberNavigator {
+    return FiberNavigator.fromFiber(this.__fiber.child);
+  }
+
+  get sibling(): FiberNavigator {
+    return FiberNavigator.fromFiber(this.__fiber.sibling);
   }
 
   get owner() {
@@ -336,6 +360,42 @@ export class FiberNavigator {
     } while (fiber);
 
     return null;
+  }
+
+  get depth() {
+    let maxDepth = 0;
+    const nodes = [];
+
+    const mark = (fiber: FiberNavigator, depth) => {
+      if (!fiber?.isHostComponent) return;
+      const domNode = fiber.domNode;
+      domNode.setAttribute('data-depth', String(depth));
+      nodes.push(domNode);
+    };
+
+    const walk = (fiber: FiberNavigator, depth) => {
+      mark(fiber, depth);
+
+      if (fiber.sibling) {
+        walk(fiber.sibling, depth);
+      }
+
+      if (fiber.child) {
+        maxDepth++;
+        walk(fiber.child, depth + 1);
+      }
+    };
+
+    walk(this.root, 0);
+
+    nodes.forEach(node => {
+      node.setAttribute('data-depth-max', String(maxDepth));
+
+      const ratio = node.getAttribute('data-depth') / maxDepth;
+      node.style.background = `rgb(${(1 - ratio) * 255}, ${(1 - ratio) * 255}, ${(1 - ratio) * 255})`;
+    });
+
+    return maxDepth;
   }
 
   get instance() {
@@ -447,6 +507,18 @@ export class FiberNavigator {
     // Host components are platform components (i.e. 'div' on web)
     // https://github.com/acdlite/react-fiber-architecture#type-and-key
     return typeof this.__fiber.type === 'string';
+  }
+
+  get isContextProvider() {
+    return this.__fiber.type?.$$typeof === Symbol.for('react.provider');
+  }
+
+  get isContextConsumer() {
+    return this.__fiber.type?.$$typeof === Symbol.for('react.context');
+  }
+
+  get isSuspense() {
+    return this.__fiber.type === Symbol.for('react.suspense');
   }
 
   //

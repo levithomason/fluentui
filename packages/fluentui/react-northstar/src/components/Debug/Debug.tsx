@@ -6,6 +6,7 @@ import { EventListener } from '@fluentui/react-component-event-listener';
 import { isBrowser } from '../../utils';
 import { isDebugEnabled } from '@fluentui/styles';
 
+import { DebugDepth } from './DebugDepth';
 import { DebugPanel } from './DebugPanel';
 import { FiberNavigator } from './FiberNavigator';
 import { DebugRect } from './DebugRect';
@@ -21,12 +22,14 @@ export type DebugState = {
   debugPanelPosition?: 'left' | 'right';
   fiberNav: FiberNavigator;
   selectedFiberNav: FiberNavigator;
+  showDepth: boolean;
   isSelecting: boolean;
 };
 
 const INITIAL_STATE: DebugState = {
   fiberNav: null,
   selectedFiberNav: null,
+  showDepth: false,
   isSelecting: false,
 };
 
@@ -103,6 +106,12 @@ export class Debug extends React.Component<DebugProps, DebugState> {
           this.startSelecting();
         }
         break;
+
+      case keyboardKey.p:
+        if (e.altKey && e.shiftKey) {
+          this.toggleDepth();
+        }
+        break;
     }
   };
 
@@ -140,9 +149,13 @@ export class Debug extends React.Component<DebugProps, DebugState> {
 
   close = () => this.setState(INITIAL_STATE);
 
+  toggleDepth = () => {
+    this.setState({ showDepth: !this.state.showDepth });
+  };
+
   render() {
     const { mountDocument } = this.props;
-    const { fiberNav, selectedFiberNav, isSelecting, debugPanelPosition } = this.state;
+    const { fiberNav, selectedFiberNav, isSelecting, debugPanelPosition, showDepth } = this.state;
 
     if (process.env.NODE_ENV !== 'production' && isDebugEnabled) {
       return (
@@ -154,6 +167,7 @@ export class Debug extends React.Component<DebugProps, DebugState> {
           {isSelecting && fiberNav && fiberNav.domNode && (
             <EventListener listener={this.handleDOMNodeClick} target={fiberNav.domNode} type="click" />
           )}
+          {showDepth && <DebugDepth />}
           {isSelecting && fiberNav && <DebugRect fiberNav={fiberNav} />}
           {selectedFiberNav && <DebugRect fiberNav={selectedFiberNav} />}
           {!isSelecting && fiberNav && fiberNav.instance && (

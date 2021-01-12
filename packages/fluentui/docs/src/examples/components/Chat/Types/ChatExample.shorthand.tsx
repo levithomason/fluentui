@@ -27,6 +27,18 @@ const items: ShorthandCollection<ChatItemProps> = [
           content: (
             <div>
               What do you think about <a href="#">www.goodFood.com</a>?
+              <div>
+                What do you think about <a href="#">www.goodFood.com</a>?
+                <div>
+                  What do you think about <a href="#">www.goodFood.com</a>?
+                  <div>
+                    What do you think about <a href="#">www.goodFood.com</a>?
+                  </div>
+                </div>
+              </div>
+              <div>
+                What do you think about <a href="#">www.goodFood.com</a>?
+              </div>
             </div>
           ),
         }}
