@@ -110,7 +110,7 @@ export const makeButtonTokens = (theme: Theme): ButtonVariantTokens => ({
     height: '32px',
     paddingX: buttonSpacing.large,
     paddingY: '0',
-    minWidth: '96px',
+    minWidth: '96px', // TODO: spec says minWidth "can be toggled off"
     maxWidth: '280px',
 
     color: theme.alias.color.neutral.neutralForeground1,
@@ -375,7 +375,7 @@ export const Button = React.forwardRef<HTMLElement, ButtonProps>((props, ref) =>
   const hasContent = !!state?.content?.children;
   const hasIcon = !!state?.icon?.children;
 
-  const iconOnly = hasIcon && !hasContent
+  const iconOnly = hasIcon && !hasContent;
   const styleSelectors = {
     primary: props.primary,
     iconOnly: iconOnly,
