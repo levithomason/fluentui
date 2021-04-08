@@ -1,0 +1,75 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import { linkTo } from '@storybook/addon-links';
+
+<Meta title="Concepts/Components/Slots" />
+
+# Component Slots
+
+Fluent UI components are like templates with defined locations where you can place children.
+We call these locations <a onClick={linkTo('Glossary')}>slots</a>.
+
+### Basic Usage
+
+Slots can take JSX which will be placed in a specific location in the component's template.
+
+```jsx
+<Button icon={<UserIcon />}>Profile</Button>
+```
+
+Which renders (pseudo code):
+
+```html
+<button>
+  <span class="slot-icon">
+    <UserIcon />
+  </span>
+  <span class="slot-children">
+    Profile
+  </span>
+</button>
+```
+
+### Adding props
+
+Slots can take a props object, spreading extra props on the slot element.
+Pass your content using the `children` prop.
+
+```jsx
+<Button icon={{ children: <UserIcon />, className: 'extra-class' }}>Profile</Button>
+```
+
+Which renders (pseudo code):
+
+```html
+<button>
+  <span class="slot-icon extra-class">
+    <UserIcon />
+  </span>
+  <span class="slot-children">
+    Profile
+  </span>
+</button>
+```
+
+### Replacing a slot component
+
+```jsx
+```
+
+### Replacing an entire slot
+
+```jsx
+```
+
+### Replacing the entire render template
+
+```jsx
+```
+
+## What slots do
+
+Receive class names for styling and layout
+Handle
+
+If you'd like to understand the design philosophy behind _why_ we use a slot approach in Fluent UI, check out our design philosophy page.
+TODO: link design philosophy page
