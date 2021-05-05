@@ -472,6 +472,10 @@
     "@fluentui/react-popover": {
       "root": "packages/react-popover",
       "projectType": "library"
+    },
+    "@fluentui/react-me-control": {
+      "root": "packages/react-me-control",
+      "projectType": "library"
     }
   }
 }
