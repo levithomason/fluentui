@@ -43,6 +43,7 @@
     "@fluentui/react-button": "9.0.0-alpha.32",
     "@fluentui/react-avatar": "9.0.0-alpha.32",
     "@fluentui/react-menu": "^9.0.0-alpha.1",
+    "@fluentui/react-icons-mdl2": "^1.1.0",
     "@fluentui/react-utilities": "^9.0.0-alpha.21",
     "tslib": "^2.1.0"
   },
