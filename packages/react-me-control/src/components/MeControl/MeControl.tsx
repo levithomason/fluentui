@@ -38,25 +38,33 @@ const LEFT_PADDING = CONTAINER_PADDING_X + AVATAR_SIZE + AVATAR_GAP;
 const ROOT_VIEW = 'root';
 const EDIT_STATUS_MESSAGE_VIEW = 'edit-status-message';
 
-const ____fakeDataStore = {
+const __fakeDataStore = {
   statusMessage: "I'm out today until 6PM",
   email: 'kellygoss@outlook.com',
   name: 'Kelly Goss',
 };
-const fakeMutation = data => Object.assign(____fakeDataStore, data);
-const fakeQuery = () => ({ ...____fakeDataStore });
+const fakeMutation = data => Object.assign(__fakeDataStore, data);
+const fakeQuery = () => ({ ...__fakeDataStore });
 
 const useStyles = makeStyles({
   root: theme => ({
     width: '320px',
     minHeight: '200px',
-    background: theme.alias.color.neutral.neutralBackground1,
+    // background: theme.alias.color.neutral.neutralBackground1,
+    background: 'lightsalmon',
     boxShadow: theme.alias.shadow.shadow8,
   }),
 
+  headerRow: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    margin: `16px ${CONTAINER_PADDING_X}px 8px`,
+    background: 'cornflowerblue',
+  },
+
   logo: {
     gridArea: 'logo',
-    height: '25px',
+    height: '20px',
     // TODO: spec says elevation is [optional], even though it is in the default variant.
     //       remove default shadows from image styles
     boxShadow: 'none',
@@ -65,35 +73,75 @@ const useStyles = makeStyles({
     border: 'none',
   },
 
-  headerRow: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    padding: `16px ${CONTAINER_PADDING_X}px 8px`,
+  signoutButton: {
+    gridArea: 'signout',
+    // TODO: ask design about this, it should be styled like text and aligned to its container.
+    //       the button padding and min sizes make it impossible to align the text to the container.
+    padding: 0,
+    height: 'auto',
+    width: 'auto',
+    minWidth: 0,
+    minHeight: 0,
   },
 
   userInfoRow: {
     display: 'grid',
-    gap: '12px',
+    columnGap: '12px',
     gridTemplate: `
            "avatar name"    auto
            "avatar email"   auto /
             auto   1fr
           `,
-    padding: `8px ${CONTAINER_PADDING_X}px 4px`,
+    margin: `20px ${CONTAINER_PADDING_X}px 4px`,
+    background: 'bisque',
   },
 
   avatar: { gridArea: 'avatar' },
 
-  name: { gridArea: 'name', fontWeight: 'bold', fontSize: '24px', lineHeight: '20px' },
+  name: theme => ({
+    gridArea: 'name',
+    display: 'flex',
+    alignItems: 'flex-end',
+    // TODO: note, figma designs have bold name, not semi-bold, but there is no bold token
+    fontWeight: theme.global.type.fontWeights.semibold,
+    fontSize: theme.global.type.fontSizes.base[300],
+    lineHeight: theme.global.type.fontSizes.base[300],
+  }),
 
-  email: { gridArea: 'email', fontSize: '14px', lineHeight: '16px' },
-
-  statusMessage: {
-    background: '#eee',
-    padding: '16px 12px',
-    margin: `0 ${CONTAINER_PADDING_X}px 8px ${LEFT_PADDING}px`,
+  editNameButton: theme => ({
+    padding: 0,
+    margin: '0 0 0 12px',
+    height: '12px',
+    width: '12px',
+    minHeight: '12px',
+    minWidth: '12px',
+    color: theme.alias.color.neutral.neutralForeground2,
+  }),
+  editNameIcon: {
+    transform: 'scale(0.6)', // default 20px icon down to 12px
   },
-  statusMessageDisplayUntil: { fontSize: '80%', marginTop: '16px' },
+
+  email: theme => ({
+    gridArea: 'email',
+    fontSize: theme.global.type.fontSizes.base[200],
+    lineHeight: theme.global.type.fontSizes.base[200],
+    color: theme.alias.color.neutral.neutralForeground2,
+  }),
+
+  statusMessage: theme => ({
+    background: '#eee',
+    padding: '8px',
+    margin: `8px ${CONTAINER_PADDING_X}px 8px ${LEFT_PADDING}px`,
+    borderRadius: theme.global.borderRadius.medium,
+    fontSize: theme.global.type.fontSizes.base[300],
+    lineHeight: theme.global.type.fontSizes.base[300],
+  }),
+  statusMessageDisplayUntil: theme => ({
+    marginTop: '8px',
+    fontSize: theme.global.type.fontSizes.base[100],
+    lineHeight: theme.global.type.fontSizes.base[100],
+    color: theme.alias.color.neutral.neutralForeground2,
+  }),
 
   editStatusMessageRoot: {
     padding: ' 16px',
@@ -153,12 +201,12 @@ export const MeControl: React.FunctionComponent<MeControlProps> = props => {
 
   const styles = useStyles();
   const [view, setView] = React.useState(ROOT_VIEW);
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(true);
   const [status, setStatus] = React.useState('available');
 
   const handleTriggerClick = React.useCallback(() => {
     setOpen(!open);
-  }, []);
+  }, [open]);
 
   const handleEditStatus = React.useCallback(() => {
     setView(EDIT_STATUS_MESSAGE_VIEW);
@@ -203,7 +251,7 @@ export const MeControl: React.FunctionComponent<MeControlProps> = props => {
       <Menu
         // TODO: temp controlled menu since click inside closes
         open={open}
-        className={styles.root}
+        menuPopup={{ className: styles.root }}
       >
         <MenuTrigger>
           <Button iconOnly icon={<Avatar size={20} badge="success" />} primary onClick={handleTriggerClick} />
@@ -215,7 +263,7 @@ export const MeControl: React.FunctionComponent<MeControlProps> = props => {
                 src="https://www.backbase.com/wp-content/uploads/2020/05/Microsoft-Logo-PNG-Transparent.png"
                 className={styles.logo}
               />
-              <Button transparent size="small" style={{ gridArea: 'signout' }}>
+              <Button transparent size="small" className={styles.signoutButton}>
                 Sign out
               </Button>
             </div>
@@ -228,8 +276,15 @@ export const MeControl: React.FunctionComponent<MeControlProps> = props => {
                 onClick={handleChangeProfilePicture}
               />
               <span className={styles.name}>
-                {name}
-                <Button transparent iconOnly icon={<EditIcon />} onClick={handleChangeName} />
+                <span>{name}</span>
+                <Button
+                  transparent
+                  iconOnly
+                  size="small"
+                  icon={<EditIcon className={styles.editNameIcon} />}
+                  onClick={handleChangeName}
+                  className={styles.editNameButton}
+                />
               </span>
               <span className={styles.email}>{email}</span>
             </div>
@@ -300,13 +355,13 @@ export const MeControl: React.FunctionComponent<MeControlProps> = props => {
               </Menu>
             </MenuList>
             {/*
-           TODO: we do not support a navigation style menu
-                 where icons are used to indicate change of UI but not for pointing to a nested menu.
-        */}
+               TODO: we do not support a navigation style menu
+                     where icons are used to indicate change of UI but not for pointing to a nested menu.
+            */}
             {/*
-          TODO: secondaryContent does not align with the submenuIndicator
-                the secondary content is too close to the right of the menu item compared to an indicator icon
-        */}
+              TODO: secondaryContent does not align with the submenuIndicator
+                    the secondary content is too close to the right of the menu item compared to an indicator icon
+            */}
             <MenuItem secondaryContent={<ChevronRightIcon />} className={styles.menuItem} onClick={handleEditStatus}>
               Set status message
             </MenuItem>
