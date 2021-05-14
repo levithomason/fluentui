@@ -25,8 +25,10 @@ import {
   AwayStatusIcon,
   Blocked2SolidIcon,
   CircleRingIcon,
+  DeleteIcon,
 } from '@fluentui/react-icons-mdl2';
 import { SkypeCircleCheckIcon } from '@fluentui/react-icons-mdl2-branded';
+import { AvatarBadge, AvatarBadgeProps } from '../../../../react-avatar/src';
 
 export interface MeControlProps {}
 
@@ -46,20 +48,30 @@ const __fakeDataStore = {
 const fakeMutation = data => Object.assign(__fakeDataStore, data);
 const fakeQuery = () => ({ ...__fakeDataStore });
 
+/**
+ * Phase 2 items:
+ *  Avatar presence/status indicator
+ *  Edit profile picture
+ *  Edit name
+ *  Status dropdown menu item
+ *  Displaying current status message
+ *  Edit/Remove current status message
+ *  Set status message menu item
+ */
+
 const useStyles = makeStyles({
   root: theme => ({
     width: '320px',
     minHeight: '200px',
-    // background: theme.alias.color.neutral.neutralBackground1,
-    background: 'lightsalmon',
+    background: theme.alias.color.neutral.neutralBackground1,
     boxShadow: theme.alias.shadow.shadow8,
+    borderRadius: theme.global.borderRadius.medium,
   }),
 
   headerRow: {
     display: 'flex',
     justifyContent: 'space-between',
     margin: `16px ${CONTAINER_PADDING_X}px 8px`,
-    background: 'cornflowerblue',
   },
 
   logo: {
@@ -88,20 +100,22 @@ const useStyles = makeStyles({
     display: 'grid',
     columnGap: '12px',
     gridTemplate: `
-           "avatar name"    auto
-           "avatar email"   auto /
-            auto   1fr
-          `,
+      "avatar name  editName"    auto
+      "avatar email email"   auto /
+       auto   1fr   auto
+    `,
     margin: `20px ${CONTAINER_PADDING_X}px 4px`,
-    background: 'bisque',
   },
 
   avatar: { gridArea: 'avatar' },
 
-  name: theme => ({
+  nameContainer: {
     gridArea: 'name',
     display: 'flex',
     alignItems: 'flex-end',
+  },
+
+  name: theme => ({
     // TODO: note, figma designs have bold name, not semi-bold, but there is no bold token
     fontWeight: theme.global.type.fontWeights.semibold,
     fontSize: theme.global.type.fontSizes.base[300],
@@ -109,6 +123,7 @@ const useStyles = makeStyles({
   }),
 
   editNameButton: theme => ({
+    gridArea: 'editName',
     padding: 0,
     margin: '0 0 0 12px',
     height: '12px',
@@ -129,18 +144,36 @@ const useStyles = makeStyles({
   }),
 
   statusMessage: theme => ({
-    background: '#eee',
+    position: 'relative',
+    background: theme.alias.color.neutral.neutralBackground3,
     padding: '8px',
     margin: `8px ${CONTAINER_PADDING_X}px 8px ${LEFT_PADDING}px`,
     borderRadius: theme.global.borderRadius.medium,
     fontSize: theme.global.type.fontSizes.base[300],
     lineHeight: theme.global.type.fontSizes.base[300],
+    ':hover': {
+      '& .status-message-controls': {
+        display: 'block',
+      },
+    },
   }),
   statusMessageDisplayUntil: theme => ({
     marginTop: '8px',
     fontSize: theme.global.type.fontSizes.base[100],
     lineHeight: theme.global.type.fontSizes.base[100],
     color: theme.alias.color.neutral.neutralForeground2,
+  }),
+  statusMessageButtons: theme => ({
+    position: 'absolute',
+    // display: 'none',
+    bottom: 0,
+    right: 0,
+  }),
+  editStatusMessageIcon: theme => ({
+    fontSize: theme.global.type.fontSizes.base[300],
+  }),
+  removeStatusMessageIcon: theme => ({
+    fontSize: theme.global.type.fontSizes.base[300],
   }),
 
   editStatusMessageRoot: {
@@ -160,22 +193,26 @@ const useStyles = makeStyles({
 
   menuItem: { paddingLeft: `${LEFT_PADDING}px` },
 
-  available: theme => ({
+  statusMenu: theme => ({
+    width: '237px',
+    borderRadius: theme.global.borderRadius.medium,
+  }),
+  statusMenuItemAvailable: theme => ({
     color: theme.alias.color.lime.foreground3,
   }),
-  busy: theme => ({
+  statusMenuItemBusy: theme => ({
     color: theme.alias.color.cranberry.foreground3,
   }),
-  doNotDisturb: theme => ({
+  statusMenuItemDoNotDisturb: theme => ({
     color: theme.alias.color.cranberry.foreground3,
   }),
-  beRightBack: theme => ({
+  statusMenuItemBeRightBack: theme => ({
     color: theme.alias.color.peach.foreground3,
   }),
-  appearAway: theme => ({
+  statusMenuItemAppearAway: theme => ({
     color: theme.alias.color.peach.foreground3,
   }),
-  appearOffline: theme => ({
+  statusMenuItemAppearOffline: theme => ({
     // TODO: do outline color, gray in light theme, white in contrast theme
     // color: theme.alias.color.red.foreground1,
   }),
@@ -190,16 +227,21 @@ const StatusMessageTextArea: React.FunctionComponent = () => {
   }, []);
 
   return (
-    <textarea className={styles.editStatusMessageTextArea} onInput={handleChangeStatusMessage}>
-      {statusMessage}
-    </textarea>
+    <textarea
+      className={styles.editStatusMessageTextArea}
+      onInput={handleChangeStatusMessage}
+      defaultValue={statusMessage}
+    />
   );
 };
+
+const IS_PHASE_2 = false;
 
 export const MeControl: React.FunctionComponent<MeControlProps> = props => {
   const { statusMessage, name, email } = fakeQuery();
 
   const styles = useStyles();
+  const [isPhase2, setIsPhase2] = React.useState(IS_PHASE_2);
   const [view, setView] = React.useState(ROOT_VIEW);
   const [open, setOpen] = React.useState(true);
   const [status, setStatus] = React.useState('available');
@@ -208,7 +250,11 @@ export const MeControl: React.FunctionComponent<MeControlProps> = props => {
     setOpen(!open);
   }, [open]);
 
-  const handleEditStatus = React.useCallback(() => {
+  const handleSetRootView = React.useCallback(() => {
+    setView(ROOT_VIEW);
+  }, []);
+
+  const handleSetEditStatusMessageView = React.useCallback(() => {
     setView(EDIT_STATUS_MESSAGE_VIEW);
   }, []);
 
@@ -217,17 +263,20 @@ export const MeControl: React.FunctionComponent<MeControlProps> = props => {
     setOpen(false);
   }, []);
 
-  const handleBack = React.useCallback(() => {
-    setView(ROOT_VIEW);
-  }, []);
-
   const handleChangeName = React.useCallback(() => {
     alert('handleChangeName');
+  }, []);
+
+  const handleClearStatus = React.useCallback(() => {
+    alert('handleClearStatus');
   }, []);
 
   const handleChangeProfilePicture = React.useCallback(() => {
     alert('handleChangeProfilePicture');
   }, []);
+
+  const [avatarBadgeProps, setAvatarBadgeProps] = React.useState<AvatarBadgeProps>({});
+  const avatarBadge = <AvatarBadge {...avatarBadgeProps} />;
 
   return (
     <div>
@@ -246,6 +295,12 @@ export const MeControl: React.FunctionComponent<MeControlProps> = props => {
         )}
       </pre>
 
+      <div style={{ padding: '16px 0' }}>
+        <label>
+          <input type="checkbox" onChange={e => setIsPhase2(e.target.checked)} /> Enable Phase 2
+        </label>
+      </div>
+
       {/* TODO: Root slot is a menu*/}
       {/* TODO: note, we do not document the anatomy of the Menu well, the menuPopup is secret. Make it known.*/}
       <Menu
@@ -254,7 +309,12 @@ export const MeControl: React.FunctionComponent<MeControlProps> = props => {
         menuPopup={{ className: styles.root }}
       >
         <MenuTrigger>
-          <Button iconOnly icon={<Avatar size={20} badge="success" />} primary onClick={handleTriggerClick} />
+          <Button
+            iconOnly
+            icon={isPhase2 ? <Avatar size={20} badge={avatarBadge} /> : <Avatar size={20} />}
+            primary
+            onClick={handleTriggerClick}
+          />
         </MenuTrigger>
         {(view === ROOT_VIEW && (
           <MenuList>
@@ -269,110 +329,153 @@ export const MeControl: React.FunctionComponent<MeControlProps> = props => {
             </div>
             <div className={styles.userInfoRow}>
               {/* TODO: hover/click to edit pic */}
-              <Avatar
-                className={styles.avatar}
-                badge="success"
-                size={AVATAR_SIZE}
-                onClick={handleChangeProfilePicture}
-              />
-              <span className={styles.name}>
-                <span>{name}</span>
-                <Button
-                  transparent
-                  iconOnly
-                  size="small"
-                  icon={<EditIcon className={styles.editNameIcon} />}
-                  onClick={handleChangeName}
-                  className={styles.editNameButton}
+              {isPhase2 ? (
+                <Avatar
+                  className={styles.avatar}
+                  badge={avatarBadge}
+                  size={AVATAR_SIZE}
+                  onClick={handleChangeProfilePicture}
                 />
+              ) : (
+                <Avatar className={styles.avatar} size={AVATAR_SIZE} />
+              )}
+              <span className={styles.nameContainer}>
+                <span className={styles.name}>{name}</span>
+                {isPhase2 && (
+                  <Button
+                    transparent
+                    iconOnly
+                    size="small"
+                    icon={<EditIcon className={styles.editNameIcon} />}
+                    onClick={handleChangeName}
+                    className={styles.editNameButton}
+                  />
+                )}
               </span>
               <span className={styles.email}>{email}</span>
             </div>
-            {status && (
+            {isPhase2 && status && (
               <div className={styles.statusMessage}>
                 <div>{statusMessage}</div>
                 <div className={styles.statusMessageDisplayUntil}>
                   {/* TODO: display until should be pulled from some state */}
                   Display until 11:59 PM
+                  <div className={'status-message-controls ' + styles.statusMessageButtons}>
+                    <Button
+                      transparent
+                      size="small"
+                      iconOnly
+                      onChange={handleSetEditStatusMessageView}
+                      icon={<EditIcon className={styles.editStatusMessageIcon} />}
+                    />
+                    <Button
+                      transparent
+                      size="small"
+                      iconOnly
+                      onChange={handleClearStatus}
+                      icon={<DeleteIcon className={styles.removeStatusMessageIcon} />}
+                    />
+                  </div>
                 </div>
               </div>
             )}
-            <MenuList>
-              <Menu hasCheckmarks hasIcons>
-                <MenuTrigger>
-                  <MenuItem secondaryContent={<ChevronRightIcon />} className={styles.menuItem} submenuIndicator={null}>
-                    Available
-                  </MenuItem>
-                </MenuTrigger>
-                {/* TODO: this callback should be (e, data) so 
+            {isPhase2 && (
+              <MenuList>
+                <Menu
+                  hasCheckmarks
+                  hasIcons
+                  checkedValues={{ status: [status] }}
+                  onCheckedValueChange={handleChangeStatus}
+                  position="below"
+                  align="top"
+                  menuPopup={{
+                    className: styles.statusMenu,
+                  }}
+                >
+                  <MenuTrigger>
+                    <MenuItem className={styles.menuItem}>Available</MenuItem>
+                  </MenuTrigger>
+                  {/* TODO: this callback should be (e, data) so 
                         1. we can include more data in the object later
                         2. we stay consistent across all component callbacks 
-              */}
-                <MenuList checkedValues={{ status: [status] }} onCheckedValueChange={handleChangeStatus}>
-                  <MenuItemRadio
-                    name="status"
-                    value="available"
-                    icon={<SkypeCircleCheckIcon className={styles.available} />}
-                  >
-                    Available
-                  </MenuItemRadio>
-                  <MenuItemRadio name="status" value="busy" icon={<StatusCircleOuterIcon className={styles.busy} />}>
-                    Busy
-                  </MenuItemRadio>
-                  <MenuItemRadio
-                    name="status"
-                    value="do-not-disturb"
-                    icon={<Blocked2SolidIcon className={styles.doNotDisturb} />}
-                  >
-                    Do Not Disturb
-                  </MenuItemRadio>
-                  <MenuItemRadio
-                    name="status"
-                    value="be-right-back"
-                    icon={<AwayStatusIcon className={styles.beRightBack} />}
-                  >
-                    Be Right Back
-                  </MenuItemRadio>
-                  <MenuItemRadio
-                    name="status"
-                    value="appear-away"
-                    icon={<AwayStatusIcon className={styles.appearAway} />}
-                  >
-                    Appear Away
-                  </MenuItemRadio>
-                  <MenuItemRadio
-                    name="status"
-                    value="appear-offline"
-                    icon={<CircleRingIcon className={styles.appearOffline} />}
-                  >
-                    Appear Offline
-                  </MenuItemRadio>
-                  <MenuDivider />
-                  <MenuItem icon={<ClockIcon />}>Duration</MenuItem>
-                  <MenuDivider />
-                  <MenuItem icon={<ResetIcon />}>Reset Status</MenuItem>
-                </MenuList>
-              </Menu>
-            </MenuList>
+                  */}
+                  <MenuList>
+                    <MenuItemRadio
+                      name="status"
+                      value="available"
+                      icon={<SkypeCircleCheckIcon className={styles.statusMenuItemAvailable} />}
+                    >
+                      Available
+                    </MenuItemRadio>
+                    <MenuItemRadio
+                      name="status"
+                      value="busy"
+                      icon={<StatusCircleOuterIcon className={styles.statusMenuItemBusy} />}
+                    >
+                      Busy
+                    </MenuItemRadio>
+                    <MenuItemRadio
+                      name="status"
+                      value="do-not-disturb"
+                      icon={<Blocked2SolidIcon className={styles.statusMenuItemDoNotDisturb} />}
+                    >
+                      Do Not Disturb
+                    </MenuItemRadio>
+                    <MenuItemRadio
+                      name="status"
+                      value="be-right-back"
+                      icon={<AwayStatusIcon className={styles.statusMenuItemBeRightBack} />}
+                    >
+                      Be Right Back
+                    </MenuItemRadio>
+                    <MenuItemRadio
+                      name="status"
+                      value="appear-away"
+                      icon={<AwayStatusIcon className={styles.statusMenuItemAppearAway} />}
+                    >
+                      Appear Away
+                    </MenuItemRadio>
+                    <MenuItemRadio
+                      name="status"
+                      value="appear-offline"
+                      icon={<CircleRingIcon className={styles.statusMenuItemAppearOffline} />}
+                    >
+                      Appear Offline
+                    </MenuItemRadio>
+                    <MenuDivider />
+                    <MenuItem icon={<ClockIcon />}>Duration</MenuItem>
+                    <MenuDivider />
+                    <MenuItem icon={<ResetIcon />}>Reset Status</MenuItem>
+                  </MenuList>
+                </Menu>
+              </MenuList>
+            )}
             {/*
-               TODO: we do not support a navigation style menu
+              TODO: we do not support a navigation style menu
                      where icons are used to indicate change of UI but not for pointing to a nested menu.
-            */}
-            {/*
               TODO: secondaryContent does not align with the submenuIndicator
                     the secondary content is too close to the right of the menu item compared to an indicator icon
+              TODO: the submenuIndicator should show if the user defines one, whether or not there is a submenu.
+                    there is a workarond of forcing "hasSubmenu", should we really have this?
             */}
-            <MenuItem secondaryContent={<ChevronRightIcon />} className={styles.menuItem} onClick={handleEditStatus}>
-              Set status message
-            </MenuItem>
-            <MenuItem secondaryContent={<NavigateExternalInlineIcon />} className={styles.menuItem}>
+            {isPhase2 && (
+              <MenuItem
+                hasSubmenu
+                submenuIndicator={<ChevronRightIcon />}
+                className={styles.menuItem}
+                onClick={handleSetEditStatusMessageView}
+              >
+                Set status message
+              </MenuItem>
+            )}
+            <MenuItem hasSubmenu submenuIndicator={<NavigateExternalInlineIcon />} className={styles.menuItem}>
               My Microsoft account
             </MenuItem>
           </MenuList>
         )) ||
           (view === EDIT_STATUS_MESSAGE_VIEW && (
             <div className={styles.editStatusMessageRoot}>
-              <Button transparent icon={<ChevronLeftIcon />} iconPosition="before" onClick={handleBack}>
+              <Button transparent icon={<ChevronLeftIcon />} iconPosition="before" onClick={handleSetRootView}>
                 Back
               </Button>
               <Divider />
