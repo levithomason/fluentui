@@ -3,6 +3,7 @@ import * as React from 'react';
 import {
   Avatar,
   Button,
+  CompoundButton,
   Divider,
   Image,
   makeStyles,
@@ -66,6 +67,7 @@ const useStyles = makeStyles({
     width: '320px',
     // minHeight: '156px',
     minHeight: 'auto',
+    maxWidth: '320px',
     paddingBottom: '12px',
     background: theme.alias.color.neutral.neutralBackground1,
     boxShadow: theme.alias.shadow.shadow8,
@@ -193,18 +195,24 @@ const useStyles = makeStyles({
   }),
 
   editStatusMessageRoot: {
-    padding: ' 16px',
+    padding: '16px 16px 24px 16px',
   },
   editStatusMessageTextArea: theme => ({
+    boxSizing: 'border-box',
+    padding: '8px',
     height: '240px',
     width: '100%',
     fontFamily: 'inherit',
+    fontSize: theme.global.type.fontSizes.base[400],
+    lineHeight: theme.global.type.lineHeights.base[400],
     resize: 'none',
-    background: theme.alias.color.neutral.neutralBackground2,
+    // TODO: figma file shows bg2, but hex is #F5F5F5, which is bg3 in our code. bg2 in code is #FAFAFA.
+    background: theme.alias.color.neutral.neutralBackground3,
     overflowX: 'hidden',
-    overflowY: 'scroll',
+    overflowY: 'auto',
     border: 'none',
     borderBottom: `2px solid ${theme.alias.color.brand.brandBackground}`,
+    borderRadius: '4px',
   }),
 
   menuItem: { paddingLeft: `${LEFT_PADDING}px` },
@@ -232,6 +240,15 @@ const useStyles = makeStyles({
     // TODO: do outline color, gray in light theme, white in contrast theme
     // color: theme.alias.color.red.foreground1,
   }),
+
+  statusMessageDisplayUntilSelect: theme => ({
+    width: '100%',
+    padding: '8px 16px',
+    // TODO: figma file shows bg2, but hex is #F5F5F5, which is bg3 in our code. bg2 in code is #FAFAFA.
+    background: theme.alias.color.neutral.neutralBackground3,
+    border: 'none',
+    borderRadius: '4px',
+  }),
 });
 
 const StatusMessageTextArea: React.FunctionComponent = () => {
@@ -255,7 +272,7 @@ export const MeControl: React.FunctionComponent<MeControlProps> = props => {
   const { statusMessage, name, email } = fakeQuery();
 
   const styles = useStyles();
-  const [view, setView] = React.useState(ROOT_VIEW);
+  const [view, setView] = React.useState(EDIT_STATUS_MESSAGE_VIEW);
   const [open, setOpen] = React.useState(true);
   const [status, setStatus] = React.useState('available');
 
@@ -314,7 +331,7 @@ export const MeControl: React.FunctionComponent<MeControlProps> = props => {
             onClick={handleTriggerClick}
           />
         </MenuTrigger>
-        {(view === ROOT_VIEW && (
+        {((!props.enablePhase2 || view === ROOT_VIEW) && (
           <MenuList>
             <div className={styles.headerRow}>
               <Image
@@ -479,11 +496,17 @@ export const MeControl: React.FunctionComponent<MeControlProps> = props => {
             </MenuItem>
           </MenuList>
         )) ||
-          (view === EDIT_STATUS_MESSAGE_VIEW && (
+          (props.enablePhase2 && view === EDIT_STATUS_MESSAGE_VIEW && (
             <div className={styles.editStatusMessageRoot}>
-              <Button transparent icon={<ChevronLeftIcon />} iconPosition="before" onClick={handleSetRootView}>
-                Back
-              </Button>
+              <CompoundButton
+                transparent
+                secondaryContent={email}
+                icon={<ChevronLeftIcon />}
+                iconPosition="before"
+                onClick={handleSetRootView}
+              >
+                Set status message2
+              </CompoundButton>
               <Divider />
               <div>
                 <label>Status ({email})</label>
@@ -496,9 +519,13 @@ export const MeControl: React.FunctionComponent<MeControlProps> = props => {
               </div>
               <div>
                 <label>Clear status message after</label>
-                <select>
-                  <option value="Today">Today</option>
-                  <option value="1 hour">1 hour</option>
+                <select className={styles.statusMessageDisplayUntilSelect}>
+                  <option value="never">Never</option>
+                  <option value="today">Today</option>
+                  <option value="1-hour">1 hour</option>
+                  <option value="4-hours">4 hours</option>
+                  <option value="this-week">This week</option>
+                  <option value="custom">Custom</option>
                 </select>
               </div>
               <div>
