@@ -215,6 +215,18 @@ const useStyles = makeStyles({
     color: theme.alias.color.neutral.neutralForeground3,
   }),
 
+  editStatusMessageTextAreaCharacterCount: theme => ({
+    position: 'absolute',
+    right: '12px',
+    bottom: '12px',
+    color: theme.alias.color.neutral.neutralForeground3,
+    fontSize: theme.global.type.fontSizes.base[300],
+    lineHeight: theme.global.type.lineHeights.base[300],
+  }),
+
+  editStatusMessageTextAreaContainer: theme => ({
+    position: 'relative',
+  }),
   editStatusMessageTextArea: theme => ({
     boxSizing: 'border-box',
     padding: '8px',
@@ -284,17 +296,23 @@ const useStyles = makeStyles({
 const StatusMessageTextArea: React.FunctionComponent = () => {
   const { statusMessage } = fakeQuery();
   const styles = useStyles();
+  const [characterCount, setCharacterCount] = React.useState(statusMessage.length);
 
   const handleChangeStatusMessage = React.useCallback(e => {
-    fakeMutation({ statusMessage: e.target.value });
+    const statusMessage = e.target.value;
+    setCharacterCount(statusMessage.length);
+    fakeMutation({ statusMessage });
   }, []);
 
   return (
-    <textarea
-      className={styles.editStatusMessageTextArea}
-      onInput={handleChangeStatusMessage}
-      defaultValue={statusMessage}
-    />
+    <div className={styles.editStatusMessageTextAreaContainer}>
+      <textarea
+        className={styles.editStatusMessageTextArea}
+        onInput={handleChangeStatusMessage}
+        defaultValue={statusMessage}
+      />
+      <div className={styles.editStatusMessageTextAreaCharacterCount}>{characterCount}</div>
+    </div>
   );
 };
 
