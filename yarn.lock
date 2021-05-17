@@ -1581,6 +1581,11 @@
     "@fluentui/react-utilities" "^9.0.0-alpha.21"
     tslib "^2.1.0"
 
+"@fluentui/react-icons@1.1.124":
+  version "1.1.124"
+  resolved "https://registry.yarnpkg.com/@fluentui/react-icons/-/react-icons-1.1.124.tgz#0c651836ad6b9f12a62689af5d27f0ab553d5d74"
+  integrity sha512-sqzEgY87q7El6PCuU9Bj7i2CPmzE5rBSJbzfqoaOqEEYxifD/JbGFPLsFRFlgrzxoAuNOG2AaYhmWC/kZH1crA==
+
 "@fluentui/react-image@^9.0.0-alpha.33":
   version "9.0.0-alpha.33"
   resolved "https://registry.yarnpkg.com/@fluentui/react-image/-/react-image-9.0.0-alpha.33.tgz#1246f7ac64ca3ca4898fc637c14d855c26c1550d"

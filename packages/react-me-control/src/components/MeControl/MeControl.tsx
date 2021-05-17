@@ -5,6 +5,7 @@ import {
   Button,
   Image,
   makeStyles,
+  mergeClasses,
   Menu,
   MenuDivider,
   MenuItem,
@@ -15,19 +16,24 @@ import {
 import {
   ClockIcon,
   ResetIcon,
-  ChevronRightIcon,
-  NavigateExternalInlineIcon,
   EditIcon,
-  ChevronLeftIcon,
-  InfoIcon,
   StatusCircleOuterIcon,
   AwayStatusIcon,
   Blocked2SolidIcon,
   CircleRingIcon,
-  DeleteIcon,
 } from '@fluentui/react-icons-mdl2';
+import {
+  Delete20Regular,
+  Delete20Filled,
+  Edit20Regular,
+  Edit20Filled,
+  Open16Regular,
+  ChevronRight20Regular,
+  ChevronLeft20Regular,
+} from '@fluentui/react-icons';
+
 import { SkypeCircleCheckIcon } from '@fluentui/react-icons-mdl2-branded';
-import { AvatarBadge, AvatarBadgeProps } from '../../../../react-avatar/src';
+import { AvatarBadge } from '../../../../react-avatar/src';
 
 export interface MeControlProps {
   enablePhase2?: boolean;
@@ -37,6 +43,7 @@ const AVATAR_SIZE = 48;
 const CONTAINER_PADDING_X = 16;
 const AVATAR_GAP = 12;
 const LEFT_PADDING = CONTAINER_PADDING_X + AVATAR_SIZE + AVATAR_GAP;
+const MAX_STATUS_MESSAGE_LENGTH = 280;
 
 const ROOT_VIEW = 'root';
 const EDIT_STATUS_MESSAGE_VIEW = 'edit-status-message';
@@ -48,6 +55,22 @@ const __fakeDataStore = {
 };
 const fakeMutation = data => Object.assign(__fakeDataStore, data);
 const fakeQuery = () => ({ ...__fakeDataStore });
+
+// TODO: this should be set on all the icons by default -> create a bug in system-icons repo
+const useIconHoverStyles = makeStyles({
+  icon: { fill: 'currentColor' },
+});
+
+const IconHover = ({ Regular, Hover }) => {
+  const styles = useIconHoverStyles();
+
+  return (
+    <span>
+      <Regular className={mergeClasses('icon-regular', styles.icon)} />
+      <Hover className={mergeClasses('icon-hover', styles.icon)} />
+    </span>
+  );
+};
 
 /**
  * Phase 2 items:
@@ -184,6 +207,15 @@ const useStyles = makeStyles({
     height: '24px',
     minWidth: '0',
     minHeight: '0',
+    '& .icon-hover': {
+      display: 'none',
+    },
+    '&:hover .icon-hover': {
+      display: 'inline',
+    },
+    '&:hover .icon-regular': {
+      display: 'none',
+    },
   },
   editStatusMessageIcon: theme => ({
     fontSize: theme.global.type.fontSizes.base[300],
@@ -226,11 +258,11 @@ const useStyles = makeStyles({
 
   editStatusMessageTextAreaContainer: theme => ({
     position: 'relative',
+    marginBottom: '24px',
   }),
   editStatusMessageTextArea: theme => ({
     boxSizing: 'border-box',
     padding: '8px',
-    marginBottom: '24px',
     height: '240px',
     width: '100%',
     fontFamily: 'inherit',
@@ -247,6 +279,12 @@ const useStyles = makeStyles({
   }),
 
   menuItem: { paddingLeft: `${LEFT_PADDING}px` },
+
+  // Align the link icon vertically
+  myAccountMenuItem: { height: '16px' },
+
+  // TODO: this should be set on all the icons by default -> create a bug in system-icons repo
+  svgIcon: { fill: 'currentColor' },
 
   statusMenu: theme => ({
     width: '237px',
@@ -296,12 +334,15 @@ const useStyles = makeStyles({
 const StatusMessageTextArea: React.FunctionComponent = () => {
   const { statusMessage } = fakeQuery();
   const styles = useStyles();
-  const [characterCount, setCharacterCount] = React.useState(statusMessage.length);
+  const [characterCount, setCharacterCount] = React.useState(MAX_STATUS_MESSAGE_LENGTH - statusMessage.length);
 
   const handleChangeStatusMessage = React.useCallback(e => {
-    const statusMessage = e.target.value;
-    setCharacterCount(statusMessage.length);
-    fakeMutation({ statusMessage });
+    const newStatusMessage = e.target.value;
+    setCharacterCount(MAX_STATUS_MESSAGE_LENGTH - newStatusMessage.length);
+    if (newStatusMessage.length >= MAX_STATUS_MESSAGE_LENGTH) {
+      return;
+    }
+    fakeMutation({ statusMessage: newStatusMessage });
   }, []);
 
   return (
@@ -309,7 +350,7 @@ const StatusMessageTextArea: React.FunctionComponent = () => {
       <textarea
         className={styles.editStatusMessageTextArea}
         onInput={handleChangeStatusMessage}
-        defaultValue={statusMessage}
+        value={statusMessage}
       />
       <div className={styles.editStatusMessageTextAreaCharacterCount}>{characterCount}</div>
     </div>
@@ -322,7 +363,7 @@ export const MeControl: React.FunctionComponent<MeControlProps> = props => {
   const styles = useStyles();
   const [view, setView] = React.useState(ROOT_VIEW);
   const [open, setOpen] = React.useState(true);
-  const [status, setStatus] = React.useState('available');
+  const [status, setStatus] = React.useState('Available');
 
   const statusMessageDisplayUntilDate = new Date();
 
@@ -344,7 +385,8 @@ export const MeControl: React.FunctionComponent<MeControlProps> = props => {
 
   const handleChangeStatus = React.useCallback((e, name, checkedItems) => {
     setStatus(checkedItems[0]);
-    setOpen(false);
+    // TODO: is this really the intended behavior, it is highly unproductive in the user flow
+    // setOpen(false);
   }, []);
 
   const handleChangeName = React.useCallback(() => {
@@ -357,6 +399,10 @@ export const MeControl: React.FunctionComponent<MeControlProps> = props => {
 
   const handleChangeProfilePicture = React.useCallback(() => {
     alert('handleChangeProfilePicture');
+  }, []);
+
+  const handleMyMicrosoftAccount = React.useCallback(() => {
+    alert('handleMyMicrosoftAccount');
   }, []);
 
   const avatarBadge = <AvatarBadge />;
@@ -437,7 +483,7 @@ export const MeControl: React.FunctionComponent<MeControlProps> = props => {
                     iconOnly
                     onClick={handleSetEditStatusMessageView}
                     className={styles.editStatusMessageButton}
-                    icon={<EditIcon className={styles.editStatusMessageIcon} />}
+                    icon={<IconHover Regular={Edit20Regular} Hover={Edit20Filled} />}
                   />
                   <Button
                     transparent
@@ -445,7 +491,7 @@ export const MeControl: React.FunctionComponent<MeControlProps> = props => {
                     iconOnly
                     onClick={handleClearStatus}
                     className={styles.editStatusMessageButton}
-                    icon={<DeleteIcon className={styles.removeStatusMessageIcon} />}
+                    icon={<IconHover Regular={Delete20Regular} Hover={Delete20Filled} />}
                   />
                 </div>
               </div>
@@ -464,7 +510,9 @@ export const MeControl: React.FunctionComponent<MeControlProps> = props => {
                   }}
                 >
                   <MenuTrigger>
-                    <MenuItem className={styles.menuItem}>Available</MenuItem>
+                    <MenuItem className={styles.menuItem} submenuIndicator={<ChevronRight20Regular />}>
+                      {status}
+                    </MenuItem>
                   </MenuTrigger>
                   {/* TODO: MenuList onCheckedValueChange callback signature should be (e, data) so:
                         1. we can include more data in the object later
@@ -473,42 +521,42 @@ export const MeControl: React.FunctionComponent<MeControlProps> = props => {
                   <MenuList>
                     <MenuItemRadio
                       name="status"
-                      value="available"
+                      value="Available"
                       icon={<SkypeCircleCheckIcon className={styles.statusMenuItemAvailable} />}
                     >
                       Available
                     </MenuItemRadio>
                     <MenuItemRadio
                       name="status"
-                      value="busy"
+                      value="Busy"
                       icon={<StatusCircleOuterIcon className={styles.statusMenuItemBusy} />}
                     >
                       Busy
                     </MenuItemRadio>
                     <MenuItemRadio
                       name="status"
-                      value="do-not-disturb"
+                      value="Do not disturb"
                       icon={<Blocked2SolidIcon className={styles.statusMenuItemDoNotDisturb} />}
                     >
                       Do Not Disturb
                     </MenuItemRadio>
                     <MenuItemRadio
                       name="status"
-                      value="be-right-back"
+                      value="Be right back"
                       icon={<AwayStatusIcon className={styles.statusMenuItemBeRightBack} />}
                     >
                       Be Right Back
                     </MenuItemRadio>
                     <MenuItemRadio
                       name="status"
-                      value="appear-away"
+                      value="Appear away"
                       icon={<AwayStatusIcon className={styles.statusMenuItemAppearAway} />}
                     >
                       Appear Away
                     </MenuItemRadio>
                     <MenuItemRadio
                       name="status"
-                      value="appear-offline"
+                      value="Appear offline"
                       icon={<CircleRingIcon className={styles.statusMenuItemAppearOffline} />}
                     >
                       Appear Offline
@@ -527,19 +575,27 @@ export const MeControl: React.FunctionComponent<MeControlProps> = props => {
               TODO: secondaryContent does not align with the submenuIndicator
                     the secondary content is too close to the right of the menu item compared to an indicator icon
               TODO: the submenuIndicator should show if the user defines one, whether or not there is a submenu.
-                    there is a workarond of forcing "hasSubmenu", should we really have this?
+                    there is a workaround of forcing "hasSubmenu", should we really have this?
             */}
             {props.enablePhase2 && (
               <MenuItem
                 hasSubmenu
-                submenuIndicator={<ChevronRightIcon />}
+                submenuIndicator={<ChevronRight20Regular />}
                 className={styles.menuItem}
                 onClick={handleSetEditStatusMessageView}
               >
                 Set status message
               </MenuItem>
             )}
-            <MenuItem hasSubmenu submenuIndicator={<NavigateExternalInlineIcon />} className={styles.menuItem}>
+            <MenuItem
+              hasSubmenu
+              submenuIndicator={{
+                className: styles.myAccountMenuItem,
+                children: <Open16Regular className={styles.svgIcon} />,
+              }}
+              className={styles.menuItem}
+              onClick={handleMyMicrosoftAccount}
+            >
               My Microsoft account
             </MenuItem>
           </MenuList>
@@ -550,7 +606,7 @@ export const MeControl: React.FunctionComponent<MeControlProps> = props => {
                 <Button
                   transparent
                   iconOnly
-                  icon={<ChevronLeftIcon />}
+                  icon={<ChevronLeft20Regular />}
                   iconPosition="before"
                   onClick={handleSetRootView}
                   className={styles.editStatusMessageHeaderButton}

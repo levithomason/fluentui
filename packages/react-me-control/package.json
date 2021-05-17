@@ -40,6 +40,7 @@
   },
   "dependencies": {
     "@fluentui/react-components": "^9.0.0-alpha.42",
+    "@fluentui/react-icons": "1.1.124",
     "@fluentui/react-icons-mdl2": "^1.1.0",
     "@fluentui/react-utilities": "^9.0.0-alpha.21",
     "tslib": "^2.1.0"
