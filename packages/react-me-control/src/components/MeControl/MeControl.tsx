@@ -30,7 +30,9 @@ import {
 import { SkypeCircleCheckIcon } from '@fluentui/react-icons-mdl2-branded';
 import { AvatarBadge, AvatarBadgeProps } from '../../../../react-avatar/src';
 
-export interface MeControlProps {}
+export interface MeControlProps {
+  enablePhase2?: boolean;
+}
 
 const AVATAR_SIZE = 48;
 const CONTAINER_PADDING_X = 16;
@@ -62,7 +64,9 @@ const fakeQuery = () => ({ ...__fakeDataStore });
 const useStyles = makeStyles({
   root: theme => ({
     width: '320px',
-    minHeight: '200px',
+    // minHeight: '156px',
+    minHeight: 'auto',
+    paddingBottom: '12px',
     background: theme.alias.color.neutral.neutralBackground1,
     boxShadow: theme.alias.shadow.shadow8,
     borderRadius: theme.global.borderRadius.medium,
@@ -113,6 +117,11 @@ const useStyles = makeStyles({
     gridArea: 'name',
     display: 'flex',
     alignItems: 'flex-end',
+    ':hover': {
+      '& .edit-name-button': {
+        display: 'block',
+      },
+    },
   },
 
   name: theme => ({
@@ -124,6 +133,7 @@ const useStyles = makeStyles({
 
   editNameButton: theme => ({
     gridArea: 'editName',
+    display: 'none',
     padding: 0,
     margin: '0 0 0 12px',
     height: '12px',
@@ -152,7 +162,7 @@ const useStyles = makeStyles({
     fontSize: theme.global.type.fontSizes.base[300],
     lineHeight: theme.global.type.fontSizes.base[300],
     ':hover': {
-      '& .status-message-controls': {
+      '& .status-message-buttons': {
         display: 'block',
       },
     },
@@ -163,12 +173,18 @@ const useStyles = makeStyles({
     lineHeight: theme.global.type.fontSizes.base[100],
     color: theme.alias.color.neutral.neutralForeground2,
   }),
-  statusMessageButtons: theme => ({
+  statusMessageButtons: {
     position: 'absolute',
-    // display: 'none',
+    display: 'none',
     bottom: 0,
     right: 0,
-  }),
+  },
+  editStatusMessageButton: {
+    width: '24px',
+    height: '24px',
+    minWidth: '0',
+    minHeight: '0',
+  },
   editStatusMessageIcon: theme => ({
     fontSize: theme.global.type.fontSizes.base[300],
   }),
@@ -235,19 +251,22 @@ const StatusMessageTextArea: React.FunctionComponent = () => {
   );
 };
 
-const IS_PHASE_2 = false;
-
 export const MeControl: React.FunctionComponent<MeControlProps> = props => {
   const { statusMessage, name, email } = fakeQuery();
 
   const styles = useStyles();
-  const [isPhase2, setIsPhase2] = React.useState(IS_PHASE_2);
   const [view, setView] = React.useState(ROOT_VIEW);
   const [open, setOpen] = React.useState(true);
   const [status, setStatus] = React.useState('available');
 
+  const statusMessageDisplayUntilDate = new Date();
+
   const handleTriggerClick = React.useCallback(() => {
     setOpen(!open);
+  }, [open]);
+
+  const handleSignoutClick = React.useCallback(() => {
+    alert('handleSignoutClick');
   }, [open]);
 
   const handleSetRootView = React.useCallback(() => {
@@ -275,32 +294,10 @@ export const MeControl: React.FunctionComponent<MeControlProps> = props => {
     alert('handleChangeProfilePicture');
   }, []);
 
-  const [avatarBadgeProps, setAvatarBadgeProps] = React.useState<AvatarBadgeProps>({});
-  const avatarBadge = <AvatarBadge {...avatarBadgeProps} />;
+  const avatarBadge = <AvatarBadge />;
 
   return (
     <div>
-      <pre>
-        {JSON.stringify(
-          {
-            view,
-            open,
-            name,
-            email,
-            status,
-            statusMessage,
-          },
-          null,
-          2,
-        )}
-      </pre>
-
-      <div style={{ padding: '16px 0' }}>
-        <label>
-          <input type="checkbox" onChange={e => setIsPhase2(e.target.checked)} /> Enable Phase 2
-        </label>
-      </div>
-
       {/* TODO: Root slot is a menu*/}
       {/* TODO: note, we do not document the anatomy of the Menu well, the menuPopup is secret. Make it known.*/}
       <Menu
@@ -311,7 +308,8 @@ export const MeControl: React.FunctionComponent<MeControlProps> = props => {
         <MenuTrigger>
           <Button
             iconOnly
-            icon={isPhase2 ? <Avatar size={20} badge={avatarBadge} /> : <Avatar size={20} />}
+            icon={props.enablePhase2 ? <Avatar size={28} badge={avatarBadge} /> : <Avatar size={28} />}
+            size="large"
             primary
             onClick={handleTriggerClick}
           />
@@ -323,13 +321,13 @@ export const MeControl: React.FunctionComponent<MeControlProps> = props => {
                 src="https://www.backbase.com/wp-content/uploads/2020/05/Microsoft-Logo-PNG-Transparent.png"
                 className={styles.logo}
               />
-              <Button transparent size="small" className={styles.signoutButton}>
+              <Button transparent size="small" className={styles.signoutButton} onClick={handleSignoutClick}>
                 Sign out
               </Button>
             </div>
             <div className={styles.userInfoRow}>
               {/* TODO: hover/click to edit pic */}
-              {isPhase2 ? (
+              {props.enablePhase2 ? (
                 <Avatar
                   className={styles.avatar}
                   badge={avatarBadge}
@@ -341,45 +339,53 @@ export const MeControl: React.FunctionComponent<MeControlProps> = props => {
               )}
               <span className={styles.nameContainer}>
                 <span className={styles.name}>{name}</span>
-                {isPhase2 && (
+                {props.enablePhase2 && (
                   <Button
                     transparent
                     iconOnly
                     size="small"
                     icon={<EditIcon className={styles.editNameIcon} />}
                     onClick={handleChangeName}
-                    className={styles.editNameButton}
+                    className={'edit-name-button ' + styles.editNameButton}
                   />
                 )}
               </span>
               <span className={styles.email}>{email}</span>
             </div>
-            {isPhase2 && status && (
+            {props.enablePhase2 && status && (
               <div className={styles.statusMessage}>
                 <div>{statusMessage}</div>
-                <div className={styles.statusMessageDisplayUntil}>
-                  {/* TODO: display until should be pulled from some state */}
-                  Display until 11:59 PM
-                  <div className={'status-message-controls ' + styles.statusMessageButtons}>
-                    <Button
-                      transparent
-                      size="small"
-                      iconOnly
-                      onChange={handleSetEditStatusMessageView}
-                      icon={<EditIcon className={styles.editStatusMessageIcon} />}
-                    />
-                    <Button
-                      transparent
-                      size="small"
-                      iconOnly
-                      onChange={handleClearStatus}
-                      icon={<DeleteIcon className={styles.removeStatusMessageIcon} />}
-                    />
+                {statusMessageDisplayUntilDate && (
+                  <div className={styles.statusMessageDisplayUntil}>
+                    Display until{' '}
+                    {statusMessageDisplayUntilDate.toLocaleString('en-US', {
+                      hour: 'numeric',
+                      minute: 'numeric',
+                      hour12: true,
+                    })}
                   </div>
+                )}
+                <div className={'status-message-buttons ' + styles.statusMessageButtons}>
+                  <Button
+                    transparent
+                    size="small"
+                    iconOnly
+                    onClick={handleSetEditStatusMessageView}
+                    className={styles.editStatusMessageButton}
+                    icon={<EditIcon className={styles.editStatusMessageIcon} />}
+                  />
+                  <Button
+                    transparent
+                    size="small"
+                    iconOnly
+                    onClick={handleClearStatus}
+                    className={styles.editStatusMessageButton}
+                    icon={<DeleteIcon className={styles.removeStatusMessageIcon} />}
+                  />
                 </div>
               </div>
             )}
-            {isPhase2 && (
+            {props.enablePhase2 && (
               <MenuList>
                 <Menu
                   hasCheckmarks
@@ -395,9 +401,9 @@ export const MeControl: React.FunctionComponent<MeControlProps> = props => {
                   <MenuTrigger>
                     <MenuItem className={styles.menuItem}>Available</MenuItem>
                   </MenuTrigger>
-                  {/* TODO: this callback should be (e, data) so 
+                  {/* TODO: MenuList onCheckedValueChange callback signature should be (e, data) so:
                         1. we can include more data in the object later
-                        2. we stay consistent across all component callbacks 
+                        2. we stay consistent across all component callbacks
                   */}
                   <MenuList>
                     <MenuItemRadio
@@ -458,7 +464,7 @@ export const MeControl: React.FunctionComponent<MeControlProps> = props => {
               TODO: the submenuIndicator should show if the user defines one, whether or not there is a submenu.
                     there is a workarond of forcing "hasSubmenu", should we really have this?
             */}
-            {isPhase2 && (
+            {props.enablePhase2 && (
               <MenuItem
                 hasSubmenu
                 submenuIndicator={<ChevronRightIcon />}
@@ -501,6 +507,21 @@ export const MeControl: React.FunctionComponent<MeControlProps> = props => {
             </div>
           ))}
       </Menu>
+
+      <pre style={{ padding: '8px', marginTop: '300px', background: '#f6f6f6', color: '#888', borderRadius: '8px' }}>
+        {JSON.stringify(
+          {
+            view,
+            open,
+            name,
+            email,
+            status,
+            statusMessage,
+          },
+          null,
+          2,
+        )}
+      </pre>
     </div>
   );
 };
