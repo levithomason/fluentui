@@ -3,8 +3,6 @@ import * as React from 'react';
 import {
   Avatar,
   Button,
-  CompoundButton,
-  Divider,
   Image,
   makeStyles,
   Menu,
@@ -197,9 +195,30 @@ const useStyles = makeStyles({
   editStatusMessageRoot: {
     padding: '16px 16px 24px 16px',
   },
+  editStatusMessageHeader: {
+    marginBottom: '16px',
+  },
+  editStatusMessageHeaderButton: {
+    float: 'left',
+    marginTop: '-8px',
+    marginLeft: '-8px',
+  },
+  editStatusMessageHeaderText: theme => ({
+    fontSize: theme.global.type.fontSizes.base[300],
+    lineHeight: theme.global.type.lineHeights.base[300],
+    fontWeight: theme.global.type.fontWeights.semibold,
+  }),
+
+  editStatusMessageHeaderEmail: theme => ({
+    fontSize: theme.global.type.fontSizes.base[300],
+    lineHeight: theme.global.type.lineHeights.base[300],
+    color: theme.alias.color.neutral.neutralForeground3,
+  }),
+
   editStatusMessageTextArea: theme => ({
     boxSizing: 'border-box',
     padding: '8px',
+    marginBottom: '24px',
     height: '240px',
     width: '100%',
     fontFamily: 'inherit',
@@ -241,7 +260,15 @@ const useStyles = makeStyles({
     // color: theme.alias.color.red.foreground1,
   }),
 
+  statusMessageDisplayUntilLabel: theme => ({
+    marginBottom: '8px',
+    fontSize: theme.global.type.fontSizes.base[300],
+    lineHeight: theme.global.type.lineHeights.base[300],
+    color: theme.alias.color.neutral.neutralForeground2,
+  }),
   statusMessageDisplayUntilSelect: theme => ({
+    boxSizing: 'border-box',
+    marginBottom: '16px',
     width: '100%',
     padding: '8px 16px',
     // TODO: figma file shows bg2, but hex is #F5F5F5, which is bg3 in our code. bg2 in code is #FAFAFA.
@@ -249,6 +276,9 @@ const useStyles = makeStyles({
     border: 'none',
     borderRadius: '4px',
   }),
+  setStatusMessageDoneButton: {
+    float: 'right',
+  },
 });
 
 const StatusMessageTextArea: React.FunctionComponent = () => {
@@ -272,7 +302,7 @@ export const MeControl: React.FunctionComponent<MeControlProps> = props => {
   const { statusMessage, name, email } = fakeQuery();
 
   const styles = useStyles();
-  const [view, setView] = React.useState(EDIT_STATUS_MESSAGE_VIEW);
+  const [view, setView] = React.useState(ROOT_VIEW);
   const [open, setOpen] = React.useState(true);
   const [status, setStatus] = React.useState('available');
 
@@ -498,27 +528,21 @@ export const MeControl: React.FunctionComponent<MeControlProps> = props => {
         )) ||
           (props.enablePhase2 && view === EDIT_STATUS_MESSAGE_VIEW && (
             <div className={styles.editStatusMessageRoot}>
-              <CompoundButton
-                transparent
-                secondaryContent={email}
-                icon={<ChevronLeftIcon />}
-                iconPosition="before"
-                onClick={handleSetRootView}
-              >
-                Set status message2
-              </CompoundButton>
-              <Divider />
-              <div>
-                <label>Status ({email})</label>
-                <StatusMessageTextArea />
+              <div className={styles.editStatusMessageHeader}>
+                <Button
+                  transparent
+                  iconOnly
+                  icon={<ChevronLeftIcon />}
+                  iconPosition="before"
+                  onClick={handleSetRootView}
+                  className={styles.editStatusMessageHeaderButton}
+                />
+                <div className={styles.editStatusMessageHeaderText}>Set status message</div>
+                <div className={styles.editStatusMessageHeaderEmail}>{email}</div>
               </div>
+              <StatusMessageTextArea />
               <div>
-                <label>
-                  <input type="checkbox" /> Show when people message me <InfoIcon />
-                </label>
-              </div>
-              <div>
-                <label>Clear status message after</label>
+                <label className={styles.statusMessageDisplayUntilLabel}>Clear status message after</label>
                 <select className={styles.statusMessageDisplayUntilSelect}>
                   <option value="never">Never</option>
                   <option value="today">Today</option>
@@ -528,9 +552,9 @@ export const MeControl: React.FunctionComponent<MeControlProps> = props => {
                   <option value="custom">Custom</option>
                 </select>
               </div>
-              <div>
-                <Button primary>Done</Button>
-              </div>
+              <Button primary className={styles.setStatusMessageDoneButton} onClick={handleSetRootView}>
+                Done
+              </Button>
             </div>
           ))}
       </Menu>
