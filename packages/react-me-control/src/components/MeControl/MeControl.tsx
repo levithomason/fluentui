@@ -5,6 +5,7 @@ import {
   Button,
   Image,
   makeStyles,
+  mergeClasses,
   Menu,
   MenuDivider,
   MenuItem,
@@ -16,7 +17,6 @@ import {
   ClockIcon,
   ResetIcon,
   ChevronRightIcon,
-  NavigateExternalInlineIcon,
   EditIcon,
   ChevronLeftIcon,
   InfoIcon,
@@ -24,10 +24,11 @@ import {
   AwayStatusIcon,
   Blocked2SolidIcon,
   CircleRingIcon,
-  DeleteIcon,
 } from '@fluentui/react-icons-mdl2';
+import { Delete20Regular, Delete20Filled, Edit20Regular, Edit20Filled, Open16Regular } from '@fluentui/react-icons';
+
 import { SkypeCircleCheckIcon } from '@fluentui/react-icons-mdl2-branded';
-import { AvatarBadge, AvatarBadgeProps } from '../../../../react-avatar/src';
+import { AvatarBadge } from '../../../../react-avatar/src';
 
 export interface MeControlProps {
   enablePhase2?: boolean;
@@ -46,8 +47,24 @@ const __fakeDataStore = {
   email: 'kellygoss@outlook.com',
   name: 'Kelly Goss',
 };
-const fakeMutation = data => Object.assign(__fakeDataStore, data);
+const fakeMutation = (data) => Object.assign(__fakeDataStore, data);
 const fakeQuery = () => ({ ...__fakeDataStore });
+
+// TODO: this should be set on all the icons by default -> create a bug in system-icons repo
+const useIconHoverStyles = makeStyles({
+  icon: { fill: 'currentColor' },
+});
+
+const IconHover = ({ Regular, Hover }) => {
+  const styles = useIconHoverStyles();
+
+  return (
+    <span>
+      <Regular className={mergeClasses('icon-regular', styles.icon)} />
+      <Hover className={mergeClasses('icon-hover', styles.icon)} />
+    </span>
+  );
+};
 
 /**
  * Phase 2 items:
@@ -61,7 +78,7 @@ const fakeQuery = () => ({ ...__fakeDataStore });
  */
 
 const useStyles = makeStyles({
-  root: theme => ({
+  root: (theme) => ({
     width: '320px',
     // minHeight: '156px',
     minHeight: 'auto',
@@ -124,14 +141,14 @@ const useStyles = makeStyles({
     },
   },
 
-  name: theme => ({
+  name: (theme) => ({
     // TODO: note, figma designs have bold name, not semi-bold, but there is no bold token
     fontWeight: theme.global.type.fontWeights.semibold,
     fontSize: theme.global.type.fontSizes.base[300],
     lineHeight: theme.global.type.fontSizes.base[300],
   }),
 
-  editNameButton: theme => ({
+  editNameButton: (theme) => ({
     gridArea: 'editName',
     display: 'none',
     padding: 0,
@@ -146,14 +163,14 @@ const useStyles = makeStyles({
     transform: 'scale(0.6)', // default 20px icon down to 12px
   },
 
-  email: theme => ({
+  email: (theme) => ({
     gridArea: 'email',
     fontSize: theme.global.type.fontSizes.base[200],
     lineHeight: theme.global.type.fontSizes.base[200],
     color: theme.alias.color.neutral.neutralForeground2,
   }),
 
-  statusMessage: theme => ({
+  statusMessage: (theme) => ({
     position: 'relative',
     background: theme.alias.color.neutral.neutralBackground3,
     padding: '8px',
@@ -167,7 +184,7 @@ const useStyles = makeStyles({
       },
     },
   }),
-  statusMessageDisplayUntil: theme => ({
+  statusMessageDisplayUntil: (theme) => ({
     marginTop: '8px',
     fontSize: theme.global.type.fontSizes.base[100],
     lineHeight: theme.global.type.fontSizes.base[100],
@@ -184,11 +201,20 @@ const useStyles = makeStyles({
     height: '24px',
     minWidth: '0',
     minHeight: '0',
+    '& .icon-hover': {
+      display: 'none',
+    },
+    '&:hover .icon-hover': {
+      display: 'inline',
+    },
+    '&:hover .icon-regular': {
+      display: 'none',
+    },
   },
-  editStatusMessageIcon: theme => ({
+  editStatusMessageIcon: (theme) => ({
     fontSize: theme.global.type.fontSizes.base[300],
   }),
-  removeStatusMessageIcon: theme => ({
+  removeStatusMessageIcon: (theme) => ({
     fontSize: theme.global.type.fontSizes.base[300],
   }),
 
@@ -236,26 +262,32 @@ const useStyles = makeStyles({
 
   menuItem: { paddingLeft: `${LEFT_PADDING}px` },
 
-  statusMenu: theme => ({
+  // Align the link icon vertically
+  myAccountMenuItem: { height: '16px' },
+
+  // TODO: this should be set on all the icons by default -> create a bug in system-icons repo
+  svgIcon: { fill: 'currentColor' },
+
+  statusMenu: (theme) => ({
     width: '237px',
     borderRadius: theme.global.borderRadius.medium,
   }),
-  statusMenuItemAvailable: theme => ({
+  statusMenuItemAvailable: (theme) => ({
     color: theme.alias.color.lime.foreground3,
   }),
-  statusMenuItemBusy: theme => ({
+  statusMenuItemBusy: (theme) => ({
     color: theme.alias.color.cranberry.foreground3,
   }),
-  statusMenuItemDoNotDisturb: theme => ({
+  statusMenuItemDoNotDisturb: (theme) => ({
     color: theme.alias.color.cranberry.foreground3,
   }),
-  statusMenuItemBeRightBack: theme => ({
+  statusMenuItemBeRightBack: (theme) => ({
     color: theme.alias.color.peach.foreground3,
   }),
-  statusMenuItemAppearAway: theme => ({
+  statusMenuItemAppearAway: (theme) => ({
     color: theme.alias.color.peach.foreground3,
   }),
-  statusMenuItemAppearOffline: theme => ({
+  statusMenuItemAppearOffline: (theme) => ({
     // TODO: do outline color, gray in light theme, white in contrast theme
     // color: theme.alias.color.red.foreground1,
   }),
@@ -285,7 +317,7 @@ const StatusMessageTextArea: React.FunctionComponent = () => {
   const { statusMessage } = fakeQuery();
   const styles = useStyles();
 
-  const handleChangeStatusMessage = React.useCallback(e => {
+  const handleChangeStatusMessage = React.useCallback((e) => {
     fakeMutation({ statusMessage: e.target.value });
   }, []);
 
@@ -298,7 +330,7 @@ const StatusMessageTextArea: React.FunctionComponent = () => {
   );
 };
 
-export const MeControl: React.FunctionComponent<MeControlProps> = props => {
+export const MeControl: React.FunctionComponent<MeControlProps> = (props) => {
   const { statusMessage, name, email } = fakeQuery();
 
   const styles = useStyles();
@@ -339,6 +371,10 @@ export const MeControl: React.FunctionComponent<MeControlProps> = props => {
 
   const handleChangeProfilePicture = React.useCallback(() => {
     alert('handleChangeProfilePicture');
+  }, []);
+
+  const handleMyMicrosoftAccount = React.useCallback(() => {
+    alert('handleMyMicrosoftAccount');
   }, []);
 
   const avatarBadge = <AvatarBadge />;
@@ -419,7 +455,7 @@ export const MeControl: React.FunctionComponent<MeControlProps> = props => {
                     iconOnly
                     onClick={handleSetEditStatusMessageView}
                     className={styles.editStatusMessageButton}
-                    icon={<EditIcon className={styles.editStatusMessageIcon} />}
+                    icon={<IconHover Regular={Edit20Regular} Hover={Edit20Filled} />}
                   />
                   <Button
                     transparent
@@ -427,7 +463,7 @@ export const MeControl: React.FunctionComponent<MeControlProps> = props => {
                     iconOnly
                     onClick={handleClearStatus}
                     className={styles.editStatusMessageButton}
-                    icon={<DeleteIcon className={styles.removeStatusMessageIcon} />}
+                    icon={<IconHover Regular={Delete20Regular} Hover={Delete20Filled} />}
                   />
                 </div>
               </div>
@@ -509,7 +545,7 @@ export const MeControl: React.FunctionComponent<MeControlProps> = props => {
               TODO: secondaryContent does not align with the submenuIndicator
                     the secondary content is too close to the right of the menu item compared to an indicator icon
               TODO: the submenuIndicator should show if the user defines one, whether or not there is a submenu.
-                    there is a workarond of forcing "hasSubmenu", should we really have this?
+                    there is a workaround of forcing "hasSubmenu", should we really have this?
             */}
             {props.enablePhase2 && (
               <MenuItem
@@ -521,7 +557,15 @@ export const MeControl: React.FunctionComponent<MeControlProps> = props => {
                 Set status message
               </MenuItem>
             )}
-            <MenuItem hasSubmenu submenuIndicator={<NavigateExternalInlineIcon />} className={styles.menuItem}>
+            <MenuItem
+              hasSubmenu
+              submenuIndicator={{
+                className: styles.myAccountMenuItem,
+                children: <Open16Regular className={styles.svgIcon} />,
+              }}
+              className={styles.menuItem}
+              onClick={handleMyMicrosoftAccount}
+            >
               My Microsoft account
             </MenuItem>
           </MenuList>
