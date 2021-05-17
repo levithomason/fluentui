@@ -463,7 +463,7 @@ export const MeControl: React.FunctionComponent<MeControlProps> = props => {
               </span>
               <span className={styles.email}>{email}</span>
             </div>
-            {props.enablePhase2 && status && (
+            {props.enablePhase2 && statusMessage && (
               <div className={styles.statusMessage}>
                 <div>{statusMessage}</div>
                 {statusMessageDisplayUntilDate && (
