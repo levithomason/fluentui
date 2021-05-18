@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { MeControl } from '@fluentui/react-me-control';
+import { MeControl } from './index';
 
 export const MeControlExample = () => (
   <div style={{ display: 'flex' }}>
@@ -13,3 +13,8 @@ export const MeControlExample = () => (
     </div>
   </div>
 );
+
+export default {
+  title: 'MeControl',
+  component: MeControl,
+};
