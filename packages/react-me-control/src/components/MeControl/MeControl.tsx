@@ -247,6 +247,11 @@ const useStyles = makeStyles({
     color: theme.alias.color.neutral.neutralForeground3,
   }),
 
+  editStatusMessageTextAreaContainer: {
+    position: 'relative',
+    marginBottom: '24px',
+  },
+
   editStatusMessageTextAreaCharacterCount: theme => ({
     position: 'absolute',
     right: '12px',
@@ -256,10 +261,6 @@ const useStyles = makeStyles({
     lineHeight: theme.global.type.lineHeights.base[300],
   }),
 
-  editStatusMessageTextAreaContainer: theme => ({
-    position: 'relative',
-    marginBottom: '24px',
-  }),
   editStatusMessageTextArea: theme => ({
     boxSizing: 'border-box',
     padding: '8px',
