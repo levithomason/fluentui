@@ -2,7 +2,9 @@ import * as React from 'react';
 
 import {
   Avatar,
+  AvatarBadge,
   Button,
+  ButtonProps,
   Image,
   makeStyles,
   mergeClasses,
@@ -14,15 +16,8 @@ import {
   MenuTrigger,
 } from '@fluentui/react-components';
 import {
-  ClockIcon,
-  ResetIcon,
-  EditIcon,
-  StatusCircleOuterIcon,
-  AwayStatusIcon,
-  Blocked2SolidIcon,
-  CircleRingIcon,
-} from '@fluentui/react-icons-mdl2';
-import {
+  Clock20Regular,
+  ArrowReset20Regular,
   Delete20Regular,
   Delete20Filled,
   Edit20Regular,
@@ -30,10 +25,12 @@ import {
   Open16Regular,
   ChevronRight20Regular,
   ChevronLeft20Regular,
+  PresenceAvailable16Filled,
+  PresenceBusy16Filled,
+  PresenceDnd16Filled,
+  PresenceAway16Filled,
+  PresenceOffline16Regular,
 } from '@fluentui/react-icons';
-
-import { SkypeCircleCheckIcon } from '@fluentui/react-icons-mdl2-branded';
-import { AvatarBadge } from '../../../../react-avatar/src';
 
 export interface MeControlProps {
   enablePhase2?: boolean;
@@ -58,17 +55,37 @@ const fakeQuery = () => ({ ...__fakeDataStore });
 
 // TODO: this should be set on all the icons by default -> create a bug in system-icons repo
 const useIconHoverStyles = makeStyles({
+  root: {
+    '& .icon-hover': { display: 'none' },
+    '&:hover .icon-hover': { display: 'inline' },
+    '&:hover .icon-regular': { display: 'none' },
+  },
   icon: { fill: 'currentColor' },
 });
 
-const IconHover = ({ Regular, Hover }) => {
+const IconButtonHover = (
+  props: Omit<ButtonProps, 'icon'> & {
+    regularIcon: React.ElementType;
+    hoverIcon: React.ElementType;
+  },
+) => {
+  const { regularIcon: Regular, hoverIcon: Hover, ...buttonProps } = props;
   const styles = useIconHoverStyles();
 
   return (
-    <span>
-      <Regular className={mergeClasses('icon-regular', styles.icon)} />
-      <Hover className={mergeClasses('icon-hover', styles.icon)} />
-    </span>
+    <Button
+      transparent
+      iconOnly
+      size="small"
+      {...buttonProps}
+      className={mergeClasses(styles.root, props.className)}
+      icon={
+        <>
+          <Regular className={mergeClasses('icon-regular', styles.icon)} />
+          <Hover className={mergeClasses('icon-hover', styles.icon)} />
+        </>
+      }
+    />
   );
 };
 
@@ -140,6 +157,9 @@ const useStyles = makeStyles({
     gridArea: 'name',
     display: 'flex',
     alignItems: 'flex-end',
+  },
+
+  editNameHoverArea: {
     ':hover': {
       '& .edit-name-button': {
         display: 'block',
@@ -159,14 +179,18 @@ const useStyles = makeStyles({
     display: 'none',
     padding: 0,
     margin: '0 0 0 12px',
-    height: '12px',
-    width: '12px',
-    minHeight: '12px',
-    minWidth: '12px',
+    // TODO: red lines call for 12px square icon here
+    //       the button needs to be slightly larger to fit it
+    height: '16px',
+    width: '16px',
+    minHeight: '16px',
+    minWidth: '16px',
     color: theme.alias.color.neutral.neutralForeground2,
   }),
   editNameIcon: {
-    transform: 'scale(0.6)', // default 20px icon down to 12px
+    // TODO: red lines call for 12px square icon here but button doesn't have a size this small
+    width: '12px',
+    height: '12px',
   },
 
   email: theme => ({
@@ -207,15 +231,6 @@ const useStyles = makeStyles({
     height: '24px',
     minWidth: '0',
     minHeight: '0',
-    '& .icon-hover': {
-      display: 'none',
-    },
-    '&:hover .icon-hover': {
-      display: 'inline',
-    },
-    '&:hover .icon-regular': {
-      display: 'none',
-    },
   },
   editStatusMessageIcon: theme => ({
     fontSize: theme.global.type.fontSizes.base[300],
@@ -279,18 +294,24 @@ const useStyles = makeStyles({
     borderRadius: '4px',
   }),
 
-  menuItem: { paddingLeft: `${LEFT_PADDING}px` },
+  menuItem: {
+    paddingLeft: `${LEFT_PADDING}px`,
+    // make svg icons inherit font color
+    // TODO: this should be set on all the icons by default -> create a bug in system-icons repo
+    fill: 'currentColor',
+  },
 
   // Align the link icon vertically
   myAccountMenuItem: { height: '16px' },
 
-  // TODO: this should be set on all the icons by default -> create a bug in system-icons repo
-  svgIcon: { fill: 'currentColor' },
-
   statusMenu: theme => ({
     width: '237px',
     borderRadius: theme.global.borderRadius.medium,
+    // make svg icons inherit font color
+    // TODO: this should be set on all the icons by default -> create a bug in system-icons repo
+    fill: 'currentColor',
   }),
+
   statusMenuItemAvailable: theme => ({
     color: theme.alias.color.lime.foreground3,
   }),
@@ -307,8 +328,13 @@ const useStyles = makeStyles({
     color: theme.alias.color.peach.foreground3,
   }),
   statusMenuItemAppearOffline: theme => ({
-    // TODO: do outline color, gray in light theme, white in contrast theme
-    // color: theme.alias.color.red.foreground1,
+    color: theme.alias.color.neutral.neutralForeground4,
+  }),
+  statusMenuItemDuration: theme => ({
+    color: theme.alias.color.neutral.neutralForeground1,
+  }),
+  statusMenuItemResetStatus: theme => ({
+    color: theme.alias.color.neutral.neutralForeground1,
   }),
 
   statusMessageDisplayUntilLabel: theme => ({
@@ -330,6 +356,14 @@ const useStyles = makeStyles({
   setStatusMessageDoneButton: {
     float: 'right',
   },
+
+  debugState: theme => ({
+    padding: '8px',
+    marginTop: '300px',
+    color: theme.alias.color.neutral.neutralForeground3,
+    background: theme.alias.color.neutral.neutralBackground3,
+    borderRadius: theme.global.borderRadius.large,
+  }),
 });
 
 const StatusMessageTextArea: React.FunctionComponent = () => {
@@ -402,8 +436,8 @@ export const MeControl: React.FunctionComponent<MeControlProps> = props => {
     alert('handleChangeProfilePicture');
   }, []);
 
-  const handleMyMicrosoftAccount = React.useCallback(() => {
-    alert('handleMyMicrosoftAccount');
+  const handleMyMicrosoftAccountClick = React.useCallback(() => {
+    alert('handleMyMicrosoftAccountClick');
   }, []);
 
   const avatarBadge = <AvatarBadge />;
@@ -449,20 +483,20 @@ export const MeControl: React.FunctionComponent<MeControlProps> = props => {
               ) : (
                 <Avatar className={styles.avatar} size={AVATAR_SIZE} />
               )}
-              <span className={styles.nameContainer}>
-                <span className={styles.name}>{name}</span>
-                {props.enablePhase2 && (
-                  <Button
-                    transparent
-                    iconOnly
-                    size="small"
-                    icon={<EditIcon className={styles.editNameIcon} />}
-                    onClick={handleChangeName}
-                    className={'edit-name-button ' + styles.editNameButton}
-                  />
-                )}
+              <span className={styles.editNameHoverArea}>
+                <span className={styles.nameContainer}>
+                  <span className={styles.name}>{name}</span>
+                  {props.enablePhase2 && (
+                    <IconButtonHover
+                      regularIcon={Edit20Regular}
+                      hoverIcon={Edit20Filled}
+                      onClick={handleChangeName}
+                      className={'edit-name-button ' + styles.editNameButton}
+                    />
+                  )}
+                </span>
+                <span className={styles.email}>{email}</span>
               </span>
-              <span className={styles.email}>{email}</span>
             </div>
             {props.enablePhase2 && statusMessage && (
               <div className={styles.statusMessage}>
@@ -478,21 +512,17 @@ export const MeControl: React.FunctionComponent<MeControlProps> = props => {
                   </div>
                 )}
                 <div className={'status-message-buttons ' + styles.statusMessageButtons}>
-                  <Button
-                    transparent
-                    size="small"
-                    iconOnly
-                    onClick={handleSetEditStatusMessageView}
+                  <IconButtonHover
+                    regularIcon={Edit20Regular}
+                    hoverIcon={Edit20Filled}
                     className={styles.editStatusMessageButton}
-                    icon={<IconHover Regular={Edit20Regular} Hover={Edit20Filled} />}
+                    onClick={handleSetEditStatusMessageView}
                   />
-                  <Button
-                    transparent
-                    size="small"
-                    iconOnly
+                  <IconButtonHover
+                    regularIcon={Delete20Regular}
+                    hoverIcon={Delete20Filled}
                     onClick={handleClearStatus}
                     className={styles.editStatusMessageButton}
-                    icon={<IconHover Regular={Delete20Regular} Hover={Delete20Filled} />}
                   />
                 </div>
               </div>
@@ -511,7 +541,10 @@ export const MeControl: React.FunctionComponent<MeControlProps> = props => {
                   }}
                 >
                   <MenuTrigger>
-                    <MenuItem className={styles.menuItem} submenuIndicator={<ChevronRight20Regular />}>
+                    <MenuItem
+                      className={styles.menuItem}
+                      submenuIndicator={<ChevronRight20Regular className={styles.submenuIndicator} />}
+                    >
                       {status}
                     </MenuItem>
                   </MenuTrigger>
@@ -523,49 +556,63 @@ export const MeControl: React.FunctionComponent<MeControlProps> = props => {
                     <MenuItemRadio
                       name="status"
                       value="Available"
-                      icon={<SkypeCircleCheckIcon className={styles.statusMenuItemAvailable} />}
+                      icon={<PresenceAvailable16Filled className={styles.statusMenuItemAvailable} />}
                     >
                       Available
                     </MenuItemRadio>
-                    <MenuItemRadio
-                      name="status"
-                      value="Busy"
-                      icon={<StatusCircleOuterIcon className={styles.statusMenuItemBusy} />}
-                    >
-                      Busy
-                    </MenuItemRadio>
-                    <MenuItemRadio
-                      name="status"
-                      value="Do not disturb"
-                      icon={<Blocked2SolidIcon className={styles.statusMenuItemDoNotDisturb} />}
-                    >
-                      Do Not Disturb
-                    </MenuItemRadio>
-                    <MenuItemRadio
-                      name="status"
-                      value="Be right back"
-                      icon={<AwayStatusIcon className={styles.statusMenuItemBeRightBack} />}
-                    >
-                      Be Right Back
-                    </MenuItemRadio>
+                    {props.enablePhase2 && (
+                      <MenuItemRadio
+                        name="status"
+                        value="Busy"
+                        icon={<PresenceBusy16Filled className={styles.statusMenuItemBusy} />}
+                      >
+                        Busy
+                      </MenuItemRadio>
+                    )}
+                    {props.enablePhase2 && (
+                      <MenuItemRadio
+                        name="status"
+                        value="Do not disturb"
+                        icon={<PresenceDnd16Filled className={styles.statusMenuItemDoNotDisturb} />}
+                      >
+                        Do Not Disturb
+                      </MenuItemRadio>
+                    )}
+                    {props.enablePhase2 && (
+                      <MenuItemRadio
+                        name="status"
+                        value="Be right back"
+                        icon={<PresenceAway16Filled className={styles.statusMenuItemBeRightBack} />}
+                      >
+                        Be Right Back
+                      </MenuItemRadio>
+                    )}
                     <MenuItemRadio
                       name="status"
                       value="Appear away"
-                      icon={<AwayStatusIcon className={styles.statusMenuItemAppearAway} />}
+                      icon={<PresenceAway16Filled className={styles.statusMenuItemAppearAway} />}
                     >
                       Appear Away
                     </MenuItemRadio>
-                    <MenuItemRadio
-                      name="status"
-                      value="Appear offline"
-                      icon={<CircleRingIcon className={styles.statusMenuItemAppearOffline} />}
-                    >
-                      Appear Offline
-                    </MenuItemRadio>
+                    {props.enablePhase2 && (
+                      <MenuItemRadio
+                        name="status"
+                        value="Appear offline"
+                        icon={<PresenceOffline16Regular className={styles.statusMenuItemAppearOffline} />}
+                      >
+                        Appear Offline
+                      </MenuItemRadio>
+                    )}
                     <MenuDivider />
-                    <MenuItem icon={<ClockIcon />}>Duration</MenuItem>
+                    {props.enablePhase2 && (
+                      <MenuItem className={styles.statusMenuItemDuration} icon={<Clock20Regular />}>
+                        Duration
+                      </MenuItem>
+                    )}
                     <MenuDivider />
-                    <MenuItem icon={<ResetIcon />}>Reset Status</MenuItem>
+                    <MenuItem className={styles.statusMenuItemResetStatus} icon={<ArrowReset20Regular />}>
+                      Reset Status
+                    </MenuItem>
                   </MenuList>
                 </Menu>
               </MenuList>
@@ -581,7 +628,7 @@ export const MeControl: React.FunctionComponent<MeControlProps> = props => {
             {props.enablePhase2 && (
               <MenuItem
                 hasSubmenu
-                submenuIndicator={<ChevronRight20Regular />}
+                submenuIndicator={<ChevronRight20Regular className={styles.submenuIndicator} />}
                 className={styles.menuItem}
                 onClick={handleSetEditStatusMessageView}
               >
@@ -590,12 +637,9 @@ export const MeControl: React.FunctionComponent<MeControlProps> = props => {
             )}
             <MenuItem
               hasSubmenu
-              submenuIndicator={{
-                className: styles.myAccountMenuItem,
-                children: <Open16Regular className={styles.svgIcon} />,
-              }}
+              submenuIndicator={{ className: styles.myAccountMenuItem, children: <Open16Regular /> }}
               className={styles.menuItem}
-              onClick={handleMyMicrosoftAccount}
+              onClick={handleMyMicrosoftAccountClick}
             >
               My Microsoft account
             </MenuItem>
@@ -634,7 +678,7 @@ export const MeControl: React.FunctionComponent<MeControlProps> = props => {
           ))}
       </Menu>
 
-      <pre style={{ padding: '8px', marginTop: '300px', background: '#f6f6f6', color: '#888', borderRadius: '8px' }}>
+      <pre className={styles.debugState}>
         {JSON.stringify(
           {
             view,
