@@ -297,6 +297,9 @@ export const RadioItemsControlled = () => {
 };
 
 export default {
-  title: 'MenuList',
+  // use the Components prefix and (react-menu) suffix to have the same naming convention as react-examples
+  title: 'Components/MenuList (react-menu)',
+  // Explicit id used in story URL
+  id: 'Components/MenuList',
   component: MenuList,
 };
