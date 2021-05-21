@@ -25,6 +25,7 @@ import {
   Open16Regular,
   ChevronRight20Regular,
   ChevronLeft20Regular,
+  ChevronDown20Regular,
   PresenceAvailable16Filled,
   PresenceBusy16Filled,
   PresenceDnd16Filled,
@@ -53,14 +54,12 @@ const __fakeDataStore = {
 const fakeMutation = data => Object.assign(__fakeDataStore, data);
 const fakeQuery = () => ({ ...__fakeDataStore });
 
-// TODO: this should be set on all the icons by default -> create a bug in system-icons repo
 const useIconHoverStyles = makeStyles({
   root: {
     '& .icon-hover': { display: 'none' },
     '&:hover .icon-hover': { display: 'inline' },
     '&:hover .icon-regular': { display: 'none' },
   },
-  icon: { fill: 'currentColor' },
 });
 
 const IconButtonHover = (
@@ -81,8 +80,8 @@ const IconButtonHover = (
       className={mergeClasses(styles.root, props.className)}
       icon={
         <>
-          <Regular className={mergeClasses('icon-regular', styles.icon)} />
-          <Hover className={mergeClasses('icon-hover', styles.icon)} />
+          <Regular className="icon-regular" />
+          <Hover className="icon-hover" />
         </>
       }
     />
@@ -110,6 +109,11 @@ const useStyles = makeStyles({
     background: theme.alias.color.neutral.neutralBackground1,
     boxShadow: theme.alias.shadow.shadow8,
     borderRadius: theme.global.borderRadius.medium,
+    '& svg': {
+      // make svg icons inherit font color
+      // TODO: this should be set on all the icons by default -> create a bug in system-icons repo
+      fill: 'currentColor',
+    },
   }),
 
   headerRow: {
@@ -297,9 +301,6 @@ const useStyles = makeStyles({
 
   menuItem: {
     paddingLeft: `${LEFT_PADDING}px`,
-    // make svg icons inherit font color
-    // TODO: this should be set on all the icons by default -> create a bug in system-icons repo
-    fill: 'currentColor',
   },
 
   // Align the link icon vertically
@@ -308,9 +309,6 @@ const useStyles = makeStyles({
   statusMenu: theme => ({
     width: '237px',
     borderRadius: theme.global.borderRadius.medium,
-    // make svg icons inherit font color
-    // TODO: this should be set on all the icons by default -> create a bug in system-icons repo
-    fill: 'currentColor',
   }),
 
   statusMenuItemAvailable: theme => ({
@@ -349,17 +347,6 @@ const useStyles = makeStyles({
     lineHeight: theme.global.type.lineHeights.base[300],
     color: theme.alias.color.neutral.neutralForeground2,
   }),
-  statusMessageDisplayUntilSelect: theme => ({
-    boxSizing: 'border-box',
-    marginBottom: '16px',
-    width: '100%',
-    padding: '8px',
-    // TODO: figma file shows bg2, but hex is #F5F5F5, which is bg3 in our code. bg2 in code is #FAFAFA.
-    background: theme.alias.color.neutral.neutralBackground3,
-    border: 'none',
-    borderRadius: '4px',
-    color: 'inherit',
-  }),
   setStatusMessageDoneButton: {
     float: 'right',
   },
@@ -371,6 +358,20 @@ const useStyles = makeStyles({
     color: theme.alias.color.neutral.neutralForeground3,
     background: theme.alias.color.neutral.neutralBackground3,
     borderRadius: theme.global.borderRadius.large,
+  }),
+
+  clearStatusMenuPopup: theme => ({
+    width: '100%',
+    margin: '0 8px',
+    boxSizing: 'border-box',
+  }),
+  clearStatusMenuTrigger: theme => ({
+    marginBottom: '16px',
+    width: '100%',
+    maxWidth: 'unset',
+    justifyContent: 'space-between',
+    // TODO: figma file shows bg2, but hex is #F5F5F5, which is bg3 in our code. bg2 in code is #FAFAFA.
+    // background: theme.alias.color.neutral.neutralBackground3,
   }),
 });
 
@@ -405,11 +406,13 @@ export const MeControl: React.FunctionComponent<MeControlProps> = props => {
 
   const styles = useStyles();
   const [view, setView] = React.useState(EDIT_STATUS_MESSAGE_VIEW);
+  const [clearStatusAfter, setClearStatusAfter] = React.useState('Never');
   const [open, setOpen] = React.useState(true);
   const [isOnline, setIsOnline] = React.useState(true);
   const [status, setStatus] = React.useState('Available');
   const [hasStatusMessageError, setHasStatusMessageError] = React.useState(false);
 
+  // TODO: calculate proper display until time
   const statusMessageDisplayUntilDate = new Date();
 
   const handleTriggerClick = React.useCallback(() => {
@@ -430,8 +433,10 @@ export const MeControl: React.FunctionComponent<MeControlProps> = props => {
 
   const handleChangeStatus = React.useCallback((e, name, checkedItems) => {
     setStatus(checkedItems[0]);
-    // TODO: is this really the intended behavior, it is highly unproductive in the user flow
-    // setOpen(false);
+  }, []);
+
+  const handleChangeClearStatusAfter = React.useCallback((e, name, checkedItems) => {
+    setClearStatusAfter(checkedItems[0]);
   }, []);
 
   const handleChangeName = React.useCallback(() => {
@@ -540,6 +545,7 @@ export const MeControl: React.FunctionComponent<MeControlProps> = props => {
             {props.enablePhase2 && (
               <MenuList>
                 <Menu
+                  openOnHover={false}
                   hasCheckmarks
                   hasIcons
                   checkedValues={{ status: [status] }}
@@ -679,14 +685,45 @@ export const MeControl: React.FunctionComponent<MeControlProps> = props => {
                   </div>
                 )}
                 <label className={styles.statusMessageDisplayUntilLabel}>Clear status message after</label>
-                <select className={styles.statusMessageDisplayUntilSelect}>
-                  <option value="never">Never</option>
-                  <option value="today">Today</option>
-                  <option value="1-hour">1 hour</option>
-                  <option value="4-hours">4 hours</option>
-                  <option value="this-week">This week</option>
-                  <option value="custom">Custom</option>
-                </select>
+                <Menu
+                  openOnHover={false}
+                  position="below"
+                  align="top"
+                  menuPopup={{ className: styles.clearStatusMenuPopup }}
+                >
+                  <MenuTrigger>
+                    <Button
+                      icon={<ChevronDown20Regular />}
+                      iconPosition="after"
+                      className={styles.clearStatusMenuTrigger}
+                    >
+                      {clearStatusAfter}
+                    </Button>
+                  </MenuTrigger>
+                  <MenuList
+                    checkedValues={{ 'clear-status-message-after': [clearStatusAfter] }}
+                    onCheckedValueChange={handleChangeClearStatusAfter}
+                  >
+                    <MenuItemRadio name="clear-status-message-after" value="Never">
+                      Never
+                    </MenuItemRadio>
+                    <MenuItemRadio name="clear-status-message-after" value="Today">
+                      Today
+                    </MenuItemRadio>
+                    <MenuItemRadio name="clear-status-message-after" value="1 hour">
+                      1 hour
+                    </MenuItemRadio>
+                    <MenuItemRadio name="clear-status-message-after" value="4 hours">
+                      4 hours
+                    </MenuItemRadio>
+                    <MenuItemRadio name="clear-status-message-after" value="This week">
+                      This week
+                    </MenuItemRadio>
+                    <MenuItemRadio name="clear-status-message-after" value="Custom">
+                      Custom
+                    </MenuItemRadio>
+                  </MenuList>
+                </Menu>
               </div>
               <Button primary className={styles.setStatusMessageDoneButton} onClick={handleSetRootView}>
                 Done
@@ -704,6 +741,7 @@ export const MeControl: React.FunctionComponent<MeControlProps> = props => {
             email,
             status,
             statusMessage,
+            clearStatusAfter,
           },
           null,
           2,
