@@ -284,6 +284,7 @@ const useStyles = makeStyles({
     fontFamily: 'inherit',
     fontSize: theme.global.type.fontSizes.base[400],
     lineHeight: theme.global.type.lineHeights.base[400],
+    color: 'inherit',
     resize: 'none',
     // TODO: figma file shows bg2, but hex is #F5F5F5, which is bg3 in our code. bg2 in code is #FAFAFA.
     background: theme.alias.color.neutral.neutralBackground3,
@@ -337,7 +338,10 @@ const useStyles = makeStyles({
     color: theme.alias.color.neutral.neutralForeground1,
   }),
 
-  statusMessageError: theme => ({ color: theme.alias.color.foreground2 }),
+  statusMessageError: theme => ({
+    color: theme.alias.color.cranberry.foreground3,
+    margin: '12px 0',
+  }),
 
   statusMessageDisplayUntilLabel: theme => ({
     marginBottom: '8px',
@@ -349,11 +353,12 @@ const useStyles = makeStyles({
     boxSizing: 'border-box',
     marginBottom: '16px',
     width: '100%',
-    padding: '8px 16px',
+    padding: '8px',
     // TODO: figma file shows bg2, but hex is #F5F5F5, which is bg3 in our code. bg2 in code is #FAFAFA.
     background: theme.alias.color.neutral.neutralBackground3,
     border: 'none',
     borderRadius: '4px',
+    color: 'inherit',
   }),
   setStatusMessageDoneButton: {
     float: 'right',
@@ -361,7 +366,7 @@ const useStyles = makeStyles({
 
   debugState: theme => ({
     padding: '8px',
-    marginTop: '300px',
+    marginTop: '360px',
     marginBottom: '16px',
     color: theme.alias.color.neutral.neutralForeground3,
     background: theme.alias.color.neutral.neutralBackground3,
@@ -399,16 +404,11 @@ export const MeControl: React.FunctionComponent<MeControlProps> = props => {
   const { statusMessage, name, email } = fakeQuery();
 
   const styles = useStyles();
-  const [view, setView] = React.useState(ROOT_VIEW);
+  const [view, setView] = React.useState(EDIT_STATUS_MESSAGE_VIEW);
   const [open, setOpen] = React.useState(true);
   const [isOnline, setIsOnline] = React.useState(true);
   const [status, setStatus] = React.useState('Available');
   const [hasStatusMessageError, setHasStatusMessageError] = React.useState(false);
-  const [statusMessageErrorString, setStatusMessageErrorString] = React.useState(
-    isOnline
-      ? 'Failed to set status note, please try again.'
-      : "Failed to set status note, try again when you're online.",
-  );
 
   const statusMessageDisplayUntilDate = new Date();
 
@@ -671,8 +671,12 @@ export const MeControl: React.FunctionComponent<MeControlProps> = props => {
               </div>
               <StatusMessageTextArea />
               <div>
-                {statusMessageErrorString && (
-                  <div className={styles.statusMessageError}>{statusMessageErrorString}</div>
+                {hasStatusMessageError && (
+                  <div className={styles.statusMessageError}>
+                    {isOnline
+                      ? 'Failed to set status note, please try again.'
+                      : "Failed to set status note, try again when you're online."}
+                  </div>
                 )}
                 <label className={styles.statusMessageDisplayUntilLabel}>Clear status message after</label>
                 <select className={styles.statusMessageDisplayUntilSelect}>
