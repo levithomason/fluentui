@@ -109,6 +109,9 @@ const useStyles = makeStyles({
     background: theme.alias.color.neutral.neutralBackground1,
     boxShadow: theme.alias.shadow.shadow8,
     borderRadius: theme.global.borderRadius.medium,
+    '& :focus': {
+      boxShadow: '0 0 0 4px red',
+    },
     '& svg': {
       // make svg icons inherit font color
       // TODO: this should be set on all the icons by default -> create a bug in system-icons repo
@@ -166,7 +169,7 @@ const useStyles = makeStyles({
   editNameHoverArea: {
     ':hover': {
       '& .edit-name-button': {
-        display: 'block',
+        opacity: 1,
       },
     },
   },
@@ -180,7 +183,6 @@ const useStyles = makeStyles({
 
   editNameButton: theme => ({
     gridArea: 'editName',
-    display: 'none',
     padding: 0,
     margin: '0 0 0 12px',
     // TODO: red lines call for 12px square icon here
@@ -190,6 +192,9 @@ const useStyles = makeStyles({
     minHeight: '16px',
     minWidth: '16px',
     color: theme.alias.color.neutral.neutralForeground2,
+    '&:not(:focus)': {
+      opacity: 0,
+    },
   }),
   editNameIcon: {
     // TODO: red lines call for 12px square icon here but button doesn't have a size this small
@@ -213,6 +218,7 @@ const useStyles = makeStyles({
     fontSize: theme.global.type.fontSizes.base[300],
     lineHeight: theme.global.type.fontSizes.base[300],
     ':hover': {
+      // TODO: always keep in DOM for keyboard nav and available to screen readers (opacity)
       '& .status-message-buttons': {
         display: 'block',
       },
@@ -405,9 +411,9 @@ export const MeControl: React.FunctionComponent<MeControlProps> = props => {
   const { statusMessage, name, email } = fakeQuery();
 
   const styles = useStyles();
-  const [view, setView] = React.useState(EDIT_STATUS_MESSAGE_VIEW);
+  const [view, setView] = React.useState(ROOT_VIEW);
   const [clearStatusAfter, setClearStatusAfter] = React.useState('Never');
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = React.useState(false);
   const [isOnline, setIsOnline] = React.useState(true);
   const [status, setStatus] = React.useState('Available');
   const [hasStatusMessageError, setHasStatusMessageError] = React.useState(false);
@@ -415,13 +421,15 @@ export const MeControl: React.FunctionComponent<MeControlProps> = props => {
   // TODO: calculate proper display until time
   const statusMessageDisplayUntilDate = new Date();
 
-  const handleTriggerClick = React.useCallback(() => {
-    setOpen(!open);
-  }, [open]);
+  const handleOpenChange = React.useCallback((e, data) => {
+    // TODO: do not close on whitespace click
+    console.log(e);
+    setOpen(data.open);
+  }, []);
 
   const handleSignoutClick = React.useCallback(() => {
     alert('handleSignoutClick');
-  }, [open]);
+  }, []);
 
   const handleSetRootView = React.useCallback(() => {
     setView(ROOT_VIEW);
@@ -455,6 +463,13 @@ export const MeControl: React.FunctionComponent<MeControlProps> = props => {
     alert('handleMyMicrosoftAccountClick');
   }, []);
 
+  const defaultFocusedItemRef = React.useRef(null);
+  React.useEffect(() => {
+    if (open && defaultFocusedItemRef.current) {
+      defaultFocusedItemRef.current.focus();
+    }
+  }, [open]);
+
   const avatarBadge = <AvatarBadge />;
 
   return (
@@ -465,14 +480,18 @@ export const MeControl: React.FunctionComponent<MeControlProps> = props => {
         // TODO: temp controlled menu since click inside closes
         open={open}
         menuPopup={{ className: styles.root }}
+        onOpenChange={handleOpenChange}
       >
         <MenuTrigger>
           <Button
+            data-id="trigger"
             iconOnly
+            aria-label={
+              props.enablePhase2 ? `Your profile picture with status displayed as <status>.` : `Your profile picture`
+            }
             icon={props.enablePhase2 ? <Avatar size={28} badge={avatarBadge} /> : <Avatar size={28} />}
             size="large"
             primary
-            onClick={handleTriggerClick}
           />
         </MenuTrigger>
         {((!props.enablePhase2 || view === ROOT_VIEW) && (
@@ -487,28 +506,30 @@ export const MeControl: React.FunctionComponent<MeControlProps> = props => {
               </Button>
             </div>
             <div className={styles.userInfoRow}>
-              {/* TODO: hover/click to edit pic */}
-              {props.enablePhase2 ? (
-                <Avatar
-                  className={styles.avatar}
-                  badge={avatarBadge}
-                  size={AVATAR_SIZE}
-                  onClick={handleChangeProfilePicture}
-                />
-              ) : (
-                <Avatar className={styles.avatar} size={AVATAR_SIZE} />
-              )}
+              <button role="menuitem" aria-label="User profile image">
+                {props.enablePhase2 ? (
+                  // TODO: hover/click to edit pic
+                  <Avatar
+                    className={styles.avatar}
+                    badge={avatarBadge}
+                    size={AVATAR_SIZE}
+                    onClick={handleChangeProfilePicture}
+                  />
+                ) : (
+                  <Avatar className={styles.avatar} size={AVATAR_SIZE} />
+                )}
+              </button>
               <span className={styles.editNameHoverArea}>
                 <span className={styles.nameContainer}>
                   <span className={styles.name}>{name}</span>
-                  {props.enablePhase2 && (
-                    <IconButtonHover
-                      regularIcon={Edit20Regular}
-                      hoverIcon={Edit20Filled}
-                      onClick={handleChangeName}
-                      className={'edit-name-button ' + styles.editNameButton}
-                    />
-                  )}
+                  {/* TODO: ask kerryn, is this phase 2? */}
+                  <IconButtonHover
+                    role="menuitem"
+                    regularIcon={Edit20Regular}
+                    hoverIcon={Edit20Filled}
+                    onClick={handleChangeName}
+                    className={'edit-name-button ' + styles.editNameButton}
+                  />
                 </span>
                 <span className={styles.email}>{email}</span>
               </span>
@@ -643,6 +664,7 @@ export const MeControl: React.FunctionComponent<MeControlProps> = props => {
             */}
             {props.enablePhase2 && (
               <MenuItem
+                ref={defaultFocusedItemRef}
                 hasSubmenu
                 submenuIndicator={<ChevronRight20Regular className={styles.submenuIndicator} />}
                 className={styles.menuItem}
@@ -651,6 +673,7 @@ export const MeControl: React.FunctionComponent<MeControlProps> = props => {
                 Set status message
               </MenuItem>
             )}
+            {/* TODO: focus by default in phase 1*/}
             <MenuItem
               hasSubmenu
               submenuIndicator={{ className: styles.myAccountMenuItem, children: <Open16Regular /> }}
@@ -692,6 +715,7 @@ export const MeControl: React.FunctionComponent<MeControlProps> = props => {
                   menuPopup={{ className: styles.clearStatusMenuPopup }}
                 >
                   <MenuTrigger>
+                    {/* TODO: Down should open */}
                     <Button
                       icon={<ChevronDown20Regular />}
                       iconPosition="after"
