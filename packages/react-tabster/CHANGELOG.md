@@ -1,8 +1,26 @@
 # Change Log - @fluentui/react-tabster
 
-This log was last generated on Thu, 20 May 2021 07:41:54 GMT and should not be manually modified.
+This log was last generated on Wed, 26 May 2021 07:35:43 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## [9.0.0-alpha.28](https://github.com/microsoft/fluentui/tree/@fluentui/react-tabster_v9.0.0-alpha.28)
+
+Wed, 26 May 2021 07:35:43 GMT 
+[Compare changes](https://github.com/microsoft/fluentui/compare/@fluentui/react-tabster_v9.0.0-alpha.27..@fluentui/react-tabster_v9.0.0-alpha.28)
+
+### Changes
+
+- Bump @fluentui/react-utilities to v9.0.0-alpha.25 ([PR #18323](https://github.com/microsoft/fluentui/pull/18323) by lingfan.gao@microsoft.com)
+
+## [9.0.0-alpha.27](https://github.com/microsoft/fluentui/tree/@fluentui/react-tabster_v9.0.0-alpha.27)
+
+Fri, 21 May 2021 07:34:54 GMT 
+[Compare changes](https://github.com/microsoft/fluentui/compare/@fluentui/react-tabster_v9.0.0-alpha.26..@fluentui/react-tabster_v9.0.0-alpha.27)
+
+### Changes
+
+- Return memoized find* callbacks from `useFocusFinders` ([PR #18262](https://github.com/microsoft/fluentui/pull/18262) by lingfan.gao@microsoft.com)
 
 ## [9.0.0-alpha.26](https://github.com/microsoft/fluentui/tree/@fluentui/react-tabster_v9.0.0-alpha.26)
 

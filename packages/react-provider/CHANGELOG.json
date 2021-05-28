@@ -2,6 +2,70 @@
   "name": "@fluentui/react-provider",
   "entries": [
     {
+      "date": "Wed, 26 May 2021 07:35:43 GMT",
+      "tag": "@fluentui/react-provider_v9.0.0-alpha.41",
+      "version": "9.0.0-alpha.41",
+      "comments": {
+        "none": [
+          {
+            "comment": "Bump @fluentui/react-theme-provider to v9.0.0-alpha.38",
+            "author": "olfedias@microsoft.com",
+            "commit": "d2504c72ec7fba0cf4dcf1984c2e1a9322720225",
+            "package": "@fluentui/react-provider"
+          }
+        ],
+        "prerelease": [
+          {
+            "comment": "Bump @fluentui/react-utilities to v9.0.0-alpha.25",
+            "author": "lingfan.gao@microsoft.com",
+            "commit": "6ffca36c9537a1852d8ec26478b8b7aeb059e17c",
+            "package": "@fluentui/react-provider"
+          }
+        ]
+      }
+    },
+    {
+      "date": "Fri, 21 May 2021 07:34:54 GMT",
+      "tag": "@fluentui/react-provider_v9.0.0-alpha.40",
+      "version": "9.0.0-alpha.40",
+      "comments": {
+        "prerelease": [
+          {
+            "comment": "Bump @fluentui/react-tabster to v9.0.0-alpha.27",
+            "author": "miroslav.stastny@microsoft.com",
+            "commit": "3f78f90075ae78bfd28f7d498ae8f012f0221279",
+            "package": "@fluentui/react-provider"
+          }
+        ],
+        "none": [
+          {
+            "comment": "Bump @fluentui/react-theme to v9.0.0-alpha.13",
+            "author": "miroslav.stastny@microsoft.com",
+            "commit": "3f78f90075ae78bfd28f7d498ae8f012f0221279",
+            "package": "@fluentui/react-provider"
+          },
+          {
+            "comment": "Bump @fluentui/react-theme-provider to v9.0.0-alpha.37",
+            "author": "miroslav.stastny@microsoft.com",
+            "commit": "3f78f90075ae78bfd28f7d498ae8f012f0221279",
+            "package": "@fluentui/react-provider"
+          },
+          {
+            "comment": "Bump @fluentui/jest-serializer-make-styles to v9.0.0-alpha.14",
+            "author": "miroslav.stastny@microsoft.com",
+            "commit": "3f78f90075ae78bfd28f7d498ae8f012f0221279",
+            "package": "@fluentui/react-provider"
+          },
+          {
+            "comment": "Bump @fluentui/react-shared-contexts to v9.0.0-alpha.12",
+            "author": "miroslav.stastny@microsoft.com",
+            "commit": "3f78f90075ae78bfd28f7d498ae8f012f0221279",
+            "package": "@fluentui/react-provider"
+          }
+        ]
+      }
+    },
+    {
       "date": "Thu, 20 May 2021 07:41:54 GMT",
       "tag": "@fluentui/react-provider_v9.0.0-alpha.39",
       "version": "9.0.0-alpha.39",
