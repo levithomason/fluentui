@@ -56,9 +56,10 @@ const fakeQuery = () => ({ ...__fakeDataStore });
 
 const useIconHoverStyles = makeStyles({
   root: {
+    '&:focus': { opacity: 1 },
     '& .icon-hover': { display: 'none' },
-    '&:hover .icon-hover': { display: 'inline' },
     '&:hover .icon-regular': { display: 'none' },
+    '&:hover .icon-hover': { display: 'inline' },
   },
 });
 
@@ -192,9 +193,7 @@ const useStyles = makeStyles({
     minHeight: '16px',
     minWidth: '16px',
     color: theme.alias.color.neutral.neutralForeground2,
-    '&:not(:focus)': {
-      opacity: 0,
-    },
+    opacity: 0,
   }),
   editNameIcon: {
     // TODO: red lines call for 12px square icon here but button doesn't have a size this small
@@ -218,9 +217,8 @@ const useStyles = makeStyles({
     fontSize: theme.global.type.fontSizes.base[300],
     lineHeight: theme.global.type.fontSizes.base[300],
     ':hover': {
-      // TODO: always keep in DOM for keyboard nav and available to screen readers (opacity)
-      '& .status-message-buttons': {
-        display: 'block',
+      '& .status-message-button': {
+        opacity: 1,
       },
     },
   }),
@@ -232,7 +230,6 @@ const useStyles = makeStyles({
   }),
   statusMessageButtons: {
     position: 'absolute',
-    display: 'none',
     bottom: 0,
     right: 0,
   },
@@ -241,6 +238,7 @@ const useStyles = makeStyles({
     height: '24px',
     minWidth: '0',
     minHeight: '0',
+    opacity: 0,
   },
   editStatusMessageIcon: theme => ({
     fontSize: theme.global.type.fontSizes.base[300],
@@ -413,7 +411,7 @@ export const MeControl: React.FunctionComponent<MeControlProps> = props => {
   const styles = useStyles();
   const [view, setView] = React.useState(ROOT_VIEW);
   const [clearStatusAfter, setClearStatusAfter] = React.useState('Never');
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(true);
   const [isOnline, setIsOnline] = React.useState(true);
   const [status, setStatus] = React.useState('Available');
   const [hasStatusMessageError, setHasStatusMessageError] = React.useState(false);
@@ -463,10 +461,10 @@ export const MeControl: React.FunctionComponent<MeControlProps> = props => {
     alert('handleMyMicrosoftAccountClick');
   }, []);
 
-  const defaultFocusedItemRef = React.useRef(null);
+  const defaultFocusedItemRef = React.useRef<HTMLElement>(null);
   React.useEffect(() => {
-    if (open && defaultFocusedItemRef.current) {
-      defaultFocusedItemRef.current.focus();
+    if (open) {
+      defaultFocusedItemRef?.current?.focus?.();
     }
   }, [open]);
 
@@ -528,7 +526,7 @@ export const MeControl: React.FunctionComponent<MeControlProps> = props => {
                     regularIcon={Edit20Regular}
                     hoverIcon={Edit20Filled}
                     onClick={handleChangeName}
-                    className={'edit-name-button ' + styles.editNameButton}
+                    className={mergeClasses('edit-name-button', styles.editNameButton)}
                   />
                 </span>
                 <span className={styles.email}>{email}</span>
@@ -547,112 +545,112 @@ export const MeControl: React.FunctionComponent<MeControlProps> = props => {
                     })}
                   </div>
                 )}
-                <div className={'status-message-buttons ' + styles.statusMessageButtons}>
+                <div className={styles.statusMessageButtons}>
                   <IconButtonHover
+                    role="menuitem"
                     regularIcon={Edit20Regular}
                     hoverIcon={Edit20Filled}
-                    className={styles.editStatusMessageButton}
+                    className={mergeClasses('status-message-button', styles.editStatusMessageButton)}
                     onClick={handleSetEditStatusMessageView}
                   />
                   <IconButtonHover
+                    role="menuitem"
                     regularIcon={Delete20Regular}
                     hoverIcon={Delete20Filled}
                     onClick={handleClearStatus}
-                    className={styles.editStatusMessageButton}
+                    className={mergeClasses('status-message-button', styles.editStatusMessageButton)}
                   />
                 </div>
               </div>
             )}
             {props.enablePhase2 && (
-              <MenuList>
-                <Menu
-                  openOnHover={false}
-                  hasCheckmarks
-                  hasIcons
-                  checkedValues={{ status: [status] }}
-                  onCheckedValueChange={handleChangeStatus}
-                  position="below"
-                  align="top"
-                  menuPopup={{
-                    className: styles.statusMenu,
-                  }}
-                >
-                  <MenuTrigger>
-                    <MenuItem
-                      className={styles.menuItem}
-                      submenuIndicator={<ChevronRight20Regular className={styles.submenuIndicator} />}
-                    >
-                      {status}
-                    </MenuItem>
-                  </MenuTrigger>
-                  {/* TODO: MenuList onCheckedValueChange callback signature should be (e, data) so:
+              <Menu
+                openOnHover={false}
+                hasCheckmarks
+                hasIcons
+                checkedValues={{ status: [status] }}
+                onCheckedValueChange={handleChangeStatus}
+                position="below"
+                align="top"
+                menuPopup={{
+                  className: styles.statusMenu,
+                }}
+              >
+                <MenuTrigger>
+                  <MenuItem
+                    className={styles.menuItem}
+                    submenuIndicator={<ChevronRight20Regular className={styles.submenuIndicator} />}
+                  >
+                    {status}
+                  </MenuItem>
+                </MenuTrigger>
+                {/* TODO: MenuList onCheckedValueChange callback signature should be (e, data) so:
                         1. we can include more data in the object later
                         2. we stay consistent across all component callbacks
                   */}
-                  <MenuList>
+                <MenuList>
+                  <MenuItemRadio
+                    name="status"
+                    value="Available"
+                    icon={<PresenceAvailable16Filled className={styles.statusMenuItemAvailable} />}
+                  >
+                    Available
+                  </MenuItemRadio>
+                  {props.enablePhase2 && (
                     <MenuItemRadio
                       name="status"
-                      value="Available"
-                      icon={<PresenceAvailable16Filled className={styles.statusMenuItemAvailable} />}
+                      value="Busy"
+                      icon={<PresenceBusy16Filled className={styles.statusMenuItemBusy} />}
                     >
-                      Available
+                      Busy
                     </MenuItemRadio>
-                    {props.enablePhase2 && (
-                      <MenuItemRadio
-                        name="status"
-                        value="Busy"
-                        icon={<PresenceBusy16Filled className={styles.statusMenuItemBusy} />}
-                      >
-                        Busy
-                      </MenuItemRadio>
-                    )}
-                    {props.enablePhase2 && (
-                      <MenuItemRadio
-                        name="status"
-                        value="Do not disturb"
-                        icon={<PresenceDnd16Filled className={styles.statusMenuItemDoNotDisturb} />}
-                      >
-                        Do Not Disturb
-                      </MenuItemRadio>
-                    )}
-                    {props.enablePhase2 && (
-                      <MenuItemRadio
-                        name="status"
-                        value="Be right back"
-                        icon={<PresenceAway16Filled className={styles.statusMenuItemBeRightBack} />}
-                      >
-                        Be Right Back
-                      </MenuItemRadio>
-                    )}
+                  )}
+                  {props.enablePhase2 && (
                     <MenuItemRadio
                       name="status"
-                      value="Appear away"
-                      icon={<PresenceAway16Filled className={styles.statusMenuItemAppearAway} />}
+                      value="Do not disturb"
+                      icon={<PresenceDnd16Filled className={styles.statusMenuItemDoNotDisturb} />}
                     >
-                      Appear Away
+                      Do Not Disturb
                     </MenuItemRadio>
-                    {props.enablePhase2 && (
-                      <MenuItemRadio
-                        name="status"
-                        value="Appear offline"
-                        icon={<PresenceOffline16Regular className={styles.statusMenuItemAppearOffline} />}
-                      >
-                        Appear Offline
-                      </MenuItemRadio>
-                    )}
-                    <MenuDivider />
-                    {props.enablePhase2 && (
-                      <MenuItem className={styles.statusMenuItemDuration} icon={<Clock20Regular />}>
-                        Duration
-                      </MenuItem>
-                    )}
-                    <MenuDivider />
-                    <MenuItem className={styles.statusMenuItemResetStatus} icon={<ArrowReset20Regular />}>
-                      Reset Status
+                  )}
+                  {props.enablePhase2 && (
+                    <MenuItemRadio
+                      name="status"
+                      value="Be right back"
+                      icon={<PresenceAway16Filled className={styles.statusMenuItemBeRightBack} />}
+                    >
+                      Be Right Back
+                    </MenuItemRadio>
+                  )}
+                  <MenuItemRadio
+                    name="status"
+                    value="Appear away"
+                    icon={<PresenceAway16Filled className={styles.statusMenuItemAppearAway} />}
+                  >
+                    Appear Away
+                  </MenuItemRadio>
+                  {props.enablePhase2 && (
+                    <MenuItemRadio
+                      name="status"
+                      value="Appear offline"
+                      icon={<PresenceOffline16Regular className={styles.statusMenuItemAppearOffline} />}
+                    >
+                      Appear Offline
+                    </MenuItemRadio>
+                  )}
+                  <MenuDivider />
+                  {props.enablePhase2 && (
+                    <MenuItem className={styles.statusMenuItemDuration} icon={<Clock20Regular />}>
+                      Duration
                     </MenuItem>
-                  </MenuList>
-                </Menu>
-              </MenuList>
+                  )}
+                  <MenuDivider />
+                  <MenuItem className={styles.statusMenuItemResetStatus} icon={<ArrowReset20Regular />}>
+                    Reset Status
+                  </MenuItem>
+                </MenuList>
+              </Menu>
             )}
             {/*
               TODO: we do not support a navigation style menu
