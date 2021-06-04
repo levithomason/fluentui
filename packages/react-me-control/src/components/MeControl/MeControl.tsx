@@ -110,9 +110,9 @@ const useStyles = makeStyles({
     background: theme.alias.color.neutral.neutralBackground1,
     boxShadow: theme.alias.shadow.shadow8,
     borderRadius: theme.global.borderRadius.medium,
-    '& :focus': {
-      boxShadow: '0 0 0 4px red',
-    },
+    // '& :focus': {
+    //   boxShadow: '0 0 0 4px red',
+    // },
     '& svg': {
       // make svg icons inherit font color
       // TODO: this should be set on all the icons by default -> create a bug in system-icons repo
@@ -164,6 +164,13 @@ const useStyles = makeStyles({
   },
 
   avatar: { gridArea: 'avatar' },
+  editAvatarButton: {
+    appearance: 'none',
+    border: 'none',
+    margin: 0,
+    padding: 0,
+    background: 'none',
+  },
 
   nameContainer: {
     gridArea: 'name',
@@ -508,10 +515,12 @@ export const MeControl: React.FunctionComponent<MeControlProps> = props => {
               </Button>
             </div>
             <div className={styles.userInfoRow}>
-              <button role="menuitem" aria-label="User profile image">
+              <button role="menuitem" aria-label="User profile image" className={styles.editAvatarButton}>
                 {props.enablePhase2 ? (
                   // TODO: hover/click to edit pic
                   <Avatar
+                    // TODO: this does not work, we're removing this feature but it is currently broken
+                    // as={Button}
                     className={styles.avatar}
                     badge={avatarBadge}
                     size={AVATAR_SIZE}
@@ -550,6 +559,7 @@ export const MeControl: React.FunctionComponent<MeControlProps> = props => {
                   </div>
                 )}
                 <div className={styles.statusMessageButtons}>
+                  {/* TODO: these do not have proper focus rings, no Fluent UI Button does */}
                   <IconButtonHover
                     role="menuitem"
                     regularIcon={Edit20Regular}
