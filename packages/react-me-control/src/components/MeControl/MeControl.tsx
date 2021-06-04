@@ -118,6 +118,10 @@ const useStyles = makeStyles({
       // TODO: this should be set on all the icons by default -> create a bug in system-icons repo
       fill: 'currentColor',
     },
+    // TODO: Fluent UI should publish z index rules that it uses and when
+    //       This was required in Teams to get the menu to appear on top of the calendar.
+    //       We should have it placed much higher than 1, but need to address all our layers together
+    zIndex: 1,
   }),
 
   headerRow: {
