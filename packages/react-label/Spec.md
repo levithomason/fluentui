@@ -2,7 +2,7 @@
 
 ## Background
 
-_Description and use cases of this component_
+Labels provide a name or title to a component or group of components, e.g., text fields, checkboxes, radio buttons, and dropdown menus.
 
 ## Prior Art
 
