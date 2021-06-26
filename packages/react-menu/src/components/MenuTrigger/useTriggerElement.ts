@@ -1,61 +1,47 @@
 import * as React from 'react';
+import { getCode, ArrowRightKey, ArrowDownKey } from '@fluentui/keyboard-key';
 import { useMergedRefs, useEventCallback, shouldPreventDefaultOnKeyDown } from '@fluentui/react-utilities';
-import { getCode, keyboardKey } from '@fluentui/keyboard-key';
 import { useFocusFinders } from '@fluentui/react-tabster';
-import { MenuTriggerState } from './MenuTrigger.types';
 import { useMenuContext } from '../../contexts/menuContext';
-import { isOutsideMenu } from '../../utils/index';
+import { MenuTriggerChildProps, MenuTriggerState } from './MenuTrigger.types';
 
-// Helper type to select on parts of state the hook uses
-type UseTriggerElementState = Pick<MenuTriggerState, 'children'>;
+const noop = () => null;
 
 /**
  * Adds the necessary props to the trigger element
- *
- * onHover -> adds mouseenter/mouseleave events
- * onContextMenu -> removes all events except for onContextMenu
  */
-export const useTriggerElement = (state: UseTriggerElementState): MenuTriggerState => {
+export const useTriggerElement = (state: MenuTriggerState): MenuTriggerState => {
   const triggerRef = useMenuContext(context => context.triggerRef);
-  const menuPopupRef = useMenuContext(context => context.menuPopupRef);
+  const menuPopoverRef = useMenuContext(context => context.menuPopoverRef);
   const setOpen = useMenuContext(context => context.setOpen);
   const open = useMenuContext(context => context.open);
   const triggerId = useMenuContext(context => context.triggerId);
-  const onHover = useMenuContext(context => context.onHover);
-  const onContext = useMenuContext(context => context.onContext);
+  const openOnHover = useMenuContext(context => context.openOnHover);
+  const openOnContext = useMenuContext(context => context.openOnContext);
   const isSubmenu = useMenuContext(context => context.isSubmenu);
-
   const { findFirstFocusable } = useFocusFinders();
-  const openedWithKeyboardRef = React.useRef(false);
-  React.useEffect(() => {
-    if ((openedWithKeyboardRef.current && open) || (!isSubmenu && open)) {
-      const firstFocusable = findFirstFocusable(menuPopupRef.current);
-      firstFocusable?.focus();
-    }
+  const focusFirst = React.useCallback(() => {
+    const firstFocusable = findFirstFocusable(menuPopoverRef.current);
+    firstFocusable?.focus();
+  }, [findFirstFocusable, menuPopoverRef]);
 
-    openedWithKeyboardRef.current = false;
-  }, [openedWithKeyboardRef, findFirstFocusable, menuPopupRef, open, isSubmenu]);
+  const openedWithKeyboardRef = React.useRef(false);
 
   // TODO also need to warn on React.Fragment usage
   const child = React.Children.only(state.children);
 
   const onContextMenu = useEventCallback((e: React.MouseEvent<HTMLElement>) => {
-    if (onContext) {
+    if (openOnContext) {
       e.preventDefault();
-      setOpen(e, true);
+      setOpen(e, { open: true, keyboard: false });
     }
     child.props?.onContextMenu?.(e);
   });
 
   const onClick = useEventCallback((e: React.MouseEvent<HTMLElement>) => {
-    // Click event will close the menu popup
-    // Therefore, do not propagate click events to parent popup for nested menu trigger
-    if (isSubmenu) {
-      e.stopPropagation();
-    }
-
-    if (!onContext) {
-      setOpen(e, !open);
+    if (!openOnContext) {
+      setOpen(e, { open: !open, keyboard: openedWithKeyboardRef.current });
+      openedWithKeyboardRef.current = false;
     }
     child.props?.onClick?.(e);
   });
@@ -68,49 +54,61 @@ export const useTriggerElement = (state: UseTriggerElementState): MenuTriggerSta
     }
 
     const keyCode = getCode(e);
-    if (
-      !onContext &&
-      ((isSubmenu && keyCode === keyboardKey.ArrowRight) || (!isSubmenu && keyCode === keyboardKey.ArrowDown))
-    ) {
-      openedWithKeyboardRef.current = true;
-      setOpen(e, true);
+
+    if (!openOnContext && ((isSubmenu && keyCode === ArrowRightKey) || (!isSubmenu && keyCode === ArrowDownKey))) {
+      setOpen(e, { open: true, keyboard: true });
+    }
+
+    // if menu is already open, can't rely on effects to focus
+    if (open && keyCode === ArrowRightKey && isSubmenu) {
+      focusFirst();
+    }
+
+    if (open && keyCode === ArrowDownKey && !isSubmenu) {
+      focusFirst();
     }
 
     child.props?.onKeyDown?.(e);
   });
 
   const onMouseEnter = useEventCallback((e: React.MouseEvent<HTMLElement>) => {
-    if (onHover && !onContext) {
-      setOpen(e, true);
+    if (openOnHover) {
+      setOpen(e, { open: true, keyboard: false });
     }
+
     child.props?.onMouseEnter?.(e);
   });
 
-  // no mouse leave, since mouse enter sets focus for menu items
-  const onBlur = useEventCallback((e: React.FocusEvent<HTMLElement>) => {
-    if (isOutsideMenu({ menuPopupRef, triggerRef, event: e })) {
-      setOpen(e, false);
+  const onMouseLeave = useEventCallback((e: React.MouseEvent<HTMLElement>) => {
+    if (openOnHover) {
+      setOpen(e, { open: false, keyboard: false });
     }
 
-    child.props?.onBlur?.(e);
+    child.props?.onMouseLeave?.(e);
   });
 
   const disabled = child.props?.disabled;
-  const triggerProps: Partial<React.HTMLAttributes<HTMLElement>> = {
+  const triggerProps: MenuTriggerChildProps = {
     'aria-haspopup': true,
     'aria-expanded': open,
-    id: triggerId,
-    ...(child.props || {}),
+    id: child.props.id || triggerId,
 
-    // These handlers should always handle the child's props
-    ...(!disabled && {
-      // These handlers should always handle the child's original handlers
-      onClick,
-      onMouseEnter,
-      onContextMenu,
-      onKeyDown,
-      onBlur,
-    }),
+    ...(!disabled
+      ? {
+          onClick,
+          onMouseEnter,
+          onMouseLeave,
+          onContextMenu,
+          onKeyDown,
+        }
+      : // Spread disabled event handlers to implement contract and avoid specific disabled logic in handlers
+        {
+          onClick: noop,
+          onMouseEnter: noop,
+          onMouseLeave: noop,
+          onContextMenu: noop,
+          onKeyDown: noop,
+        }),
   };
 
   state.children = React.cloneElement(child, {

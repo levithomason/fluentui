@@ -27,7 +27,8 @@ export interface IScrollablePaneState {
 
 const getClassNames = classNamesFunction<IScrollablePaneStyleProps, IScrollablePaneStyles>();
 
-export class ScrollablePaneBase extends React.Component<IScrollablePaneProps, IScrollablePaneState>
+export class ScrollablePaneBase
+  extends React.Component<IScrollablePaneProps, IScrollablePaneState>
   implements IScrollablePane {
   private _root = React.createRef<HTMLDivElement>();
   private _stickyAboveRef = React.createRef<HTMLDivElement>();
@@ -186,13 +187,21 @@ export class ScrollablePaneBase extends React.Component<IScrollablePaneProps, IS
   }
 
   public render(): JSX.Element {
-    const { className, theme, styles } = this.props;
+    const { className, scrollContainerFocus, scrollContainerAriaLabel, theme, styles } = this.props;
     const { stickyTopHeight, stickyBottomHeight } = this.state;
     const classNames = getClassNames(styles!, {
       theme: theme!,
       className,
       scrollbarVisibility: this.props.scrollbarVisibility,
     });
+
+    const scrollContainerProps = scrollContainerFocus
+      ? {
+          role: 'group',
+          tabIndex: 0,
+          'aria-label': scrollContainerAriaLabel,
+        }
+      : {};
 
     return (
       <div {...getNativeProps(this.props, divProperties)} ref={this._root} className={classNames.root}>
@@ -201,7 +210,12 @@ export class ScrollablePaneBase extends React.Component<IScrollablePaneProps, IS
           className={classNames.stickyAbove}
           style={this._getStickyContainerStyle(stickyTopHeight, true)}
         />
-        <div ref={this._contentContainer} className={classNames.contentContainer} data-is-scrollable={true}>
+        <div
+          ref={this._contentContainer}
+          {...scrollContainerProps}
+          className={classNames.contentContainer}
+          data-is-scrollable={true}
+        >
           <ScrollablePaneContext.Provider value={this._getScrollablePaneContext()}>
             {this.props.children}
           </ScrollablePaneContext.Provider>

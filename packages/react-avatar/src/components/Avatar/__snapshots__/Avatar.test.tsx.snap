@@ -10,9 +10,30 @@ exports[`Avatar displays a badge 1`] = `
   >
     FL
   </span>
-  <span
+  <div
+    aria-hidden={true}
     className=""
-  />
+  >
+    <span
+      className=""
+    >
+      <span
+        aria-hidden={true}
+        className=""
+        role="presentation"
+      >
+        <svg
+          className=""
+          viewBox="0 0 2048 2048"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M1570 437q42 0 78 15t64 43 42 63 16 79q0 40-15 77t-43 65l-794 795q-28 28-65 43t-77 16q-40 0-77-15t-65-44l-362-362q-28-28-43-65t-16-77q0-42 16-78t43-64 63-42 79-16q40 0 77 15t65 43l220 220 652-653q28-28 65-43t77-15z"
+          />
+        </svg>
+      </span>
+    </span>
+  </div>
 </span>
 `;
 
@@ -75,6 +96,7 @@ exports[`Avatar prioritizes image over icon 1`] = `
     />
   </span>
   <img
+    className=""
     src="i.png"
   />
 </span>
@@ -91,6 +113,7 @@ exports[`Avatar prioritizes image over initials 1`] = `
     FL
   </span>
   <img
+    className=""
     src="i.png"
   />
 </span>
@@ -109,6 +132,7 @@ exports[`Avatar prioritizes image over initials and icon 1`] = `
     />
   </span>
   <img
+    className=""
     src="i.png"
   />
 </span>
@@ -166,6 +190,7 @@ exports[`Avatar renders a default state 1`] = `
       role="presentation"
     >
       <svg
+        className=""
         viewBox="0 0 2048 2048"
         xmlns="http://www.w3.org/2000/svg"
       >
@@ -206,6 +231,7 @@ exports[`Avatar renders an icon if the name is not alphabetic 1`] = `
       role="presentation"
     >
       <svg
+        className=""
         viewBox="0 0 2048 2048"
         xmlns="http://www.w3.org/2000/svg"
       >
@@ -231,6 +257,7 @@ exports[`Avatar renders an image 1`] = `
       role="presentation"
     >
       <svg
+        className=""
         viewBox="0 0 2048 2048"
         xmlns="http://www.w3.org/2000/svg"
       >
@@ -241,6 +268,7 @@ exports[`Avatar renders an image 1`] = `
     </span>
   </span>
   <img
+    className=""
     src="i.png"
   />
 </span>

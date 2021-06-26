@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Button, ButtonProps } from '@fluentui/react-button';
-import { Playground, PlaygroundProps, PropDefinition } from '../Playground';
+import { Playground } from '../Playground';
+import { PlaygroundProps, PropDefinition } from '../Playground.types';
 
 // TODO: this is here while waiting for react-icons to merge
 const SVGIcon = () => (
@@ -100,7 +101,9 @@ export const Disabled = () => (
   </>
 );
 
-export const buttonBaseProps: PropDefinition[] = [
+type ExampleProps = { iconOnly?: string };
+
+export const buttonBaseProps: PropDefinition<ButtonProps & ExampleProps>[] = [
   { propName: 'content', propType: 'string', defaultValue: 'This is a button', dependsOnProps: ['~iconOnly'] },
   { propName: 'disabled', propType: 'boolean' },
   { propName: 'icon', propType: 'boolean' },
@@ -111,11 +114,15 @@ export const buttonBaseProps: PropDefinition[] = [
     defaultValue: 'before',
     dependsOnProps: ['icon', '~iconOnly'],
   },
-  { propName: 'primary', propType: 'boolean' },
+  { propName: 'primary', propType: 'boolean', dependsOnProps: ['~subtle', '~transparent'] },
   { propName: 'size', propType: ['small', 'medium', 'large'], defaultValue: 'medium' },
+  { propName: 'subtle', propType: 'boolean', dependsOnProps: ['~primary', '~transparent'] },
+  { propName: 'transparent', propType: 'boolean', dependsOnProps: ['~primary', '~subtle'] },
 ];
 
-const buttonProps: PlaygroundProps['sections'] = [{ sectionName: 'Button props', propList: buttonBaseProps }];
+const buttonProps: PlaygroundProps<ButtonProps>['sections'] = [
+  { sectionName: 'Button props', propList: buttonBaseProps },
+];
 
 export const ButtonPlayground = () => (
   <Playground sections={buttonProps}>

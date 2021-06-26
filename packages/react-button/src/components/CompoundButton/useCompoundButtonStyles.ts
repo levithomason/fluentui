@@ -1,266 +1,212 @@
-import { ax, makeStyles } from '@fluentui/react-make-styles';
-import { Theme } from '@fluentui/react-theme';
+import { mergeClasses, makeStyles } from '@fluentui/react-make-styles';
 import { buttonSpacing, useButtonStyles } from '../Button/useButtonStyles';
-import { CompoundButtonState, CompoundButtonStyleSelectors, CompoundButtonVariantTokens } from './CompoundButton.types';
+import { CompoundButtonState } from './CompoundButton.types';
 
-export const makeCompoundButtonTokens = (theme: Theme): CompoundButtonVariantTokens => ({
-  base: {
-    // root tokens
+const CompoundButtonClassNames = {
+  secondaryContent: 'CompoundButton-secondaryContent',
+};
+
+const useRootStyles = makeStyles({
+  base: theme => ({
+    // TODO: remove unsafe property: https://caniuse.com/?search=gap
+    gap: buttonSpacing.large,
+
     height: 'auto',
-    paddingX: buttonSpacing.large,
-    paddingY: buttonSpacing.large,
 
-    // icon tokens
-    iconFontSize: '40px',
-    iconSpacing: buttonSpacing.large,
-    iconHeight: '40px',
-    iconWidth: '40px',
-
-    // secondary content tokens
-    secondaryContentColor: theme.alias.color.neutral.neutralForeground2,
-    secondaryContentFontSize: theme.global.type.fontSizes.base[200],
-    secondaryContentFontWeight: theme.global.type.fontWeights.regular,
-    secondaryContentGap: buttonSpacing.smaller,
-
-    hovered: {
-      secondaryContentColor: theme.alias.color.neutral.neutralForeground2Hover,
+    [`& .${CompoundButtonClassNames.secondaryContent}`]: {
+      color: theme.alias.color.neutral.neutralForeground2,
     },
 
-    pressed: {
-      secondaryContentColor: theme.alias.color.neutral.neutralForeground2Pressed,
+    ':hover': {
+      [`& .${CompoundButtonClassNames.secondaryContent}`]: {
+        color: theme.alias.color.neutral.neutralForeground2Hover,
+      },
     },
-  },
+
+    ':active': {
+      [`& .${CompoundButtonClassNames.secondaryContent}`]: {
+        color: theme.alias.color.neutral.neutralForeground2Pressed,
+      },
+    },
+  }),
   small: {
-    paddingX: buttonSpacing.medium,
-    paddingY: buttonSpacing.medium,
-
-    fontSize: theme.global.type.fontSizes.base[300],
-    lineHeight: theme.global.type.lineHeights.base[300],
+    padding: buttonSpacing.medium,
+  },
+  medium: {
+    padding: buttonSpacing.large,
   },
   large: {
-    paddingX: buttonSpacing.larger,
-    paddingY: buttonSpacing.larger,
+    padding: buttonSpacing.larger,
+  },
+  primary: theme => ({
+    [`& .${CompoundButtonClassNames.secondaryContent}`]: {
+      color: theme.alias.color.neutral.neutralForegroundInvertedAccessible,
+    },
 
-    secondaryContentFontSize: theme.global.type.fontSizes.base[300],
-  },
-  iconOnly: {
-    maxWidth: '52px',
-    minWidth: '52px',
-  },
-  iconOnlySmall: {
+    ':hover': {
+      [`& .${CompoundButtonClassNames.secondaryContent}`]: {
+        color: theme.alias.color.neutral.neutralForegroundInvertedAccessible,
+      },
+    },
+
+    ':active': {
+      [`& .${CompoundButtonClassNames.secondaryContent}`]: {
+        color: theme.alias.color.neutral.neutralForegroundInvertedAccessible,
+      },
+    },
+  }),
+  subtle: theme => ({
+    [`& .${CompoundButtonClassNames.secondaryContent}`]: {
+      color: theme.alias.color.neutral.neutralForeground2,
+    },
+
+    ':hover': {
+      [`& .${CompoundButtonClassNames.secondaryContent}`]: {
+        color: theme.alias.color.neutral.neutralForeground2BrandHover,
+      },
+    },
+
+    ':active': {
+      [`& .${CompoundButtonClassNames.secondaryContent}`]: {
+        color: theme.alias.color.neutral.neutralForeground2BrandPressed,
+      },
+    },
+  }),
+  transparent: theme => ({
+    [`& .${CompoundButtonClassNames.secondaryContent}`]: {
+      color: theme.alias.color.neutral.neutralForeground2,
+    },
+
+    ':hover': {
+      [`& .${CompoundButtonClassNames.secondaryContent}`]: {
+        color: theme.alias.color.neutral.neutralForeground2BrandHover,
+      },
+    },
+
+    ':active': {
+      [`& .${CompoundButtonClassNames.secondaryContent}`]: {
+        color: theme.alias.color.neutral.neutralForeground2BrandPressed,
+      },
+    },
+  }),
+  disabled: theme => ({
+    [`& .${CompoundButtonClassNames.secondaryContent}`]: {
+      color: theme.alias.color.neutral.neutralForegroundDisabled,
+    },
+
+    ':hover': {
+      [`& .${CompoundButtonClassNames.secondaryContent}`]: {
+        color: theme.alias.color.neutral.neutralForegroundDisabled,
+      },
+    },
+
+    ':active': {
+      [`& .${CompoundButtonClassNames.secondaryContent}`]: {
+        color: theme.alias.color.neutral.neutralForegroundDisabled,
+      },
+    },
+  }),
+});
+
+const useRootIconOnlyStyles = makeStyles({
+  small: {
     maxWidth: '48px',
     minWidth: '48px',
   },
-  iconOnlyLarge: {
+  medium: {
+    maxWidth: '52px',
+    minWidth: '52px',
+  },
+  large: {
     maxWidth: '56px',
     minWidth: '56px',
   },
-  primary: {
-    secondaryContentColor: theme.alias.color.neutral.neutralForegroundInvertedAccessible,
+});
 
-    hovered: {
-      secondaryContentColor: theme.alias.color.neutral.neutralForegroundInvertedAccessible,
-    },
+const useChildrenStyles = makeStyles({
+  small: theme => ({
+    fontSize: theme.global.type.fontSizes.base[300],
+    lineHeight: theme.global.type.lineHeights.base[300],
+  }),
+  medium: theme => ({
+    fontSize: theme.global.type.fontSizes.base[300],
+    lineHeight: theme.global.type.lineHeights.base[300],
+  }),
+  large: theme => ({
+    fontSize: theme.global.type.fontSizes.base[400],
+    lineHeight: theme.global.type.lineHeights.base[400],
+  }),
+});
 
-    pressed: {
-      secondaryContentColor: theme.alias.color.neutral.neutralForegroundInvertedAccessible,
-    },
-  },
-  disabled: {
-    secondaryContentColor: theme.alias.color.neutral.neutralForegroundDisabled,
-
-    hovered: {
-      secondaryContentColor: theme.alias.color.neutral.neutralForeground2Hover,
-    },
-
-    pressed: {
-      secondaryContentColor: theme.alias.color.neutral.neutralForeground2Pressed,
-    },
+const useIconStyles = makeStyles({
+  base: {
+    fontSize: '40px',
+    height: '40px',
+    width: '40px',
   },
 });
 
-const useStyles = makeStyles({
-  root: theme => {
-    const compoundButtonTokens = makeCompoundButtonTokens(theme);
-
-    return {
-      gap: compoundButtonTokens.base?.iconSpacing,
-      height: compoundButtonTokens.base?.height,
-      padding: `${compoundButtonTokens.base?.paddingY} ${compoundButtonTokens.base?.paddingX}`,
-    };
-  },
-  rootSmall: theme => {
-    const compoundButtonTokens = makeCompoundButtonTokens(theme);
-
-    return {
-      padding: `${compoundButtonTokens.small?.paddingY} ${compoundButtonTokens.small?.paddingX}`,
-    };
-  },
-  rootLarge: theme => {
-    const compoundButtonTokens = makeCompoundButtonTokens(theme);
-
-    return {
-      padding: `${compoundButtonTokens.large?.paddingY} ${compoundButtonTokens.large?.paddingX}`,
-    };
-  },
-  rootIconOnly: theme => {
-    const compoundButtonTokens = makeCompoundButtonTokens(theme);
-
-    return {
-      maxWidth: compoundButtonTokens.iconOnly?.maxWidth,
-      minWidth: compoundButtonTokens.iconOnly?.minWidth,
-    };
-  },
-  rootIconOnlySmall: theme => {
-    const compoundButtonTokens = makeCompoundButtonTokens(theme);
-
-    return {
-      maxWidth: compoundButtonTokens.iconOnlySmall?.maxWidth,
-      minWidth: compoundButtonTokens.iconOnlySmall?.minWidth,
-    };
-  },
-  rootIconOnlyLarge: theme => {
-    const compoundButtonTokens = makeCompoundButtonTokens(theme);
-
-    return {
-      maxWidth: compoundButtonTokens.iconOnlyLarge?.maxWidth,
-      minWidth: compoundButtonTokens.iconOnlyLarge?.minWidth,
-    };
-  },
-  childrenSmall: theme => {
-    const compoundButtonTokens = makeCompoundButtonTokens(theme);
-
-    return {
-      fontSize: compoundButtonTokens.small?.fontSize,
-      lineHeight: compoundButtonTokens.small?.lineHeight,
-    };
-  },
-  icon: theme => {
-    const compoundButtonTokens = makeCompoundButtonTokens(theme);
-
-    return {
-      fontSize: compoundButtonTokens.base?.iconFontSize,
-      height: compoundButtonTokens.base?.iconHeight,
-      width: compoundButtonTokens.base?.iconWidth,
-    };
-  },
-  contentContainer: {
+const useContentContainerStyles = makeStyles({
+  base: {
     display: 'flex',
     flexDirection: 'column',
     textAlign: 'left',
   },
-  secondaryContent: theme => {
-    const compoundButtonTokens = makeCompoundButtonTokens(theme);
-
-    return {
-      lineHeight: '100%',
-
-      color: compoundButtonTokens.base?.secondaryContentColor,
-      fontSize: compoundButtonTokens.base?.secondaryContentFontSize,
-      fontWeight: compoundButtonTokens.base?.secondaryContentFontWeight,
-      marginTop: compoundButtonTokens.base?.secondaryContentGap,
-
-      ':hover': {
-        color: compoundButtonTokens.base?.hovered?.secondaryContentColor,
-      },
-
-      ':active': {
-        color: compoundButtonTokens.base?.pressed?.secondaryContentColor,
-      },
-    };
-  },
-  secondaryContentLarge: theme => {
-    const compoundButtonTokens = makeCompoundButtonTokens(theme);
-
-    return {
-      fontSize: compoundButtonTokens.large?.secondaryContentFontSize,
-    };
-  },
-  secondaryContentPrimary: theme => {
-    const compoundButtonTokens = makeCompoundButtonTokens(theme);
-
-    return {
-      color: compoundButtonTokens.primary?.secondaryContentColor,
-
-      ':hover': {
-        color: compoundButtonTokens.primary?.hovered?.secondaryContentColor,
-      },
-
-      ':active': {
-        color: compoundButtonTokens.primary?.pressed?.secondaryContentColor,
-      },
-    };
-  },
-  secondaryContentDisabled: theme => {
-    const compoundButtonTokens = makeCompoundButtonTokens(theme);
-
-    return {
-      color: compoundButtonTokens.disabled?.secondaryContentColor,
-
-      ':hover': {
-        color: compoundButtonTokens.disabled?.hovered?.secondaryContentColor,
-      },
-
-      ':active': {
-        color: compoundButtonTokens.disabled?.pressed?.secondaryContentColor,
-      },
-    };
-  },
 });
 
-export const useCompoundButtonStyles = (state: CompoundButtonState, selectors: CompoundButtonStyleSelectors) => {
-  // Save the classnames used in useButtonStyles and undefine them at the state level so that they are always applied
-  // last.
-  const {
-    className: rootClassName,
-    children: { className: childrenClassName } = { className: undefined },
-    icon: { className: iconClassName } = { className: undefined },
-  } = state;
-  state.className = undefined;
-  if (state.children) {
-    state.children.className = undefined;
-  }
-  if (state.icon) {
-    state.icon.className = undefined;
-  }
-  useButtonStyles(state, selectors);
+const useSecondaryContentStyles = makeStyles({
+  base: theme => ({
+    lineHeight: '100%',
+    marginTop: buttonSpacing.smaller,
 
-  const styles = useStyles();
+    fontWeight: theme.global.type.fontWeights.regular,
+  }),
+  small: theme => ({
+    fontSize: theme.global.type.fontSizes.base[200],
+  }),
+  medium: theme => ({
+    fontSize: theme.global.type.fontSizes.base[200],
+  }),
+  large: theme => ({
+    fontSize: theme.global.type.fontSizes.base[300],
+  }),
+});
 
-  state.className = ax(
+export const useCompoundButtonStyles = (state: CompoundButtonState): CompoundButtonState => {
+  const rootStyles = useRootStyles();
+  const rootIconOnlyStyles = useRootIconOnlyStyles();
+  const childrenStyles = useChildrenStyles();
+  const iconStyles = useIconStyles();
+  const contentContainerStyles = useContentContainerStyles();
+  const secondaryContentStyles = useSecondaryContentStyles();
+
+  state.className = mergeClasses(
+    rootStyles.base,
+    rootStyles[state.size],
+    state.primary && rootStyles.primary,
+    state.subtle && rootStyles.subtle,
+    state.transparent && rootStyles.transparent,
+    state.disabled && rootStyles.disabled,
+    state.iconOnly && rootIconOnlyStyles[state.size],
     state.className,
-    styles.root,
-    selectors.size === 'small' && styles.rootSmall,
-    selectors.size === 'large' && styles.rootLarge,
-    selectors.iconOnly && styles.rootIconOnly,
-    selectors.iconOnly && selectors.size === 'small' && styles.rootIconOnlySmall,
-    selectors.iconOnly && selectors.size === 'large' && styles.rootIconOnlyLarge,
-    rootClassName,
   );
 
   if (state.children) {
-    state.children.className = ax(
-      state.children.className,
-      selectors.size === 'small' && styles.childrenSmall,
-      childrenClassName,
-    );
+    state.children.className = mergeClasses(childrenStyles[state.size], state.children.className);
   }
 
-  if (state.icon) {
-    state.icon.className = ax(state.icon.className, styles.icon, iconClassName);
-  }
+  state.icon.className = mergeClasses(iconStyles.base, state.icon.className);
 
-  if (state.contentContainer) {
-    state.contentContainer.className = ax(styles.contentContainer, state.contentContainer.className);
-  }
+  state.contentContainer.className = mergeClasses(contentContainerStyles.base, state.contentContainer.className);
 
-  if (state.secondaryContent) {
-    state.secondaryContent.className = ax(
-      styles.secondaryContent,
-      selectors.size === 'large' && styles.secondaryContentLarge,
-      selectors.primary && styles.secondaryContentPrimary,
-      selectors.disabled && styles.secondaryContentDisabled,
-      state.secondaryContent.className,
-    );
-  }
+  state.secondaryContent.className = mergeClasses(
+    CompoundButtonClassNames.secondaryContent,
+    secondaryContentStyles.base,
+    secondaryContentStyles[state.size],
+    state.secondaryContent.className,
+  );
+
+  useButtonStyles(state);
+
+  return state;
 };

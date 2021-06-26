@@ -4,38 +4,13 @@
 
 ```ts
 
-import { getTabsterAttribute } from 'tabster';
-import * as React from 'react';
+import type { MakeStylesStyleRule } from '@fluentui/make-styles';
+import { RefObject } from 'react';
+import type { Theme } from '@fluentui/react-theme';
 import { Types } from 'tabster';
 
-export { getTabsterAttribute }
-
 // @public (undocumented)
-export const renderTabsterProvider: (state: TabsterProviderState) => JSX.Element;
-
-// @public
-export const TabsterProvider: React.FunctionComponent<TabsterProviderProps>;
-
-// @public (undocumented)
-export interface TabsterProviderProps extends React.HTMLAttributes<HTMLElement> {
-    customRoot?: boolean;
-    // (undocumented)
-    dir?: 'rtl' | 'ltr';
-    // (undocumented)
-    document: Document | undefined;
-}
-
-// @public (undocumented)
-export interface TabsterProviderState extends TabsterProviderProps {
-    // Warning: (ae-forgotten-export) The symbol "TabsterContextValue" needs to be exported by the entry point index.d.ts
-    //
-    // (undocumented)
-    contextValue: TabsterContextValue | undefined;
-    // (undocumented)
-    dir: 'ltr' | 'rtl';
-    // (undocumented)
-    document: Document | undefined;
-}
+export const createFocusIndicatorStyleRule: (rule?: MakeStylesStyleRule<Theme>) => MakeStylesStyleRule<Theme>;
 
 // @public
 export const useArrowNavigationGroup: (options?: UseArrowNavigationGroupOptions | undefined) => Types.TabsterDOMAttribute;
@@ -51,10 +26,27 @@ export const useFocusFinders: () => {
     findAllFocusable: (root: HTMLElement, matcher: (el: HTMLElement) => boolean) => HTMLElement[];
     findFirstFocusable: (root: HTMLElement) => HTMLElement | null | undefined;
     findLastFocusable: (root: HTMLElement) => HTMLElement | null | undefined;
+    findNextFocusable: (current: HTMLElement) => HTMLElement | null | undefined;
+    findPrevFocusable: (current: HTMLElement) => HTMLElement | null | undefined;
+};
+
+// @public
+export function useKeyboardNavAttribute<E extends HTMLElement>(): RefObject<E>;
+
+// @public
+export const useModalAttributes: (options?: UseModalAttributesOptions) => {
+    modalAttributes: Types.TabsterDOMAttribute;
+    triggerAttributes: Types.TabsterDOMAttribute;
 };
 
 // @public (undocumented)
-export const useTabsterProvider: (props: TabsterProviderProps, ref: React.Ref<HTMLElement>) => TabsterProviderState;
+export interface UseModalAttributesOptions {
+    alwaysFocusable?: boolean;
+    trapFocus?: boolean;
+}
+
+// @public
+export const useTabsterAttributes: (props: Types.TabsterAttributeProps) => Types.TabsterDOMAttribute;
 
 
 // (No @packageDocumentation comment for this package)

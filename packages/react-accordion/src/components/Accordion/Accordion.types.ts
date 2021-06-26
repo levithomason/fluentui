@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { ComponentProps, Descendant } from '@fluentui/react-utilities';
-import { AccordionHeaderProps } from '../AccordionHeader/AccordionHeader.types';
+import { ComponentProps, ComponentState, Descendant } from '@fluentui/react-utilities';
+import { AccordionHeaderProps, AccordionHeaderShorthandProps } from '../AccordionHeader/AccordionHeader.types';
 
 export type AccordionIndex = number | number[];
 
@@ -9,9 +9,10 @@ export type AccordionIndex = number | number[];
  */
 type AccordionHeaderCommonProps = Pick<
   AccordionHeaderProps,
-  'expandIcon' | 'expandIconPosition' | 'icon' | 'button' | 'size' | 'inline'
+  AccordionShorthandProps | 'expandIconPosition' | 'size' | 'inline'
 >;
 export interface AccordionContextValue extends AccordionHeaderCommonProps {
+  navigable: boolean;
   /**
    * The list of opened panels by index
    */
@@ -23,6 +24,10 @@ export interface AccordionContextValue extends AccordionHeaderCommonProps {
 }
 
 export interface AccordionProps extends ComponentProps, AccordionHeaderCommonProps, React.HTMLAttributes<HTMLElement> {
+  /**
+   * Indicates if keyboard navigation is available
+   */
+  navigable?: boolean;
   /**
    * Indicates if Accordion support multiple Panels opened at the same time
    */
@@ -39,16 +44,19 @@ export interface AccordionProps extends ComponentProps, AccordionHeaderCommonPro
    * Default value for the uncontrolled state of the panel
    */
   defaultIndex?: AccordionIndex;
-  onToggle?(event: React.MouseEvent<HTMLElement>, index: number): void;
+  onToggle?(event: React.MouseEvent | React.KeyboardEvent, index: number): void;
 }
 
-export interface AccordionState extends AccordionProps {
+export type AccordionShorthandProps = Exclude<AccordionHeaderShorthandProps, 'children'>;
+
+export type AccordionDefaultedProps = 'collapsible' | 'multiple' | 'navigable';
+
+export interface AccordionState
+  extends ComponentState<AccordionProps, AccordionShorthandProps, AccordionDefaultedProps> {
   /**
    * Ref to the root slot
    */
-  ref: React.MutableRefObject<HTMLElement>;
-  multiple: boolean;
-  collapsible: boolean;
+  ref: React.Ref<HTMLElement>;
   /**
    * Internal Context used by Accordion and AccordionItem communication
    */

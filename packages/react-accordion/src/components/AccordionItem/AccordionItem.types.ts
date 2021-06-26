@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { ComponentProps, Descendant } from '@fluentui/react-utilities';
+import { ComponentProps, ComponentState, Descendant } from '@fluentui/react-utilities';
 
 export interface AccordionItemContextValue {
   open: boolean;
   disabled: boolean;
-  onHeaderClick(ev: React.MouseEvent<HTMLElement>): void;
+  onHeaderClick(ev: React.MouseEvent | React.KeyboardEvent): void;
 }
 
 export interface AccordionItemProps extends ComponentProps, React.HTMLAttributes<HTMLElement> {
@@ -14,11 +14,11 @@ export interface AccordionItemProps extends ComponentProps, React.HTMLAttributes
   disabled?: boolean;
 }
 
-export interface AccordionItemState extends AccordionItemProps {
+export interface AccordionItemState extends ComponentState<AccordionItemProps> {
   /**
    * Ref to the root slot
    */
-  ref: React.MutableRefObject<HTMLElement>;
+  ref: React.Ref<HTMLElement>;
   context: AccordionItemContextValue;
   /**
    * Internal Context used by AccordionHeader and AccordionPanel communication

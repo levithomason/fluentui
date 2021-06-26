@@ -93,6 +93,7 @@ export const LayerBase: React.FunctionComponent<ILayerProps> = React.forwardRef<
       onLayerDidMount?.();
     };
 
+    // eslint-disable-next-line no-restricted-properties
     React.useLayoutEffect(() => {
       createLayerElement();
       // Check if the user provided a hostId prop and register the layer with the ID.
@@ -116,9 +117,11 @@ export const LayerBase: React.FunctionComponent<ILayerProps> = React.forwardRef<
       <span className="ms-layer" ref={mergedRef}>
         {layerElement &&
           ReactDOM.createPortal(
+            /* eslint-disable deprecation/deprecation */
             <Fabric {...(!eventBubblingEnabled && getFilteredEvents())} className={classNames.content}>
               {children}
             </Fabric>,
+            /* eslint-enable deprecation/deprecation */
             layerElement,
           )}
       </span>

@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { getSlots } from '@fluentui/react-utilities';
-import { {{camelCase componentName}}ShorthandProps, {{componentName}}State } from './{{componentName}}.types';
+import { {{componentName}}State } from './{{componentName}}.types';
+import { {{camelCase componentName}}ShorthandProps } from './use{{componentName}}';
 
 /**
  * Render the final JSX of {{componentName}}
- * {@docCategory {{componentName}} }
  */
 export const render{{componentName}} = (state: {{componentName}}State) => {
   const { slots, slotProps } = getSlots(state, {{camelCase componentName}}ShorthandProps);

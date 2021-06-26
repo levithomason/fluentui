@@ -1,10 +1,9 @@
-import { getCSSRules } from '@fluentui/test-utilities';
-
-import { createDOMRenderer, MakeStylesDOMRenderer, resetDOMRenderer } from './renderer/createDOMRenderer';
+import { createDOMRenderer } from './renderer/createDOMRenderer';
+import { makeStylesRendererSerializer } from './utils/test/snapshotSerializer';
 import { makeStyles } from './makeStyles';
-import { cssRulesSerializer } from './utils/test/snapshotSerializer';
+import { MakeStylesRenderer } from './types';
 
-expect.addSnapshotSerializer(cssRulesSerializer);
+expect.addSnapshotSerializer(makeStylesRendererSerializer);
 
 function createFakeDocument(): Document {
   const doc = document.implementation.createDocument('http://www.w3.org/1999/xhtml', 'html', null);
@@ -14,14 +13,10 @@ function createFakeDocument(): Document {
 }
 
 describe('makeStyles', () => {
-  let renderer: MakeStylesDOMRenderer;
+  let renderer: MakeStylesRenderer;
 
   beforeEach(() => {
-    renderer = createDOMRenderer();
-  });
-
-  afterEach(() => {
-    resetDOMRenderer();
+    renderer = createDOMRenderer(document);
   });
 
   it('returns a single classname for a single style', () => {
@@ -30,10 +25,10 @@ describe('makeStyles', () => {
         color: 'red',
       },
     });
-    expect(computeClasses({ dir: 'ltr', renderer, tokens: {} }).root).toEqual('__ncdyee0 fe3e8s90');
+    expect(computeClasses({ dir: 'ltr', renderer }).root).toEqual('__afhpfp0 fe3e8s9');
 
-    expect(getCSSRules(renderer.styleElement)).toMatchInlineSnapshot(`
-      .fe3e8s90 {
+    expect(renderer).toMatchInlineSnapshot(`
+      .fe3e8s9 {
         color: red;
       }
     `);
@@ -46,10 +41,10 @@ describe('makeStyles', () => {
         position: 'absolute',
       },
     });
-    expect(computeClasses({ dir: 'ltr', renderer, tokens: {} }).root).toEqual('__1fslksb fe3e8s90 f1euv43f');
+    expect(computeClasses({ dir: 'ltr', renderer }).root).toEqual('__1jgns8t fe3e8s9 f1euv43f');
 
-    expect(getCSSRules(renderer.styleElement)).toMatchInlineSnapshot(`
-      .fe3e8s90 {
+    expect(renderer).toMatchInlineSnapshot(`
+      .fe3e8s9 {
         color: red;
       }
       .f1euv43f {
@@ -66,23 +61,23 @@ describe('makeStyles', () => {
       },
     });
 
-    const ltrClasses = computeClasses({ dir: 'ltr', renderer, tokens: {} }).root;
-    const rtlClasses = computeClasses({ dir: 'rtl', renderer, tokens: {} }).root;
+    const ltrClasses = computeClasses({ dir: 'ltr', renderer }).root;
+    const rtlClasses = computeClasses({ dir: 'rtl', renderer }).root;
 
-    expect(ltrClasses).toEqual('__947mlk0 frdkuqy0 f1c8chgj');
-    expect(rtlClasses).toEqual('__hcjvlo0 rfrdkuqy0 rf1c8chgj');
+    expect(ltrClasses).toEqual('__a0zqzs0 frdkuqy f1c8chgj');
+    expect(rtlClasses).toEqual('__7x57i00 f81rol6 f19krssl');
 
-    expect(getCSSRules(renderer.styleElement)).toMatchInlineSnapshot(`
-      .frdkuqy0 {
+    expect(renderer).toMatchInlineSnapshot(`
+      .frdkuqy {
         padding-left: 10px;
       }
       .f1c8chgj {
         border-left-width: 10px;
       }
-      .rfrdkuqy0 {
+      .f81rol6 {
         padding-right: 10px;
       }
-      .rf1c8chgj {
+      .f19krssl {
         border-right-width: 10px;
       }
     `);
@@ -103,11 +98,10 @@ describe('makeStyles', () => {
         animationDuration: '5s',
       },
     });
-    expect(computeClasses({ dir: 'rtl', renderer, tokens: {} }).root).toBe('__194gjlt rf1g6ul6r f1cpbl36 f1t9cprh');
+    expect(computeClasses({ dir: 'rtl', renderer }).root).toBe('__3kh5ri0 f1fp4ujf f1cpbl36 f1t9cprh');
 
-    const rules = getCSSRules(renderer.styleElement);
-    expect(rules).toMatchInlineSnapshot(`
-      @-webkit-keyframes rf1q8eu9e {
+    expect(renderer).toMatchInlineSnapshot(`
+      @-webkit-keyframes f55c0se {
         from {
           -webkit-transform: rotate(0deg);
           -moz-transform: rotate(0deg);
@@ -121,9 +115,9 @@ describe('makeStyles', () => {
           transform: rotate(-360deg);
         }
       }
-      .rf1g6ul6r {
-        -webkit-animation-name: rf1q8eu9e;
-        animation-name: rf1q8eu9e;
+      .f1fp4ujf {
+        -webkit-animation-name: f55c0se;
+        animation-name: f55c0se;
       }
       .f1cpbl36 {
         -webkit-animation-iteration-count: infinite;
@@ -144,33 +138,46 @@ describe('makeStyles', () => {
       root: { display: 'flex', paddingLeft: '10px' },
     });
 
-    const classesA = computeClasses({ dir: 'rtl', renderer: rendererA, tokens: {} }).root;
+    const classesA = computeClasses({ dir: 'rtl', renderer: rendererA }).root;
 
-    computeClasses({ dir: 'ltr', renderer: rendererB, tokens: {} }).root;
-    const classesB = computeClasses({ dir: 'rtl', renderer: rendererB, tokens: {} }).root;
+    computeClasses({ dir: 'ltr', renderer: rendererB }).root;
+    const classesB = computeClasses({ dir: 'rtl', renderer: rendererB }).root;
 
     // Classes emitted by different renderers can be the same
     expect(classesA).toBe(classesB);
     // Style elements should be different for different renderers
-    expect(rendererA.styleElement).not.toBe(rendererB.styleElement);
+    expect(rendererA.styleElements['']).not.toBe(rendererB.styleElements['']);
 
-    expect(getCSSRules(rendererA.styleElement)).toMatchInlineSnapshot(`
-      .f22iagw0 {
+    expect(rendererA).toMatchInlineSnapshot(`
+      .f22iagw {
         display: flex;
       }
-      .rfrdkuqy0 {
+      .f81rol6 {
         padding-right: 10px;
       }
     `);
-    expect(getCSSRules(rendererB.styleElement)).toMatchInlineSnapshot(`
-      .f22iagw0 {
+    expect(rendererB).toMatchInlineSnapshot(`
+      .f22iagw {
         display: flex;
       }
-      .frdkuqy0 {
+      .frdkuqy {
         padding-left: 10px;
       }
-      .rfrdkuqy0 {
+      .f81rol6 {
         padding-right: 10px;
+      }
+    `);
+  });
+
+  it('handles tokens', () => {
+    const computeClasses = makeStyles<'root', { display: string }>({
+      root: tokens => ({ display: tokens.display }),
+    });
+    computeClasses({ dir: 'rtl', renderer });
+
+    expect(renderer).toMatchInlineSnapshot(`
+      .fl81ese {
+        display: var(--display);
       }
     `);
   });

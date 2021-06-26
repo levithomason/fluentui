@@ -1,36 +1,40 @@
-import {
-  createDOMRenderer,
-  makeStyles as vanillaMakeStyles,
-  MakeStylesOptions,
-  MakeStylesRenderer,
-  MakeStylesStyleRule,
-} from '@fluentui/make-styles';
-import { useFluent } from '@fluentui/react-provider';
-import { useTheme } from '@fluentui/react-theme-provider';
+import { makeStyles as vanillaMakeStyles, MakeStylesOptions, MakeStylesStyleRule } from '@fluentui/make-styles';
+import { useFluent } from '@fluentui/react-shared-contexts';
 import { Theme } from '@fluentui/react-theme';
 import * as React from 'react';
 
-function useRenderer(document: Document | undefined): MakeStylesRenderer {
-  return React.useMemo(() => {
-    return createDOMRenderer(document);
-  }, [document]);
+import { useRenderer } from './RendererContext';
+
+function isInsideComponent() {
+  try {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    React.useContext(({} as unknown) as React.Context<unknown>);
+    return true;
+  } catch (e) {
+    return false;
+  }
 }
 
 export function makeStyles<Slots extends string>(stylesBySlots: Record<Slots, MakeStylesStyleRule<Theme>>) {
   const getStyles = vanillaMakeStyles(stylesBySlots);
 
-  if (process.env.NODE_ENV === 'test') {
-    return () => ({} as Record<Slots, string>);
+  if (process.env.NODE_ENV !== 'production') {
+    if (isInsideComponent()) {
+      throw new Error(
+        [
+          "makeStyles(): this function cannot be called in component's scope.",
+          'All makeStyles() calls should be top level i.e. in a root scope of a file.',
+        ].join(' '),
+      );
+    }
   }
 
   return function useClasses(): Record<Slots, string> {
-    const { dir, document } = useFluent();
-    const theme = useTheme();
+    const { dir } = useFluent();
 
-    const renderer = useRenderer(document);
-    const options: MakeStylesOptions<Theme> = {
+    const renderer = useRenderer();
+    const options: MakeStylesOptions = {
       dir,
-      tokens: theme as Theme,
       renderer,
     };
 

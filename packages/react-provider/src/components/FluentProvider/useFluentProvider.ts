@@ -1,7 +1,8 @@
 import * as React from 'react';
-import { makeMergePropsCompat, resolveShorthandProps, useMergedRefs } from '@fluentui/react-utilities';
+import { makeMergePropsCompat, resolveShorthandProps, useConst, useMergedRefs } from '@fluentui/react-utilities';
 import { FluentProviderProps, FluentProviderState } from './FluentProvider.types';
 import { useFluent } from '@fluentui/react-shared-contexts';
+import { useKeyboardNavAttribute } from '@fluentui/react-tabster';
 
 export const fluentProviderShorthandProps: (keyof FluentProviderProps)[] = [];
 
@@ -25,8 +26,9 @@ export const useFluentProvider = (
 ): FluentProviderState => {
   const state = mergeProps(
     {
-      ref: useMergedRefs(ref, React.useRef(null)),
+      ref: useMergedRefs(ref, React.useRef(null), useKeyboardNavAttribute()),
       as: 'div',
+      tooltipContext: useConst({}),
     },
     defaultProps,
     resolveShorthandProps(props, fluentProviderShorthandProps),
@@ -38,7 +40,7 @@ export const useFluentProvider = (
    * nesting providers with the same "dir" should not add additional attributes to DOM
    * see https://github.com/microsoft/fluentui/blob/0dc74a19f3aa5a058224c20505016fbdb84db172/packages/fluentui/react-northstar/src/utils/mergeProviderContexts.ts#L89-L93
    */
-  state.document = state.document ?? parentContext.document;
+  state.targetDocument = state.targetDocument ?? parentContext.targetDocument;
   state.dir = state.dir ?? parentContext.dir;
 
   return state;

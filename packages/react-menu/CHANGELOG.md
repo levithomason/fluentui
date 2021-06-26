@@ -1,8 +1,379 @@
 # Change Log - @fluentui/react-menu
 
-This log was last generated on Thu, 01 Apr 2021 20:13:37 GMT and should not be manually modified.
+This log was last generated on Thu, 17 Jun 2021 07:34:11 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## [9.0.0-alpha.38](https://github.com/microsoft/fluentui/tree/@fluentui/react-menu_v9.0.0-alpha.38)
+
+Thu, 17 Jun 2021 07:34:11 GMT 
+[Compare changes](https://github.com/microsoft/fluentui/compare/@fluentui/react-menu_v9.0.0-alpha.37..@fluentui/react-menu_v9.0.0-alpha.38)
+
+### Changes
+
+- Bump @fluentui/react-portal to v9.0.0-alpha.21 ([PR #18482](https://github.com/microsoft/fluentui/pull/18482) by lingfan.gao@microsoft.com)
+
+## [9.0.0-alpha.37](https://github.com/microsoft/fluentui/tree/@fluentui/react-menu_v9.0.0-alpha.37)
+
+Wed, 16 Jun 2021 07:34:24 GMT 
+[Compare changes](https://github.com/microsoft/fluentui/compare/@fluentui/react-menu_v9.0.0-alpha.36..@fluentui/react-menu_v9.0.0-alpha.37)
+
+### Changes
+
+- feat(Menu): Allow custom and virtual popover target ([PR #18565](https://github.com/microsoft/fluentui/pull/18565) by lingfan.gao@microsoft.com)
+
+## [9.0.0-alpha.36](https://github.com/microsoft/fluentui/tree/@fluentui/react-menu_v9.0.0-alpha.36)
+
+Tue, 15 Jun 2021 07:40:20 GMT 
+[Compare changes](https://github.com/microsoft/fluentui/compare/@fluentui/react-menu_v9.0.0-alpha.35..@fluentui/react-menu_v9.0.0-alpha.36)
+
+### Changes
+
+- feat(Menu): Render submenus out of Order ([PR #18490](https://github.com/microsoft/fluentui/pull/18490) by lingfan.gao@microsoft.com)
+
+## [9.0.0-alpha.35](https://github.com/microsoft/fluentui/tree/@fluentui/react-menu_v9.0.0-alpha.35)
+
+Thu, 10 Jun 2021 07:32:59 GMT 
+[Compare changes](https://github.com/microsoft/fluentui/compare/@fluentui/react-menu_v9.0.0-alpha.34..@fluentui/react-menu_v9.0.0-alpha.35)
+
+### Changes
+
+- feat(Menu): MenuPopover component ([PR #18464](https://github.com/microsoft/fluentui/pull/18464) by lingfan.gao@microsoft.com)
+
+## [9.0.0-alpha.34](https://github.com/microsoft/fluentui/tree/@fluentui/react-menu_v9.0.0-alpha.34)
+
+Wed, 09 Jun 2021 07:33:38 GMT 
+[Compare changes](https://github.com/microsoft/fluentui/compare/@fluentui/react-menu_v9.0.0-alpha.33..@fluentui/react-menu_v9.0.0-alpha.34)
+
+### Changes
+
+- Add MenuTriggerChildProps interface ([PR #18415](https://github.com/microsoft/fluentui/pull/18415) by lingfan.gao@microsoft.com)
+
+## [9.0.0-alpha.33](https://github.com/microsoft/fluentui/tree/@fluentui/react-menu_v9.0.0-alpha.33)
+
+Mon, 07 Jun 2021 07:38:15 GMT 
+[Compare changes](https://github.com/microsoft/fluentui/compare/@fluentui/react-menu_v9.0.0-alpha.32..@fluentui/react-menu_v9.0.0-alpha.33)
+
+### Patches
+
+- Bump @fluentui/eslint-plugin to v1.3.1 ([PR #18437](https://github.com/microsoft/fluentui/pull/18437) by martinhochel@microsoft.com)
+- Bump @fluentui/keyboard-key to v0.3.2 ([PR #18437](https://github.com/microsoft/fluentui/pull/18437) by martinhochel@microsoft.com)
+- Bump @fluentui/react-conformance to v0.4.1 ([PR #18437](https://github.com/microsoft/fluentui/pull/18437) by martinhochel@microsoft.com)
+- Bump @fluentui/scripts to v1.0.0 ([PR #18437](https://github.com/microsoft/fluentui/pull/18437) by martinhochel@microsoft.com)
+
+### Changes
+
+- Bump @fluentui/babel-make-styles to v9.0.0-alpha.15 ([PR #18437](https://github.com/microsoft/fluentui/pull/18437) by martinhochel@microsoft.com)
+
+## [9.0.0-alpha.32](https://github.com/microsoft/fluentui/tree/@fluentui/react-menu_v9.0.0-alpha.32)
+
+Fri, 04 Jun 2021 07:37:23 GMT 
+[Compare changes](https://github.com/microsoft/fluentui/compare/@fluentui/react-menu_v9.0.0-alpha.31..@fluentui/react-menu_v9.0.0-alpha.32)
+
+### Changes
+
+- Bump @fluentui/jest-serializer-make-styles to v9.0.0-alpha.16 ([PR #18168](https://github.com/microsoft/fluentui/pull/18168) by Humberto.Morimoto@microsoft.com)
+
+## [9.0.0-alpha.31](https://github.com/microsoft/fluentui/tree/@fluentui/react-menu_v9.0.0-alpha.31)
+
+Thu, 03 Jun 2021 07:36:03 GMT 
+[Compare changes](https://github.com/microsoft/fluentui/compare/@fluentui/react-menu_v9.0.0-alpha.30..@fluentui/react-menu_v9.0.0-alpha.31)
+
+### Changes
+
+- Updates focus indicator style ([PR #18417](https://github.com/microsoft/fluentui/pull/18417) by bsunderhus@microsoft.com)
+- Only dismiss menu when a menu item is clicked ([PR #18365](https://github.com/microsoft/fluentui/pull/18365) by lingfan.gao@microsoft.com)
+
+## [9.0.0-alpha.30](https://github.com/microsoft/fluentui/tree/@fluentui/react-menu_v9.0.0-alpha.30)
+
+Wed, 02 Jun 2021 07:37:15 GMT 
+[Compare changes](https://github.com/microsoft/fluentui/compare/@fluentui/react-menu_v9.0.0-alpha.29..@fluentui/react-menu_v9.0.0-alpha.30)
+
+### Changes
+
+- Adds focus indicator styles for react-menu ([PR #18399](https://github.com/microsoft/fluentui/pull/18399) by bsunderhus@microsoft.com)
+
+## [9.0.0-alpha.29](https://github.com/microsoft/fluentui/tree/@fluentui/react-menu_v9.0.0-alpha.29)
+
+Fri, 28 May 2021 07:33:57 GMT 
+[Compare changes](https://github.com/microsoft/fluentui/compare/@fluentui/react-menu_v9.0.0-alpha.28..@fluentui/react-menu_v9.0.0-alpha.29)
+
+### Changes
+
+- Bump @fluentui/react-positioning to v9.0.0-alpha.24 ([PR #18312](https://github.com/microsoft/fluentui/pull/18312) by lingfan.gao@microsoft.com)
+
+## [9.0.0-alpha.28](https://github.com/microsoft/fluentui/tree/@fluentui/react-menu_v9.0.0-alpha.28)
+
+Thu, 27 May 2021 07:33:21 GMT 
+[Compare changes](https://github.com/microsoft/fluentui/compare/@fluentui/react-menu_v9.0.0-alpha.27..@fluentui/react-menu_v9.0.0-alpha.28)
+
+### Changes
+
+- fix: Add high contrast border ([PR #18335](https://github.com/microsoft/fluentui/pull/18335) by lingfan.gao@microsoft.com)
+
+## [9.0.0-alpha.27](https://github.com/microsoft/fluentui/tree/@fluentui/react-menu_v9.0.0-alpha.27)
+
+Wed, 26 May 2021 07:35:43 GMT 
+[Compare changes](https://github.com/microsoft/fluentui/compare/@fluentui/react-menu_v9.0.0-alpha.26..@fluentui/react-menu_v9.0.0-alpha.27)
+
+### Changes
+
+- Bump @fluentui/react-context-selector to v9.0.0-alpha.10 ([PR #18323](https://github.com/microsoft/fluentui/pull/18323) by lingfan.gao@microsoft.com)
+
+## [9.0.0-alpha.26](https://github.com/microsoft/fluentui/tree/@fluentui/react-menu_v9.0.0-alpha.26)
+
+Fri, 21 May 2021 07:34:54 GMT 
+[Compare changes](https://github.com/microsoft/fluentui/compare/@fluentui/react-menu_v9.0.0-alpha.25..@fluentui/react-menu_v9.0.0-alpha.26)
+
+### Changes
+
+- feat(Menu): Menu can cover its trigger ([PR #18265](https://github.com/microsoft/fluentui/pull/18265) by lingfan.gao@microsoft.com)
+
+## [9.0.0-alpha.25](https://github.com/microsoft/fluentui/tree/@fluentui/react-menu_v9.0.0-alpha.25)
+
+Thu, 20 May 2021 07:41:54 GMT 
+[Compare changes](https://github.com/microsoft/fluentui/compare/@fluentui/react-menu_v9.0.0-alpha.24..@fluentui/react-menu_v9.0.0-alpha.25)
+
+### Patches
+
+- Bump @fluentui/eslint-plugin to v1.3.0 ([PR #18024](https://github.com/microsoft/fluentui/pull/18024) by elcraig@microsoft.com)
+- Bump @fluentui/keyboard-key to v0.3.1 ([PR #18024](https://github.com/microsoft/fluentui/pull/18024) by elcraig@microsoft.com)
+- Bump @fluentui/react-conformance to v0.4.0 ([PR #17577](https://github.com/microsoft/fluentui/pull/17577) by elcraig@microsoft.com)
+- Bump @fluentui/scripts to v1.0.0 ([PR #18024](https://github.com/microsoft/fluentui/pull/18024) by elcraig@microsoft.com)
+
+### Changes
+
+- fix(MenuItem): Don't select text with double click ([PR #18120](https://github.com/microsoft/fluentui/pull/18120) by lingfan.gao@microsoft.com)
+
+## [9.0.0-alpha.24](https://github.com/microsoft/fluentui/tree/@fluentui/react-menu_v9.0.0-alpha.24)
+
+Wed, 19 May 2021 07:34:20 GMT 
+[Compare changes](https://github.com/microsoft/fluentui/compare/@fluentui/react-menu_v9.0.0-alpha.23..@fluentui/react-menu_v9.0.0-alpha.24)
+
+### Patches
+
+- Bump @fluentui/react-conformance to v0.3.1 ([PR #18194](https://github.com/microsoft/fluentui/pull/18194) by martinhochel@microsoft.com)
+
+### Changes
+
+- chore: add more Babel plugins ([PR #18037](https://github.com/microsoft/fluentui/pull/18037) by olfedias@microsoft.com)
+
+## [9.0.0-alpha.23](https://github.com/microsoft/fluentui/tree/@fluentui/react-menu_v9.0.0-alpha.23)
+
+Tue, 18 May 2021 07:34:38 GMT 
+[Compare changes](https://github.com/microsoft/fluentui/compare/@fluentui/react-menu_v9.0.0-alpha.22..@fluentui/react-menu_v9.0.0-alpha.23)
+
+### Changes
+
+- Bump @fluentui/babel-make-styles to v9.0.0-alpha.8 ([PR #18171](https://github.com/microsoft/fluentui/pull/18171) by olfedias@microsoft.com)
+
+## [9.0.0-alpha.22](https://github.com/microsoft/fluentui/tree/@fluentui/react-menu_v9.0.0-alpha.22)
+
+Thu, 13 May 2021 07:36:55 GMT 
+[Compare changes](https://github.com/microsoft/fluentui/compare/@fluentui/react-menu_v9.0.0-alpha.21..@fluentui/react-menu_v9.0.0-alpha.22)
+
+### Changes
+
+- Bump @fluentui/babel-make-styles to v9.0.0-alpha.7 ([PR #18039](https://github.com/microsoft/fluentui/pull/18039) by olfedias@microsoft.com)
+
+## [9.0.0-alpha.21](https://github.com/microsoft/fluentui/tree/@fluentui/react-menu_v9.0.0-alpha.21)
+
+Wed, 12 May 2021 07:36:20 GMT 
+[Compare changes](https://github.com/microsoft/fluentui/compare/@fluentui/react-menu_v9.0.0-alpha.20..@fluentui/react-menu_v9.0.0-alpha.21)
+
+### Changes
+
+- Bump @fluentui/babel-make-styles to v9.0.0-alpha.6 ([PR #18097](https://github.com/microsoft/fluentui/pull/18097) by olfedias@microsoft.com)
+
+## [9.0.0-alpha.20](https://github.com/microsoft/fluentui/tree/@fluentui/react-menu_v9.0.0-alpha.20)
+
+Mon, 10 May 2021 07:36:07 GMT 
+[Compare changes](https://github.com/microsoft/fluentui/compare/@fluentui/react-menu_v9.0.0-alpha.19..@fluentui/react-menu_v9.0.0-alpha.20)
+
+### Changes
+
+- Bump @fluentui/babel-make-styles to v9.0.0-alpha.5 ([PR #18095](https://github.com/microsoft/fluentui/pull/18095) by olfedias@microsoft.com)
+
+## [9.0.0-alpha.19](https://github.com/microsoft/fluentui/tree/@fluentui/react-menu_v9.0.0-alpha.19)
+
+Wed, 05 May 2021 07:36:50 GMT 
+[Compare changes](https://github.com/microsoft/fluentui/compare/@fluentui/react-menu_v9.0.0-alpha.18..@fluentui/react-menu_v9.0.0-alpha.19)
+
+### Changes
+
+- transform styles with Babel plugin ([PR #16534](https://github.com/microsoft/fluentui/pull/16534) by olfedias@microsoft.com)
+- Hoist focus effects to root Menu ([PR #17986](https://github.com/microsoft/fluentui/pull/17986) by lingfan.gao@microsoft.com)
+
+## [9.0.0-alpha.18](https://github.com/microsoft/fluentui/tree/@fluentui/react-menu_v9.0.0-alpha.18)
+
+Tue, 04 May 2021 07:36:35 GMT 
+[Compare changes](https://github.com/microsoft/fluentui/compare/@fluentui/react-menu_v9.0.0-alpha.17..@fluentui/react-menu_v9.0.0-alpha.18)
+
+### Changes
+
+- undefined ([PR #18007](https://github.com/microsoft/fluentui/pull/18007) by lingfan.gao@microsoft.com)
+
+## [9.0.0-alpha.17](https://github.com/microsoft/fluentui/tree/@fluentui/react-menu_v9.0.0-alpha.17)
+
+Mon, 03 May 2021 07:45:19 GMT 
+[Compare changes](https://github.com/microsoft/fluentui/compare/@fluentui/react-menu_v9.0.0-alpha.16..@fluentui/react-menu_v9.0.0-alpha.17)
+
+### Changes
+
+- Disable outside click listener when menu is closed ([PR #18005](https://github.com/microsoft/fluentui/pull/18005) by lingfan.gao@microsoft.com)
+- undefined ([PR #17171](https://github.com/microsoft/fluentui/pull/17171) by lingfan.gao@microsoft.com)
+
+## [9.0.0-alpha.16](https://github.com/microsoft/fluentui/tree/@fluentui/react-menu_v9.0.0-alpha.16)
+
+Fri, 30 Apr 2021 07:42:23 GMT 
+[Compare changes](https://github.com/microsoft/fluentui/compare/@fluentui/react-menu_v9.0.0-alpha.15..@fluentui/react-menu_v9.0.0-alpha.16)
+
+### Patches
+
+- Bump @fluentui/eslint-plugin to v1.2.0 ([PR #17932](https://github.com/microsoft/fluentui/pull/17932) by joschect@microsoft.com)
+- Bump @fluentui/keyboard-key to v0.3.0 ([PR #17932](https://github.com/microsoft/fluentui/pull/17932) by joschect@microsoft.com)
+- Bump @fluentui/react-conformance to v0.3.0 ([PR #17932](https://github.com/microsoft/fluentui/pull/17932) by joschect@microsoft.com)
+- Bump @fluentui/scripts to v1.0.0 ([PR #17932](https://github.com/microsoft/fluentui/pull/17932) by joschect@microsoft.com)
+
+### Changes
+
+- Upgrade to ts 4.0 ([PR #17932](https://github.com/microsoft/fluentui/pull/17932) by joschect@microsoft.com)
+- update snapshots ([PR #17924](https://github.com/microsoft/fluentui/pull/17924) by olfedias@microsoft.com)
+
+## [9.0.0-alpha.15](https://github.com/microsoft/fluentui/tree/@fluentui/react-menu_v9.0.0-alpha.15)
+
+Wed, 28 Apr 2021 07:32:59 GMT 
+[Compare changes](https://github.com/microsoft/fluentui/compare/@fluentui/react-menu_v9.0.0-alpha.14..@fluentui/react-menu_v9.0.0-alpha.15)
+
+### Changes
+
+- Bump @fluentui/react-tabster to v9.0.0-alpha.20 ([PR #17971](https://github.com/microsoft/fluentui/pull/17971) by olfedias@microsoft.com)
+
+## [9.0.0-alpha.14](https://github.com/microsoft/fluentui/tree/@fluentui/react-menu_v9.0.0-alpha.14)
+
+Tue, 27 Apr 2021 07:34:03 GMT 
+[Compare changes](https://github.com/microsoft/fluentui/compare/@fluentui/react-menu_v9.0.0-alpha.13..@fluentui/react-menu_v9.0.0-alpha.14)
+
+### Changes
+
+- Bump @fluentui/jest-serializer-make-styles to v9.0.0-alpha.5 ([PR #17922](https://github.com/microsoft/fluentui/pull/17922) by bsunderhus@microsoft.com)
+
+## [9.0.0-alpha.13](https://github.com/microsoft/fluentui/tree/@fluentui/react-menu_v9.0.0-alpha.13)
+
+Mon, 26 Apr 2021 07:34:31 GMT 
+[Compare changes](https://github.com/microsoft/fluentui/compare/@fluentui/react-menu_v9.0.0-alpha.12..@fluentui/react-menu_v9.0.0-alpha.13)
+
+### Changes
+
+- Bump @fluentui/jest-serializer-make-styles to v9.0.0-alpha.4 ([PR #17936](https://github.com/microsoft/fluentui/pull/17936) by bsunderhus@microsoft.com)
+
+## [9.0.0-alpha.12](https://github.com/microsoft/fluentui/tree/@fluentui/react-menu_v9.0.0-alpha.12)
+
+Fri, 23 Apr 2021 07:37:10 GMT 
+[Compare changes](https://github.com/microsoft/fluentui/compare/@fluentui/react-menu_v9.0.0-alpha.11..@fluentui/react-menu_v9.0.0-alpha.12)
+
+### Patches
+
+- Bump @fluentui/eslint-plugin to v1.1.1 ([PR #17894](https://github.com/microsoft/fluentui/pull/17894) by olfedias@microsoft.com)
+- Bump @fluentui/keyboard-key to v0.2.17 ([PR #17894](https://github.com/microsoft/fluentui/pull/17894) by olfedias@microsoft.com)
+- Bump @fluentui/react-conformance to v0.2.6 ([PR #17894](https://github.com/microsoft/fluentui/pull/17894) by olfedias@microsoft.com)
+- Bump @fluentui/scripts to v1.0.0 ([PR #17894](https://github.com/microsoft/fluentui/pull/17894) by olfedias@microsoft.com)
+
+### Changes
+
+- Render root menu in portal ([PR #17868](https://github.com/microsoft/fluentui/pull/17868) by lingfan.gao@microsoft.com)
+
+## [9.0.0-alpha.11](https://github.com/microsoft/fluentui/tree/@fluentui/react-menu_v9.0.0-alpha.11)
+
+Thu, 22 Apr 2021 07:33:28 GMT 
+[Compare changes](https://github.com/microsoft/fluentui/compare/@fluentui/react-menu_v9.0.0-alpha.10..@fluentui/react-menu_v9.0.0-alpha.11)
+
+### Changes
+
+- Bump @fluentui/jest-serializer-make-styles to v9.0.0-alpha.2 ([PR #17826](https://github.com/microsoft/fluentui/pull/17826) by bsunderhus@microsoft.com)
+
+## [9.0.0-alpha.10](https://github.com/microsoft/fluentui/tree/@fluentui/react-menu_v9.0.0-alpha.10)
+
+Wed, 21 Apr 2021 07:31:50 GMT 
+[Compare changes](https://github.com/microsoft/fluentui/compare/@fluentui/react-menu_v9.0.0-alpha.9..@fluentui/react-menu_v9.0.0-alpha.10)
+
+### Changes
+
+- undefined ([PR #17778](https://github.com/microsoft/fluentui/pull/17778) by lingfan.gao@microsoft.com)
+- Rename ax() to mergeClasses() ([PR #17875](https://github.com/microsoft/fluentui/pull/17875) by miroslav.stastny@microsoft.com)
+
+## [9.0.0-alpha.9](https://github.com/microsoft/fluentui/tree/@fluentui/react-menu_v9.0.0-alpha.9)
+
+Tue, 20 Apr 2021 07:31:35 GMT 
+[Compare changes](https://github.com/microsoft/fluentui/compare/@fluentui/react-menu_v9.0.0-alpha.8..@fluentui/react-menu_v9.0.0-alpha.9)
+
+### Changes
+
+- Rename `document` props to `targetDocument` ([PR #17827](https://github.com/microsoft/fluentui/pull/17827) by lingfan.gao@microsoft.com)
+
+## [9.0.0-alpha.8](https://github.com/microsoft/fluentui/tree/@fluentui/react-menu_v9.0.0-alpha.8)
+
+Fri, 16 Apr 2021 18:08:21 GMT 
+[Compare changes](https://github.com/microsoft/fluentui/compare/@fluentui/react-menu_v9.0.0-alpha.7..@fluentui/react-menu_v9.0.0-alpha.8)
+
+### Changes
+
+- Bump @fluentui/react-make-styles to v9.0.0-alpha.22 ([PR #17840](https://github.com/microsoft/fluentui/pull/17840) by bsunderhus@microsoft.com)
+
+## [9.0.0-alpha.7](https://github.com/microsoft/fluentui/tree/@fluentui/react-menu_v9.0.0-alpha.7)
+
+Fri, 16 Apr 2021 07:32:08 GMT 
+[Compare changes](https://github.com/microsoft/fluentui/compare/@fluentui/react-menu_v9.0.0-alpha.6..@fluentui/react-menu_v9.0.0-alpha.7)
+
+### Changes
+
+- Bump @fluentui/react-positioning to v9.0.0-alpha.9 ([PR #17812](https://github.com/microsoft/fluentui/pull/17812) by behowell@microsoft.com)
+
+## [9.0.0-alpha.6](https://github.com/microsoft/fluentui/tree/@fluentui/react-menu_v9.0.0-alpha.6)
+
+Wed, 14 Apr 2021 07:34:12 GMT 
+[Compare changes](https://github.com/microsoft/fluentui/compare/@fluentui/react-menu_v9.0.0-alpha.5..@fluentui/react-menu_v9.0.0-alpha.6)
+
+### Changes
+
+- Bump @fluentui/react-make-styles to v9.0.0-alpha.21 ([PR #17707](https://github.com/microsoft/fluentui/pull/17707) by bsunderhus@microsoft.com)
+
+## [9.0.0-alpha.5](https://github.com/microsoft/fluentui/tree/@fluentui/react-menu_v9.0.0-alpha.5)
+
+Fri, 09 Apr 2021 23:42:49 GMT 
+[Compare changes](https://github.com/microsoft/fluentui/compare/@fluentui/react-menu_v9.0.0-alpha.4..@fluentui/react-menu_v9.0.0-alpha.5)
+
+### Changes
+
+- Replace `on` prefix with `openOn` ([PR #17753](https://github.com/microsoft/fluentui/pull/17753) by lingfan.gao@microsoft.com)
+
+## [9.0.0-alpha.4](https://github.com/microsoft/fluentui/tree/@fluentui/react-menu_v9.0.0-alpha.4)
+
+Fri, 09 Apr 2021 07:31:06 GMT 
+[Compare changes](https://github.com/microsoft/fluentui/compare/@fluentui/react-menu_v9.0.0-alpha.3..@fluentui/react-menu_v9.0.0-alpha.4)
+
+### Changes
+
+- Bump @fluentui/react-make-styles to v9.0.0-alpha.20 ([PR #17670](https://github.com/microsoft/fluentui/pull/17670) by olfedias@microsoft.com)
+
+## [9.0.0-alpha.3](https://github.com/microsoft/fluentui/tree/@fluentui/react-menu_v9.0.0-alpha.3)
+
+Thu, 08 Apr 2021 07:33:06 GMT 
+[Compare changes](https://github.com/microsoft/fluentui/compare/@fluentui/react-menu_v9.0.0-alpha.2..@fluentui/react-menu_v9.0.0-alpha.3)
+
+### Changes
+
+- Bump @fluentui/react-make-styles to v9.0.0-alpha.19 ([PR #17713](https://github.com/microsoft/fluentui/pull/17713) by olfedias@microsoft.com)
+
+## [9.0.0-alpha.2](https://github.com/microsoft/fluentui/tree/@fluentui/react-menu_v9.0.0-alpha.2)
+
+Wed, 07 Apr 2021 08:04:03 GMT 
+[Compare changes](https://github.com/microsoft/fluentui/compare/@fluentui/react-menu_v9.0.0-alpha.1..@fluentui/react-menu_v9.0.0-alpha.2)
+
+### Changes
+
+- Support onOpenChange for controlled menu ([PR #17712](https://github.com/microsoft/fluentui/pull/17712) by lingfan.gao@microsoft.com)
+- Add props for menu item alignment ([PR #17682](https://github.com/microsoft/fluentui/pull/17682) by lingfan.gao@microsoft.com)
 
 ## [9.0.0-alpha.1](https://github.com/microsoft/fluentui/tree/@fluentui/react-menu_v9.0.0-alpha.1)
 

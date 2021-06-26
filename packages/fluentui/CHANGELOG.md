@@ -16,21 +16,95 @@
 # Changelog
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+
 ## [Unreleased]
+
+### BREAKING CHANGES
+
+### Fixes
+- Fixed invalid prop type warning of Input and InputLabel by including "above" in labelPosition @nancy2681 ([#18206](https://github.com/microsoft/fluentui/pull/18206))
+- Update border radius to 4px from 3px @notandrew ([#17748](https://github.com/microsoft/fluentui/pull/17748))
+- Fix `getPointerStyles` transform for emotion @assuncaocharles ([#18070](https://github.com/microsoft/fluentui/pull/18070))
+- Remove `compose()` from `Menu*` components @assuncaocharles ([#17956](https://github.com/microsoft/fluentui/pull/17956))
+- Add `performClick` to `pillBehavior` @assuncaocharles ([#18098](https://github.com/microsoft/fluentui/pull/18098))
+- Add `pillGroupStyles` to fix container with pill containing images or icons @assuncaocharles ([#18096](https://github.com/microsoft/fluentui/pull/18096))
+- Add `aria-selected` to `Pill` based on state @assuncaocharles ([#18114](https://github.com/microsoft/fluentui/pull/18114))
+- Conditionally add `onClick` to `Pill` based on `actionable` prop to avoid NVDA narrating as clickable @assuncaocharles ([#18113](https://github.com/microsoft/fluentui/pull/18113))
+- Add `aria-hidden="true"` to `PillIcon` and `PillImage` @assuncaocharles ([#18118](https://github.com/microsoft/fluentui/pull/18118))
+- Support selection with Space key for selectable `Pill` @assuncaocharles ([#18138](https://github.com/microsoft/fluentui/pull/18138))
+- Add Avatar* styles to theme types @assuncaocharles ([#17782](https://github.com/microsoft/fluentui/pull/17782))
+- Fix events passed to `Tooltip` trigger @assuncaocharles ([#18234](https://github.com/microsoft/fluentui/pull/18234))
+- Fix `Tooltip` to spread unhandledProps to trigger @assuncaocharles ([#18277](https://github.com/microsoft/fluentui/pull/18277))
+- Add animations to `SkeletonText` @assuncaocharles ([#18276](https://github.com/microsoft/fluentui/pull/18276))
+- Fix user selection narration with NVDA in `Dropdown` @kolaps33 ([#18339](https://github.com/microsoft/fluentui/pull/18339))
+- Fix `useAutoControlled` to use updated state @assuncaocharles ([#18338](https://github.com/microsoft/fluentui/pull/18338))
+- Fix RTL version of `NumberListIcon` @notandrew ([#18310](https://github.com/microsoft/fluentui/pull/18310))
+- Fix `ChatMessage` badge-bar conflict with focus-border @Hirse ([#18303](https://github.com/microsoft/fluentui/pull/18303))
+- Fix `Dropdown` to pass all positioning props to its inner `Popper` @yuanboxue-amber ([#18457](https://github.com/microsoft/fluentui/pull/18457))
+- Update `Datepicker` today cell background color in dark-v2 theme to increase contrast @yuanboxue-amber ([#18461](https://github.com/microsoft/fluentui/pull/18461))
+- Fix missing `vertical` prop from parent context in `MenuItemContent` @assuncaocharles ([#18570](https://github.com/microsoft/fluentui/pull/18570))
+- Add `AvatarStatusIcon` to theme types @assuncaocharles ([#18583](https://github.com/microsoft/fluentui/pull/18583))
+
+### Features
+- Add Default Border Transparent and Default Foreground9 colors @notandrew ([#17906](https://github.com/microsoft/fluentui/pull/17906))
+- Add `inline` to `ChatMessage`'s `actionMenu` prop that allows actionMenu to be rendered either inline or attached to body @yuanboxue-amber ([#18147](https://github.com/microsoft/fluentui/pull/18147))
+- Let focus-border inherit border-radius from `ChatMessage` @Hirse ([#18305](https://github.com/microsoft/fluentui/pull/18305))
+- Add Default Foreground5 and Foreground6 for v2 theme and v2 dark theme @yuanboxue-amber ([#18451](https://github.com/microsoft/fluentui/pull/18451))
+- Add `compact`-prop to `Chat` (and `ChatMessage`) that displays the Chat in compact density @Hirse ([#18334](https://github.com/microsoft/fluentui/pull/18334))
+
+### Performance
+
+### Documentation
+- Allow switching to V2 themes in maximized examples @Hirse ([#18292](https://github.com/microsoft/fluentui/pull/18292))
+- Add DocumentTitle from Prototype section @Hirse ([#18539](https://github.com/microsoft/fluentui/pull/18539))
+
+<!--------------------------------[ v0.56.0 ]------------------------------- -->
+## [v0.56.0](https://github.com/microsoft/fluentui/tree/@fluentui/react-northstar_v0.56.0) (2021-05-14)
+[Compare changes](https://github.com/microsoft/fluentui/compare/@fluentui/react-northstar_v0.55.0..@fluentui/react-northstar_v0.56.0)
+
+### BREAKING CHANGES
+- `useCSS` hook was removed @layershifter ([#18139](https://github.com/microsoft/fluentui/pull/18139))
+
+### Fixes
+- Fix `focusVisiblePlugin` removing `data-whatinput='initial'` selector @assuncaocharles ([#18074](https://github.com/microsoft/fluentui/pull/18074))
+
+### Features
+- Update to Emotion 11 @layershifter ([#18143](https://github.com/microsoft/fluentui/pull/18143))
+
+<!--------------------------------[ v0.55.0 ]------------------------------- -->
+## [v0.55.0](https://github.com/microsoft/fluentui/tree/@fluentui/react-northstar_v0.55.0) (2021-05-05)
+[Compare changes](https://github.com/microsoft/fluentui/compare/@fluentui/react-northstar_v0.54.0..@fluentui/react-northstar_v0.55.0)
+
+### BREAKING CHANGES
+- `nonce` can be configured for Emotion renderer @layershifter ([#17972](https://github.com/microsoft/fluentui/pull/17972))
+
+### Fixes
+- Correct ref to `Toolbar` overflowSentinel @yuanboxue-amber ([#17813](https://github.com/microsoft/fluentui/pull/17813))
+- Fix `Carousel` to allow click in element inside item @assuncaocharles ([#17814](https://github.com/microsoft/fluentui/pull/17814))
+- Fix `chatMessageStyles` to show reactions on mouse over when variable `showActionMenu` is present @assuncaocharles ([#17853](https://github.com/microsoft/fluentui/pull/17853))
+- Fix `MenuButton` context position by removing right click reference object in `Popup` @petr-duda ([#17976](https://github.com/microsoft/fluentui/pull/17976))
+- Fix `Popup` to only render `Portal` when popup open @yuanboxue-amber ([#17926](https://github.com/microsoft/fluentui/pull/17926))
+
+### Features
+- Add NumberSymbolIcon (#), MoleculeIcon, TaskListIcon; update ReactionsIcon and VideoEmphasisIcon @notandrew ([#18012](https://github.com/microsoft/fluentui/pull/18012))
+- Add default `backgroundActive2` and brand `backgroundPressed1` color slots @notandrew ([#17699](https://github.com/microsoft/fluentui/pull/17699))
+- Add data-popup-trapfocus to differentiate beween dialog and popup @jurokapsiar ([#17743](https://github.com/microsoft/fluentui/pull/17743))
+- Added `NotepadPersonIcon`. @TanelVari ([#17828](https://github.com/microsoft/fluentui/pull/17828))
+- Added `PhoneIcon`, `OutlookColorIcon`, `SkypeColorIcon`. Corrected `NotepadPersonIcon` properties. @TanelVari ([#17857](https://github.com/microsoft/fluentui/pull/17857))
+- Added `FilesOneNoteIcon`. @TanelVari ([#17982](https://github.com/microsoft/fluentui/pull/17982))
+- Add options on `Popper` `autoSize` modifier to apply max sizes always @yuanboxue-amber ([#17994](https://github.com/microsoft/fluentui/pull/17994))
+
+### Deprecations
+- Set as deprecated `Portal` component @petr-duda ([#17983](https://github.com/microsoft/fluentui/pull/17983))
+
+<!--------------------------------[ v0.54.0 ]------------------------------- -->
+## [v0.54.0](https://github.com/microsoft/fluentui/tree/@fluentui/react-northstar_v0.54.0) (2021-04-06)
+[Compare changes](https://github.com/microsoft/fluentui/compare/@fluentui/react-northstar_v0.53.0..@fluentui/react-northstar_v0.54.0)
 
 ### BREAKING CHANGES
 - Change background image of `MenuItem` submenu indicator to chevrons @yuanboxue-amber ([#17664](https://github.com/microsoft/fluentui/pull/17664))
 
-
-## Features
-- Add default `backgroundActive2` and brand `backgroundPressed1` color slots @notandrew ([#17699](https://github.com/microsoft/fluentui/pull/17699))
-- Add `borderActive4` color slot @notandrew ([#17391](https://github.com/microsoft/fluentui/pull/17391))
-- Add `Pill` base componet @assuncaocharles ([#17500](https://github.com/microsoft/fluentui/pull/17500))
-- Add `PillAction` base componet @assuncaocharles ([#17548](https://github.com/microsoft/fluentui/pull/17548))
-- Add `PillImage` base componet @assuncaocharles ([#17600](https://github.com/microsoft/fluentui/pull/17600))
-- Add `PillIcon` base componet @assuncaocharles ([#17600](https://github.com/microsoft/fluentui/pull/17600))
-- Add `PillGroup` componet @assuncaocharles ([#17601](https://github.com/microsoft/fluentui/pull/17601))
-## Fixes
+### Fixes
 - Optimized `FileImageIcon` and adding padding to `ImageUnavailableIcon` to match FileImageIcon @notandrew ([#17631](https://github.com/microsoft/fluentui/pull/17631))
 - Add success to AlertDismissAction propTypes @jurokapsiar ([#17542](https://github.com/microsoft/fluentui/pull/17542))
 - Add `overflowSentinel` slot to fix `Toolbar` overflow when parent container does not have fixed width @ling1726 ([#17451](https://github.com/microsoft/fluentui/pull/17451))
@@ -38,10 +112,18 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Add missing `aria-haspopup` for `ToolbarMenuItem` with submenu @yuanboxue-amber ([#17646](https://github.com/microsoft/fluentui/pull/17646))
 - Fix `Datepicker` so its `Input` value changes on `selectedDate` prop change @yuanboxue-amber ([#17644](https://github.com/microsoft/fluentui/pull/17644))
 
+### Features
+- Add `borderActive4` color slot @notandrew ([#17391](https://github.com/microsoft/fluentui/pull/17391))
+- Add `Pill` base componet @assuncaocharles ([#17500](https://github.com/microsoft/fluentui/pull/17500))
+- Add `PillAction` base componet @assuncaocharles ([#17548](https://github.com/microsoft/fluentui/pull/17548))
+- Add `PillImage` base componet @assuncaocharles ([#17600](https://github.com/microsoft/fluentui/pull/17600))
+- Add `PillIcon` base componet @assuncaocharles ([#17600](https://github.com/microsoft/fluentui/pull/17600))
+- Add `PillGroup` componet @assuncaocharles ([#17601](https://github.com/microsoft/fluentui/pull/17601))
+
 ### Performance
 - Optimize memory consumption in `useStyles()` @layershifter ([#17521](https://github.com/microsoft/fluentui/pull/17521))
 
-## Documentation
+### Documentation
 - Update left nav in UI Builder to separate add components from navigator @codepretty ([#17002](https://github.com/microsoft/fluentui/pull/17002))
 - Deprecate `useCSS()` hook @layershifter ([#17520](https://github.com/microsoft/fluentui/pull/17520))
 
@@ -49,7 +131,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [v0.53.0](https://github.com/microsoft/fluentui/tree/@fluentui/react-northstar_v0.53.0) (2021-03-13)
 [Compare changes](https://github.com/microsoft/fluentui/compare/@fluentui/react-northstar_v0.52.2..@fluentui/react-northstar_v0.53.0)
 
-## BREAKING CHANGES
+### BREAKING CHANGES
 - Remove unsupported values for `size` prop in `Button` component @notandrew ([#16416](https://github.com/microsoft/fluentui/pull/16416))
 - Removing logic from `buttonBehavior` related to loading state @kolaps33 ([#16663](https://github.com/microsoft/fluentui/pull/16663))
 - Renamed `Card` property `quiet` to `ghost` as per design spec. @TanelVari ([#16585](https://github.com/microsoft/fluentui/pull/16585))
@@ -57,7 +139,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Removed `@fluentui/keyboard-key` dependency from all packages. @xugao ([#16700](https://github.com/microsoft/fluentui/pull/16700))
 - Updated `Datepicker` to allow the entire week selection and removed space between cells. @vejrj ([#16887](https://github.com/microsoft/fluentui/pull/16887))
 
-## Fixes
+### Fixes
 - Fix vertical `Menu` background color to pull from the correct color scheme in Teams themes @codepretty ([#17200](https://github.com/microsoft/fluentui/pull/17200))
 - Fix `Menu` iconOnly focus border to be correct style in Teams themes @codepretty ([#17005](https://github.com/microsoft/fluentui/pull/17005))
 - Fix `Label` color schemes. Fix padding for circular `Label`. @TanelVari ([#16160](https://github.com/microsoft/fluentui/pull/16160))
@@ -82,7 +164,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Updating the colors for the Carousel's paddles @notandrew ([#17323](https://github.com/microsoft/fluentui/pull/17323))
 - Prevent Popup to be dismissed when scroll happens inside @yuanboxue-amber ([#17419](https://github.com/microsoft/fluentui/pull/17419))
 
-## Features
+### Features
 - For `Tree`, add keyboard navigation based on the first letter of the text content of tree items @yuanboxue-amber ([#16994](https://github.com/microsoft/fluentui/pull/16994))
 - For `VirtualTreePrototype`, add keyboard navigation based on the first letter of the text content of tree items @yuanboxue-amber ([#17012](https://github.com/microsoft/fluentui/pull/17012))
 - Added `OneNoteMonoIcon`. Updated `VideoProhibitedIcon`. @TanelVari ([#17051](https://github.com/microsoft/fluentui/pull/17051))
@@ -92,9 +174,9 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Add `ToolbarMenuItemContent` to wrap content in span @yuanboxue-amber ([#17264](https://github.com/microsoft/fluentui/pull/17264))
 - Added `ChatOffIcon`. @TanelVari ([#17360](https://github.com/microsoft/fluentui/pull/17360))
 
-## Performance
+### Performance
 
-## Documentation
+### Documentation
 - Updating avatar images used in examples on the docsite @notandrew ([#16486](https://github.com/microsoft/fluentui/pull/16486))
 - Fix docsite header colors for all themes. `ExampleSnippet` now honors theme colors for background and foreground. @TanelVari ([#16643](https://github.com/microsoft/fluentui/pull/16643))
 - Added virtual cursor simulation to UI Builder. @adamsamec ([#15972](https://github.com/microsoft/fluentui/pull/15972))
@@ -143,7 +225,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [v0.52.0](https://github.com/microsoft/fluentui/tree/@fluentui/react-northstar_v0.52.0) (2021-01-26)
 [Compare changes](https://github.com/microsoft/fluentui/compare/@fluentui/react-northstar_v0.51.7..@fluentui/react-northstar_v0.52.0)
 
-## BREAKING CHANGES
+### BREAKING CHANGES
 - `Form`: removed static properties: `Form.Field`, `Form.FieldCustom`, `Form.Label`, `Form.Message`, `Form.Input`, `Form.Checkbox`, `Form.Dropdown`, `Form.Button`, `Form.RadioGroup`, `Form.Slider`,`Form.Datepicker` @yuanboxue-amber ([#16546](https://github.com/microsoft/fluentui/pull/16546))
 - `Avatar`: removed static properties: `Avatar.Status`, `Avatar.StatusIcon`, `Avatar.Image`, `Avatar.Label`, `Avatar.Icon`  @yuanboxue-amber ([#16565](https://github.com/microsoft/fluentui/pull/16565))
 - `Tree`: removed management of `contentRef` for tree items. `TreeItem`: removed `selected`, `selectableParent` and `indeterminate` props @yuanboxue-amber ([#15831](https://github.com/microsoft/fluentui/pull/15831))

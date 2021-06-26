@@ -125,6 +125,7 @@ export interface IAzureSemanticColors {
     circle: {
       hover: string;
     };
+    focus: string;
   };
   item: {
     hover: string;
@@ -177,6 +178,7 @@ export interface IAzureSemanticColors {
   };
   detailsRow: {
     border: string;
+    focus: string;
   };
   radioButton: {
     circle: {

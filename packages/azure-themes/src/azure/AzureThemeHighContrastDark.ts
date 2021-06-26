@@ -17,6 +17,7 @@ const highContrastDarkExtendedSemanticColors: Partial<IExtendedSemanticColors> =
   buttonBackgroundHovered: HighContrastDarkSemanticColors.secondaryButton.hover.background,
   buttonBackgroundPressed: HighContrastDarkSemanticColors.secondaryButton.pressed.background,
   ButtonBorderDisabled: HighContrastDarkSemanticColors.disabledButton.background,
+  ButtonBorderFocus: HighContrastDarkSemanticColors.secondaryButton.focus.border,
   buttonText: HighContrastDarkSemanticColors.secondaryButton.rest.text,
   buttonTextChecked: HighContrastDarkSemanticColors.secondaryButton.pressed.border,
   buttonTextCheckedHovered: HighContrastDarkSemanticColors.secondaryButton.hover.border,
@@ -37,6 +38,7 @@ const highContrastDarkExtendedSemanticColors: Partial<IExtendedSemanticColors> =
   checkBoxIndeterminateBackground: HighContrastDarkSemanticColors.checkBox.checked.background,
   checkBoxIndeterminateDefaultChecked: HighContrastDarkSemanticColors.checkBox.checked.default,
   choiceGroupUncheckedDotHover: HighContrastDarkSemanticColors.choiceGroup.circle.hover,
+  choiceGroupFocusBorder: HighContrastDarkSemanticColors.choiceGroup.focus,
   commandBarBorder: HighContrastDarkSemanticColors.commandBar.border,
   datePickerDisabledBorder: HighContrastDarkSemanticColors.datePicker.disabled.border,
   datePickerSelectionBackground: HighContrastDarkSemanticColors.datePicker.rest.selected,
@@ -86,6 +88,7 @@ const highContrastDarkExtendedSemanticColors: Partial<IExtendedSemanticColors> =
   radioButtonThumbCheckedDisabled: HighContrastDarkSemanticColors.radioButton.circle.checkedDisabled,
   tabHover: HighContrastDarkSemanticColors.tabs.hover,
   rowBorder: HighContrastDarkSemanticColors.detailsRow.border,
+  rowFocus: HighContrastDarkSemanticColors.detailsRow.focus,
   variantBorder: CommonSemanticColors.dividers.lineSeparator,
   // extended
   commandBarButtonAfterColor: HighContrastDarkSemanticColors.commandBar.button.focus.borderColor,

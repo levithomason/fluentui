@@ -1,17 +1,19 @@
 import * as React from 'react';
-import { ComponentProps, ShorthandProps } from '@fluentui/react-utilities';
-import { ObjectShorthandProps } from '@fluentui/react-utilities';
+import { ComponentProps, ComponentState, ShorthandProps } from '@fluentui/react-utilities';
 
 /**
  * {@docCategory Button}
  */
 export type ButtonProps = ComponentProps &
   React.ButtonHTMLAttributes<HTMLElement> & {
+    // Temporarily declare children as a shorthand slot until #18471 is fixed
+    children?: ShorthandProps<React.HTMLAttributes<HTMLElement>>;
+
     /**
      * Icon slot that, if specified, renders an icon either before or after the `children` as specified by the
      * `iconPosition` prop.
      */
-    icon?: ShorthandProps<React.HTMLAttributes<HTMLSpanElement>>;
+    icon?: ShorthandProps<React.HTMLAttributes<HTMLElement>>;
 
     // /**
     //  * Loader slot that, if specified, renders a `loader` before the `icon` and `children` while the `loading` flag
@@ -43,12 +45,6 @@ export type ButtonProps = ComponentProps &
     //  * @default false
     //  */
     // disabledFocusable?: boolean;
-
-    /**
-     * A button can contain only an icon.
-     * @default false
-     */
-    iconOnly?: boolean;
 
     /**
      * A button can format its icon to appear before or after its content.
@@ -84,30 +80,48 @@ export type ButtonProps = ComponentProps &
      */
     size?: 'small' | 'medium' | 'large';
 
-    // /**
-    //  * A button can be styled to blend into its background and become less emphasized.
-    //  * @default false
-    //  * Mutually exclusive with `outline`, `primary` and `transparent`.
-    //  */
-    // subtle?: boolean;
+    /**
+     * A button can be styled to blend into its background and become less emphasized.
+     * @default false
+     * Mutually exclusive with `outline`, `primary` and `transparent`.
+     */
+    subtle?: boolean;
 
-    // /**
-    //  * A button can be styled such that it has no background or border styling and is just emphasized through its
-    //  * content styling.
-    //  * Mutually exclusive with `outline`, `primary` and `subtle`.
-    //  * @default false
-    //  */
-    // transparent?: boolean;
+    /**
+     * A button can be styled such that it has no background or border styling and is just emphasized through its
+     * content styling.
+     * Mutually exclusive with `outline`, `primary` and `subtle`.
+     * @default false
+     */
+    transparent?: boolean;
   };
+
+/**
+ * Names of the shorthand properties in ButtonProps.
+ * {@docCategory Button}
+ */
+export type ButtonShorthandProps = 'children' | 'icon';
+
+/**
+ * Names of ButtonProps that have a default value in useButton.
+ * {@docCategory Button}
+ */
+export type ButtonDefaultedProps = 'icon' | 'size';
 
 /**
  * {@docCategory Button}
  */
-export interface ButtonState extends ButtonProps {
-  ref: React.Ref<HTMLElement>;
+export interface ButtonState extends ComponentState<ButtonProps, ButtonShorthandProps, ButtonDefaultedProps> {
+  /**
+   * A button can contain only an icon.
+   * @default false
+   */
+  iconOnly?: boolean;
 
-  icon?: ObjectShorthandProps<React.HTMLAttributes<HTMLSpanElement>>;
-  children?: ObjectShorthandProps<React.HTMLAttributes<HTMLSpanElement>>;
+  /**
+   * Ref to the root element
+   */
+  ref: React.Ref<HTMLElement>;
 }
 
 /**
@@ -118,6 +132,8 @@ export type ButtonStyleSelectors = {
   iconOnly?: boolean;
   primary?: boolean;
   size?: string;
+  subtle?: boolean;
+  transparent?: boolean;
 };
 
 /**
@@ -171,10 +187,14 @@ export type ButtonVariants =
   | 'disabled'
   | 'iconOnly'
   | 'primary'
+  | 'subtle'
+  | 'transparent'
   | 'small'
   | 'large'
   // TODO: get rid of these combinations, use individual variants in matchers
   | 'disabledPrimary'
+  | 'disabledSubtle'
+  | 'disabledTransparent'
   | 'iconOnlySmall'
   | 'iconOnlyLarge';
 

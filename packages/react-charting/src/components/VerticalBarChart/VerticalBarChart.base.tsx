@@ -85,7 +85,10 @@ export class VerticalBarChartBase extends React.Component<IVerticalBarChartProps
     this._calloutId = getId('callout');
     this._tooltipId = getId('VCTooltipID_');
     this._refArray = [];
-    this._xAxisType = getTypeOfAxis(this.props.data![0].x, true) as XAxisTypes;
+    this._xAxisType =
+      this.props.data! && this.props.data!.length > 0
+        ? (getTypeOfAxis(this.props.data![0].x, true) as XAxisTypes)
+        : XAxisTypes.StringAxis;
   }
 
   public render(): JSX.Element {
@@ -207,6 +210,7 @@ export class VerticalBarChartBase extends React.Component<IVerticalBarChartProps
             fill={this.props.theme!.palette.white}
             strokeWidth={3}
             visibility={this.state.activeXdataPoint === item.x ? CircleVisbility.show : CircleVisbility.hide}
+            onClick={item.point.lineData?.onClick}
           />
         );
       },
@@ -306,9 +310,7 @@ export class VerticalBarChartBase extends React.Component<IVerticalBarChartProps
     for (let i = 0; i < this._colors.length; i++) {
       domainValues.push(increment * i * this._yMax);
     }
-    const colorScale = d3ScaleLinear<string>()
-      .domain(domainValues)
-      .range(this._colors);
+    const colorScale = d3ScaleLinear<string>().domain(domainValues).range(this._colors);
     return colorScale;
   }
 
@@ -472,7 +474,10 @@ export class VerticalBarChartBase extends React.Component<IVerticalBarChartProps
           ref={(e: SVGRectElement) => {
             this._refCallback(e, point.legend!);
           }}
+          onClick={point.onClick}
           onMouseOver={this._onBarHover.bind(this, point, colorScale(point.y))}
+          aria-label="Vertical bar chart"
+          role="img"
           aria-labelledby={`toolTip${this._calloutId}`}
           onMouseLeave={this._onBarLeave}
           onFocus={this._onBarFocus.bind(this, point, index, colorScale(point.y))}
@@ -516,10 +521,13 @@ export class VerticalBarChartBase extends React.Component<IVerticalBarChartProps
           y={containerHeight - this.margins.bottom! - yBarScale(point.y)}
           width={this._barWidth}
           height={Math.max(yBarScale(point.y), 0)}
+          aria-label="Vertical bar chart"
+          role="img"
           aria-labelledby={`toolTip${this._calloutId}`}
           ref={(e: SVGRectElement) => {
             this._refCallback(e, point.legend!);
           }}
+          onClick={point.onClick}
           onMouseOver={this._onBarHover.bind(this, point, colorScale(point.y))}
           onMouseLeave={this._onBarLeave}
           onBlur={this._onBarLeave}

@@ -1,4 +1,4 @@
-import { makeStyles, ax } from '@fluentui/react-make-styles';
+import { makeStyles, mergeClasses } from '@fluentui/react-make-styles';
 import { FluentProvider } from '@fluentui/react-provider';
 import { webLightTheme, teamsLightTheme } from '@fluentui/react-theme';
 import * as React from 'react';
@@ -14,8 +14,8 @@ const useStyles = makeStyles({
     padding: '5px',
   }),
   primary: theme => ({
-    borderColor: theme.alias.color.neutral.brandForeground,
-    color: theme.alias.color.neutral.brandForeground,
+    borderColor: theme.alias.color.neutral.brandForegroundLink,
+    color: theme.alias.color.neutral.brandForegroundLink,
   }),
   overrides: {
     color: 'red',
@@ -25,7 +25,7 @@ const useStyles = makeStyles({
 
 const Container: React.FC<{ className?: string; padded?: boolean; primary?: boolean }> = props => {
   const classes = useStyles();
-  const className = ax(classes.root, props.primary && classes.primary, props.className);
+  const className = mergeClasses(classes.root, props.primary && classes.primary, props.className);
 
   return <div className={className}>{props.children}</div>;
 };
@@ -85,7 +85,7 @@ export const Nesting = () => (
 export const Frame = () => (
   <PortalFrame>
     {externalDocument => (
-      <FluentProvider document={externalDocument} theme={webLightTheme}>
+      <FluentProvider targetDocument={externalDocument} theme={webLightTheme}>
         <Container>Hello world!</Container>
         <Container primary>Hello world!</Container>
       </FluentProvider>

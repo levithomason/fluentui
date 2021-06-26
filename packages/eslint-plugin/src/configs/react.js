@@ -1,5 +1,8 @@
 // @ts-check
+const path = require('path');
 const configHelpers = require('../utils/configHelpers');
+
+const gitRoot = configHelpers.findGitRoot();
 
 /** @type {import("eslint").Linter.Config} */
 const config = {
@@ -8,8 +11,6 @@ const config = {
     'airbnb',
     // Extended configs are applied in order, so these configs that turn other rules off should come last
     'prettier',
-    'prettier/react',
-    'prettier/@typescript-eslint',
   ],
   parser: '@typescript-eslint/parser',
   plugins: ['@fluentui', '@typescript-eslint', 'deprecation', 'import', 'jest', 'jsx-a11y', 'react', 'react-hooks'],
@@ -20,8 +21,10 @@ const config = {
     },
     'import/resolver': {
       typescript: {
-        alwaysTryTypes: true, // always try to resolve types under `<root>@types` directory
-        directory: process.cwd(),
+        // always try to resolve types under `<root>@types` directory
+        alwaysTryTypes: true,
+        // NOTE: For packages without a tsconfig.json, override with "project": "../../tsconfig.json"
+        project: ['./tsconfig.json', path.join(gitRoot, 'tsconfig.json')],
       },
     },
   },
@@ -95,10 +98,23 @@ const config = {
         message: `"${name}" refers to a DOM global. Did you mean to reference a local value instead?`,
       })),
     ],
+    '@fluentui/ban-imports': [
+      'error',
+      {
+        path: 'react',
+        names: ['useLayoutEffect'],
+        message: '`useLayoutEffect` causes a warning in SSR. Use `useIsomorphicLayoutEffect`',
+      },
+    ],
     'no-restricted-properties': [
       'error',
       { object: 'describe', property: 'only', message: 'describe.only should only be used during test development' },
       { object: 'it', property: 'only', message: 'it.only should only be used during test development' },
+      {
+        object: 'React',
+        property: 'useLayoutEffect',
+        message: '`useLayoutEffect` causes a warning in SSR. Use `useIsomorphicLayoutEffect`',
+      },
     ],
     'no-shadow': ['error', { hoist: 'all' }],
     'no-var': 'error',
@@ -123,6 +139,7 @@ const config = {
 
     // airbnb or other config overrides (some temporary)
     // TODO: determine which rules we want to enable, and make needed changes (separate PR)
+    'arrow-body-style': 'off',
     'class-methods-use-this': 'off',
     'consistent-return': 'off',
     'default-case': 'off',
@@ -291,6 +308,7 @@ const getOverrides = () => [
           ],
         },
       ],
+      '@typescript-eslint/no-shadow': 'error',
 
       // permanently disable due to using other rules which do the same thing
       camelcase: 'off', // redundant with @typescript-eslint/naming-convention
@@ -298,6 +316,7 @@ const getOverrides = () => [
       // permanently disable due to improper TS handling or unnecessary for TS
       // (and not covered by plugin:@typescript-eslint/eslint-recommended)
       'no-empty-function': 'off',
+      'no-shadow': 'off',
       'no-unused-vars': 'off',
       'react/jsx-filename-extension': 'off',
     },
@@ -347,12 +366,7 @@ const getOverrides = () => [
   {
     files: [...configHelpers.devDependenciesFiles],
     rules: {
-      'import/no-extraneous-dependencies': [
-        'error',
-        {
-          packageDir: [process.cwd(), configHelpers.findGitRoot()],
-        },
-      ],
+      'import/no-extraneous-dependencies': ['error', { packageDir: ['.', gitRoot] }],
     },
   },
 ];

@@ -1,4 +1,4 @@
-import { makeStyles, ax } from '@fluentui/react-make-styles';
+import { makeStyles, mergeClasses } from '@fluentui/react-make-styles';
 import { FluentProvider } from '@fluentui/react-provider';
 import { webLightTheme } from '@fluentui/react-theme';
 import * as React from 'react';
@@ -26,10 +26,6 @@ const useStyles = makeStyles({
   containerPrimary: theme => ({
     borderLeftColor: theme.alias.color.darkOrange.border2,
   }),
-
-  provider: {
-    paddingLeft: '20px',
-  },
 });
 
 const Box: React.FC = props => {
@@ -42,22 +38,17 @@ const Container: React.FC<{ className?: string; primary?: boolean }> = props => 
   const classes = useStyles();
 
   return (
-    <div className={ax(classes.container, props.primary && classes.containerPrimary, props.className)}>
+    <div className={mergeClasses(classes.container, props.primary && classes.containerPrimary, props.className)}>
       {props.children}
     </div>
   );
 };
 
-const ClassNameProvider: React.FC<{ children: (className: string) => React.ReactElement }> = props => {
-  const classes = useStyles();
-
-  return props.children(classes.provider);
-};
-
 export const RTL = () => (
   <>
     <p>
-      This scenario renders "Box" (raw output from "makeStyles()") and "Container" ("ax()" usage) components in RTL.
+      This scenario renders "Box" (raw output from "makeStyles()") and "Container" ("mergeClasses()" usage) components
+      in RTL.
     </p>
 
     <FluentProvider dir="rtl" theme={webLightTheme}>
@@ -92,39 +83,6 @@ export const Nested = () => (
 
       <FluentProvider dir="ltr">
         <Container primary>Hello world!</Container>
-      </FluentProvider>
-    </FluentProvider>
-  </>
-);
-
-export const Propagation = () => (
-  <>
-    <p>
-      This scenario shows classes propagation between boundaries with "ax()" function: classes generated in LTR context
-      will be applied properly in RTL. (The `dir` of the latest ax() call wins)
-    </p>
-
-    <FluentProvider theme={webLightTheme}>
-      <ClassNameProvider>
-        {className => (
-          <FluentProvider dir="rtl">
-            <Container className={className} primary>
-              مرحبا بالعالم!
-            </Container>
-          </FluentProvider>
-        )}
-      </ClassNameProvider>
-
-      <FluentProvider dir="rtl">
-        <ClassNameProvider>
-          {className => (
-            <FluentProvider dir="ltr">
-              <Container className={className} primary>
-                Hello world!
-              </Container>
-            </FluentProvider>
-          )}
-        </ClassNameProvider>
       </FluentProvider>
     </FluentProvider>
   </>

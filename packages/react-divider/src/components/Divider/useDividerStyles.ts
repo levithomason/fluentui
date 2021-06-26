@@ -1,4 +1,4 @@
-import { makeStyles, useAx } from '@fluentui/react-make-styles';
+import { mergeClasses, makeStyles } from '@fluentui/react-make-styles';
 import { DividerState } from './Divider.types';
 
 const useStylesOverride = makeStyles({
@@ -45,8 +45,8 @@ const useStylesOverride = makeStyles({
     '--divider-color': tokens.alias.color.neutral.neutralStroke3,
   }),
   brand: tokens => ({
-    '--divider-fontColor': tokens.alias.color.brand.brandBackgroundStatic,
-    '--divider-color': tokens.alias.color.brand.brandBackgroundStatic,
+    '--divider-fontColor': tokens.alias.color.neutral.brandBackgroundStatic,
+    '--divider-color': tokens.alias.color.neutral.brandBackgroundStatic,
   }),
   strong: tokens => ({
     '--divider-color': tokens.alias.color.neutral.neutralStroke1,
@@ -207,7 +207,7 @@ const useStylesOverride = makeStyles({
 /** Applies style classnames to slots */
 export const useDividerStyles = (s: DividerState) => {
   const styles = useStylesOverride();
-  s.className = useAx(
+  s.className = mergeClasses(
     styles.root,
     !s.children && styles.childless,
     s.appearance === 'subtle' && styles.subtle,

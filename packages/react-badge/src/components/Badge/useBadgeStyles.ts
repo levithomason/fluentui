@@ -1,4 +1,4 @@
-import { ax, makeStyles } from '@fluentui/react-make-styles';
+import { mergeClasses, makeStyles } from '@fluentui/react-make-styles';
 import { BadgeState } from './Badge.types';
 
 const useStyles = makeStyles({
@@ -7,13 +7,14 @@ const useStyles = makeStyles({
     boxSizing: 'border-box',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: theme.alias.color.brand.brandBackground,
-    borderColor: theme.alias.color.brand.brandBackground,
+    backgroundColor: theme.alias.color.neutral.brandBackground,
+    borderColor: theme.alias.color.neutral.brandBackground,
     color: theme.alias.color.neutral.neutralForegroundInvertedAccessible,
     fontWeight: theme.global.type.fontWeights.semibold,
     borderWidth: theme.global.strokeWidth.thin,
     borderStyle: 'solid',
     fontFamily: theme.global.type.fontFamilies.base,
+    position: 'relative',
   }),
   rootSmallest: {
     width: '6px',
@@ -64,12 +65,12 @@ const useStyles = makeStyles({
   rootGhost: theme => ({
     background: 'transparent',
     border: 'none',
-    color: theme.alias.color.brand.brandBackground,
+    color: theme.alias.color.neutral.brandBackground,
   }),
   rootOutline: theme => ({
     background: 'transparent',
-    borderColor: theme.alias.color.brand.brandBackground,
-    color: theme.alias.color.brand.brandBackground,
+    borderColor: theme.alias.color.neutral.brandBackground,
+    color: theme.alias.color.neutral.brandBackground,
   }),
   rootTint: theme => ({
     background: theme.global.palette.brand.tint60,
@@ -78,15 +79,17 @@ const useStyles = makeStyles({
   }),
   icon: {
     position: 'absolute',
+    top: 0,
+    bottom: 0,
   },
 });
 
 /**
  * Applies style classnames to slots
  */
-export const useBadgeStyles = (state: BadgeState) => {
+export const useBadgeStyles = (state: BadgeState): BadgeState => {
   const styles = useStyles();
-  state.className = ax(
+  state.className = mergeClasses(
     styles.root,
     state.size === 'smallest' && styles.rootSmallest,
     state.size === 'smaller' && styles.rootSmaller,
@@ -106,7 +109,7 @@ export const useBadgeStyles = (state: BadgeState) => {
   );
 
   if (state.icon) {
-    state.icon.className = ax(styles.icon, state.icon.className);
+    state.icon.className = mergeClasses(styles.icon, state.icon.className);
   }
 
   return state;

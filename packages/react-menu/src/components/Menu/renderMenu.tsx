@@ -1,7 +1,5 @@
 import * as React from 'react';
-import { getSlots } from '@fluentui/react-utilities';
 import { MenuState } from './Menu.types';
-import { menuShorthandProps } from './useMenu';
 import { MenuProvider } from '../../contexts/menuContext';
 
 /**
@@ -9,21 +7,22 @@ import { MenuProvider } from '../../contexts/menuContext';
  * {@docCategory Menu }
  */
 export const renderMenu = (state: MenuState) => {
-  const { slots, slotProps } = getSlots(state, menuShorthandProps);
   const {
     open,
     setOpen,
     onCheckedValueChange,
     checkedValues,
     defaultCheckedValues,
-    onHover,
-    onContext,
+    openOnHover,
+    openOnContext,
     triggerRef,
     triggerId,
-    menuPopupRef,
+    menuPopoverRef,
     isSubmenu,
     hasCheckmarks,
     hasIcons,
+    persistOnItemClick,
+    inline,
   } = state;
 
   return (
@@ -35,18 +34,20 @@ export const renderMenu = (state: MenuState) => {
         checkedValues,
         defaultCheckedValues,
         triggerRef,
-        onHover,
-        onContext,
+        openOnHover,
+        openOnContext,
         triggerId,
-        menuPopupRef,
+        menuPopoverRef,
         isSubmenu,
         hasMenuContext: true,
         hasCheckmarks,
         hasIcons,
+        persistOnItemClick,
+        inline,
       }}
     >
       {state.menuTrigger}
-      {state.open && <slots.menuPopup {...slotProps.menuPopup} />}
+      {state.open && state.menuPopover}
     </MenuProvider>
   );
 };

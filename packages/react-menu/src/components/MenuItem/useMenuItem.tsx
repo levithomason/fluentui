@@ -11,6 +11,7 @@ import { useCharacterSearch } from './useCharacterSearch';
 import { useMenuTriggerContext } from '../../contexts/menuTriggerContext';
 import { ChevronRightIcon } from '../../utils/DefaultIcons';
 import { useMenuListContext } from '../../contexts/menuListContext';
+import { useMenuContext } from '../../contexts/menuContext';
 
 /**
  * Consts listing which props are shorthand props.
@@ -31,6 +32,9 @@ export const useMenuItem = (
   const hasSubmenu = useMenuTriggerContext();
   const hasIcons = useMenuListContext(context => context.hasIcons);
   const hasCheckmarks = useMenuListContext(context => context.hasCheckmarks);
+  const setOpen = useMenuContext(context => context.setOpen);
+  const persistOnClickContext = useMenuContext(context => context.persistOnItemClick);
+  const dismissedWithKeyboardRef = React.useRef(false);
 
   const state = mergeProps(
     {
@@ -44,7 +48,6 @@ export const useMenuItem = (
       tabIndex: 0,
       hasSubmenu,
       'aria-disabled': props.disabled,
-      dummy: { foo: 'xxx ' },
     },
     defaultProps && resolveShorthandProps(defaultProps, menuItemShorthandProps),
     resolveShorthandProps(props, menuItemShorthandProps),
@@ -59,6 +62,7 @@ export const useMenuItem = (
         return;
       }
 
+      dismissedWithKeyboardRef.current = true;
       e.preventDefault();
       (e.target as HTMLElement)?.click();
     }
@@ -71,6 +75,17 @@ export const useMenuItem = (
       e.preventDefault();
       e.stopPropagation();
       return;
+    }
+
+    let shouldPersist = persistOnClickContext;
+    // prop wins over context;
+    if (state.persistOnClick !== undefined && persistOnClickContext !== state.persistOnClick) {
+      shouldPersist = state.persistOnClick;
+    }
+
+    if (!hasSubmenu && !shouldPersist) {
+      setOpen(e, { open: false, keyboard: dismissedWithKeyboardRef.current, bubble: true });
+      dismissedWithKeyboardRef.current = false;
     }
 
     onClickOriginal?.(e);

@@ -109,6 +109,7 @@ export const useSlider = (props: ISliderProps, ref: React.Ref<HTMLDivElement>) =
   // Ensure that value is always a number and is clamped by min/max.
   const value = Math.max(min, Math.min(max, unclampedValue || 0));
   const lowerValue = Math.max(min, Math.min(value, unclampedLowerValue || 0));
+  let renderedValue: number = value;
 
   const id = useId('Slider');
   const [useShowTransitions, { toggle: toggleUseShowTransitions }] = useBoolean(true);
@@ -134,7 +135,7 @@ export const useSlider = (props: ISliderProps, ref: React.Ref<HTMLDivElement>) =
     setTimerId(
       setTimeout(() => {
         if (props.onChanged) {
-          props.onChanged(event, value as number);
+          props.onChanged(event, renderedValue as number);
         }
       }, ONKEYDOWN_TIMEOUT_DURATION) as any,
     );
@@ -166,14 +167,17 @@ export const useSlider = (props: ISliderProps, ref: React.Ref<HTMLDivElement>) =
     if (ranged) {
       // decided which thumb value to change
       if (isAdjustingLowerValueRef.current && (originFromZero ? roundedValue <= 0 : roundedValue <= value)) {
+        renderedValue = value;
         setLowerValue(roundedValue);
       } else if (
         !isAdjustingLowerValueRef.current &&
         (originFromZero ? roundedValue >= 0 : roundedValue >= lowerValue)
       ) {
+        renderedValue = roundedValue;
         setValue(roundedValue);
       }
     } else {
+      renderedValue = roundedValue;
       setValue(roundedValue);
     }
   };
@@ -197,9 +201,13 @@ export const useSlider = (props: ISliderProps, ref: React.Ref<HTMLDivElement>) =
         break;
       case KeyCodes.home:
         newCurrentValue = min;
+        clearOnKeyDownTimer();
+        setOnKeyDownTimer(event);
         break;
       case KeyCodes.end:
         newCurrentValue = max;
+        clearOnKeyDownTimer();
+        setOnKeyDownTimer(event);
         break;
       default:
         return;
@@ -297,8 +305,9 @@ export const useSlider = (props: ISliderProps, ref: React.Ref<HTMLDivElement>) =
 
   const onMouseUpOrTouchEnd = (event: MouseEvent | TouchEvent): void => {
     if (props.onChanged) {
-      props.onChanged(event, value as number);
+      props.onChanged(event, renderedValue as number);
     }
+
     toggleUseShowTransitions();
     disposeListeners();
   };
@@ -385,13 +394,6 @@ export const useSlider = (props: ISliderProps, ref: React.Ref<HTMLDivElement>) =
     style: getTrackStyles(bottomSectionWidth),
   };
 
-  const eventProps = {
-    ...onMouseDownProp,
-    ...onTouchStartProp,
-    ...onKeyDownProp,
-    ...divButtonProps,
-  };
-
   const sliderProps: React.HTMLAttributes<HTMLElement> = {
     'aria-disabled': disabled,
     role: 'slider',
@@ -402,7 +404,10 @@ export const useSlider = (props: ISliderProps, ref: React.Ref<HTMLDivElement>) =
   const sliderBoxProps: React.HTMLAttributes<HTMLElement> = {
     id,
     className: css(classNames.slideBox, buttonProps!.className),
-    ...eventProps,
+    ...onMouseDownProp,
+    ...onTouchStartProp,
+    ...onKeyDownProp,
+    ...divButtonProps,
     ...(!ranged && {
       ...sliderProps,
       'aria-valuemin': min,
@@ -419,7 +424,6 @@ export const useSlider = (props: ISliderProps, ref: React.Ref<HTMLDivElement>) =
     style: getPositionStyles(valuePercent),
     ...(ranged && {
       ...sliderProps,
-      ...eventProps,
       ...onFocusProp,
       id: `max-${id}`,
       'aria-valuemin': lowerValue,
@@ -438,7 +442,6 @@ export const useSlider = (props: ISliderProps, ref: React.Ref<HTMLDivElement>) =
         className: classNames.thumb,
         style: getPositionStyles(lowerValuePercent),
         ...sliderProps,
-        ...eventProps,
         ...onFocusProp,
         id: `min-${id}`,
         'aria-valuemin': min,
