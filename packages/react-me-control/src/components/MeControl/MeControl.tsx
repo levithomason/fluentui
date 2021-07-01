@@ -366,20 +366,12 @@ const useStyles = makeStyles({
     float: 'right',
   },
 
-  debugState: theme => ({
-    padding: '8px',
-    marginTop: '360px',
-    marginBottom: '16px',
-    color: theme.alias.color.neutral.neutralForeground3,
-    background: theme.alias.color.neutral.neutralBackground3,
-    borderRadius: theme.global.borderRadius.large,
-  }),
-
   clearStatusMenuPopup: theme => ({
     width: '100%',
     margin: '0 8px',
     boxSizing: 'border-box',
   }),
+
   clearStatusMenuTrigger: theme => ({
     marginBottom: '16px',
     width: '100%',
@@ -387,6 +379,14 @@ const useStyles = makeStyles({
     justifyContent: 'space-between',
     // TODO: figma file shows bg2, but hex is #F5F5F5, which is bg3 in our code. bg2 in code is #FAFAFA.
     // background: theme.alias.color.neutral.neutralBackground3,
+  }),
+  debugState: theme => ({
+    padding: '8px',
+    marginTop: '360px',
+    marginBottom: '16px',
+    color: theme.alias.color.neutral.neutralForeground3,
+    background: theme.alias.color.neutral.neutralBackground3,
+    borderRadius: theme.global.borderRadius.large,
   }),
 });
 
