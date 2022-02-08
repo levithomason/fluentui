@@ -4,6 +4,7 @@ import { Button } from '../../Button';
 import descriptionMd from './ButtonDescription.md';
 import bestPracticesMd from './ButtonBestPractices.md';
 
+export { WebComponent } from './stories/WebComponent.stories';
 export { Default } from './stories/ButtonDefault.stories';
 export { Shape } from './stories/ButtonShape.stories';
 export { Appearance } from './stories/ButtonAppearance.stories';

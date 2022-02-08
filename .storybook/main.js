@@ -64,7 +64,10 @@ module.exports = /** @type {Omit<StorybookConfig,'typescript'|'babel'>} */ ({
         use: {
           loader: 'babel-loader',
           options: {
-            plugins: [require('storybook-addon-export-to-codesandbox').babelPlugin],
+            plugins: [
+              ['@babel/plugin-proposal-decorators', { decoratorsBeforeExport: true }],
+              require('storybook-addon-export-to-codesandbox').babelPlugin,
+            ],
           },
         },
       });

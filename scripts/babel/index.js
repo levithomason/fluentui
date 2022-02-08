@@ -13,6 +13,10 @@ module.exports = api => {
   const isNode = api.caller(isNodeCaller);
   const useESModules = !isNode && api.caller(supportsESM);
 
+  const assumptions = {
+    setPublicClassFields: true,
+  };
+
   const presets = [
     [
       '@babel/preset-env',
@@ -31,6 +35,8 @@ module.exports = api => {
     ['@babel/preset-typescript', { allowNamespaces: true }],
   ];
   const plugins = [
+    // ["@babel/plugin-transform-typescript", {"allowDeclareFields": true}],
+    ['@babel/plugin-proposal-decorators', { decoratorsBeforeExport: true }],
     ['@babel/plugin-proposal-class-properties', { loose: true }],
     ['@babel/plugin-proposal-nullish-coalescing-operator', { loose: true }],
     ['@babel/plugin-proposal-object-rest-spread', { loose: true, useBuiltIns: true }],
@@ -53,6 +59,7 @@ module.exports = api => {
   ].filter(Boolean);
 
   return {
+    assumptions,
     presets,
     plugins,
     // Options to facilitate debugging in editor (set DEBUG environment var)

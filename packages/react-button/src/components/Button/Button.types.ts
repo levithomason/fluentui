@@ -49,12 +49,14 @@ export type ButtonCommons = {
    */
   iconPosition?: 'before' | 'after';
 
+  // TODO: this should be optional?
   /**
    * A button can be rounded, circular, or square.
    * @default 'rounded'
    */
   shape: 'rounded' | 'circular' | 'square';
 
+  // TODO: this should be optional?
   /**
    * A button supports different sizes.
    * @default 'medium'
