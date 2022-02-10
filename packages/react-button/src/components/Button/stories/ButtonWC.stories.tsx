@@ -12,6 +12,7 @@ import { ButtonCommons, ButtonProps } from '../Button.types';
 //
 // Component state from attrs?
 // - [ ] Use component state rather than attrs
+// - [ ] Could React component state interfaces live in private wc state?
 //
 // Tag Names
 // Allow changing tag name prefix
@@ -25,6 +26,7 @@ const ELEMENT_NAME = 'fui-button';
 declare global {
   interface HTMLElementTagNameMap {
     [ELEMENT_NAME]: FluentButton;
+    'fui-flex': FluentFlex;
   }
 }
 
@@ -32,13 +34,14 @@ declare global {
   namespace JSX {
     interface IntrinsicElements {
       'fui-button': ButtonProps;
+      'fui-flex': { vertical?: boolean; children?: ButtonProps['children'] };
     }
   }
 }
 
 class FluentButton extends LitElement {
-  private static styles = css`
-    :host button {
+  public static styles = css`
+    :host .root {
       align-items: center;
       display: inline-flex;
       justify-content: center;
@@ -60,7 +63,7 @@ class FluentButton extends LitElement {
       outline-style: none;
     }
 
-    :host(:hover) button {
+    :host(:hover) .root {
       background-color: var(--colorNeutralBackground1Hover);
       border-color: var(--colorNeutralStroke1Hover);
       color: var(--colorNeutralForeground1);
@@ -68,7 +71,7 @@ class FluentButton extends LitElement {
       cursor: pointer;
     }
 
-    :host(:active) button {
+    :host(:active) .root {
       background-color: var(--colorNeutralBackground1Pressed);
       border-color: var(--colorNeutralStroke1Pressed);
       color: var(--colorNeutralForeground1);
@@ -78,74 +81,74 @@ class FluentButton extends LitElement {
 
     /** Block */
 
-    :host([block]) button {
+    :host([block]) .root {
       max-width: 100%;
       width: 100%;
     }
 
     /** Appearance */
 
-    :host([appearance='outline']) button {
+    :host([appearance='outline']) .root {
       background-color: var(--colorTransparentBackground);
     }
 
-    :host([appearance='outline']:hover) button {
+    :host([appearance='outline']:hover) .root {
       background-color: var(--colorTransparentBackgroundHover);
     }
 
-    :host([appearance='outline']:active) button {
+    :host([appearance='outline']:active) .root {
       background-color: var(--colorTransparentBackgroundPressed);
     }
 
-    :host([appearance='primary']) button {
+    :host([appearance='primary']) .root {
       background-color: var(--colorBrandBackground);
       border-color: transparent;
       color: var(--colorNeutralForegroundOnBrand);
     }
 
-    :host([appearance='primary']:hover) button {
+    :host([appearance='primary']:hover) .root {
       background-color: var(--colorBrandBackgroundHover);
       border-color: transparent;
       color: var(--colorNeutralForegroundOnBrand);
     }
 
-    :host([appearance='primary']:active) button {
+    :host([appearance='primary']:active) .root {
       background-color: var(--colorBrandBackgroundPressed);
       border-color: transparent;
       color: var(--colorNeutralForegroundOnBrand);
     }
 
-    :host([appearance='subtle']) button {
+    :host([appearance='subtle']) .root {
       background-color: var(--colorSubtleBackground);
       border-color: transparent;
       color: var(--colorNeutralForeground2);
     }
 
-    :host([appearance='subtle']:hover) button {
+    :host([appearance='subtle']:hover) .root {
       background-color: var(--colorSubtleBackgroundHover);
       border-color: transparent;
       color: var(--colorNeutralForeground2BrandHover);
     }
 
-    :host([appearance='subtle']:active) button {
+    :host([appearance='subtle']:active) .root {
       background-color: var(--colorSubtleBackgroundPressed);
       border-color: transparent;
       color: var(--colorNeutralForeground2BrandPressed);
     }
 
-    :host([appearance='transparent']) button {
+    :host([appearance='transparent']) .root {
       background-color: var(--colorTransparentBackground);
       border-color: transparent;
       color: var(--colorNeutralForeground2);
     }
 
-    :host([appearance='transparent']:hover) button {
+    :host([appearance='transparent']:hover) .root {
       background-color: var(--colorTransparentBackgroundHover);
       border-color: transparent;
       color: var(--colorNeutralForeground2BrandHover);
     }
 
-    :host([appearance='transparent']:active) button {
+    :host([appearance='transparent']:active) .root {
       background-color: var(--colorTransparentBackgroundPressed);
       border-color: transparent;
       color: var(--colorNeutralForeground2BrandPressed);
@@ -153,7 +156,7 @@ class FluentButton extends LitElement {
 
     /** Size */
 
-    :host([size='small']) button {
+    :host([size='small']) .root {
       gap: 4px;
       padding: 0 8px;
 
@@ -167,8 +170,8 @@ class FluentButton extends LitElement {
       line-height: var(--lineHeightBase200);
     }
 
-    :host(:not([size])) button,
-    :host([size='medium']) button {
+    :host(:not([size])) .root,
+    :host([size='medium']) .root {
       gap: 6px;
       padding: 0 12px;
 
@@ -182,7 +185,7 @@ class FluentButton extends LitElement {
       line-height: var(--lineHeightBase300);
     }
 
-    :host([size='large']) button {
+    :host([size='large']) .root {
       gap: 6px;
       padding: 0 16px;
 
@@ -225,7 +228,7 @@ class FluentButton extends LitElement {
 
   protected render() {
     return html`
-      <button>
+      <button class="root">
         ${this.iconPosition !== 'after' ? html`<slot name="icon" {...slotProps.icon} />` : ''}
         <slot></slot>
         ${this.iconPosition === 'after' ? html`<slot name="icon" {...slotProps.icon} />` : ''}
@@ -235,3 +238,34 @@ class FluentButton extends LitElement {
 }
 
 customElements.define(ELEMENT_NAME, FluentButton);
+
+class FluentFlex extends LitElement {
+  public static styles = css`
+    :host .root {
+      display: flex;
+      border: 2px solid red;
+    }
+
+    :host([vertical]) .root {
+      flex-direction: column;
+    }
+  `;
+
+  public static get properties() {
+    return {
+      vertical: {},
+    };
+  }
+
+  public vertical?: boolean;
+
+  protected render() {
+    return html`
+      <div class="root">
+        <slot></slot>
+      </div>
+    `;
+  }
+}
+
+customElements.define('fui-flex', FluentFlex);

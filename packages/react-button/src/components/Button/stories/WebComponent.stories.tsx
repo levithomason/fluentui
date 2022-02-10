@@ -16,14 +16,23 @@ export const WebComponent = () => (
 
     <Heading title="Default" />
     <fui-button>Button</fui-button>
+    <fui-button appearance="subtle">Subtle...</fui-button>
 
     <Heading title="Size" />
-    <fui-button size="small">Small</fui-button>
+    <fui-button onClick={() => console.log('JSX click')} size="small">
+      Small
+    </fui-button>
     <fui-button size="medium">Medium</fui-button>
     <fui-button size="large">Large</fui-button>
 
     <Heading title="Block" />
-    <fui-button block>Block</fui-button>
+    <fui-button block>
+      Block
+      <fui-flex>Default</fui-flex>
+      <fui-flex vertical>Vertical</fui-flex>
+    </fui-button>
+    <fui-flex>Default</fui-flex>
+    <fui-flex vertical>Vertical</fui-flex>
 
     <Heading title="Appearance" />
     <fui-button appearance="primary">Primary</fui-button>
