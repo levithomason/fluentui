@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { tokens } from '@fluentui/react-theme';
+import { iconFilledClassName, iconRegularClassName } from '@fluentui/react-icons';
 
 import { getSlots } from '@fluentui/react-utilities';
 
@@ -37,6 +38,21 @@ const { wrap } = provideReactWrapper(React);
       font-family: ${tokens.fontFamilyBase};
 
       outline-style: none;
+
+      :host:hover {
+        background-color: ${tokens.colorNeutralBackground1Hover};
+        border-color: ${tokens.colorNeutralStroke1Hover};
+        color: ${tokens.colorNeutralForeground1Hover};
+
+        cursor: pointer;
+      }
+
+      :host:hover .${iconFilledClassName} {
+        display: inline;
+      }
+      :host:hover .${iconRegularClassName} {
+        display: none;
+      }
     }
 
     // Appearance variations
