@@ -1,6 +1,7 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
+    "experimentalDecorators": true,
     "noEmit": false,
     "lib": ["ES2019", "dom"],
     "outDir": "dist",

@@ -46,7 +46,7 @@ export const useAlert_unstable = (props: AlertProps, ref: React.Ref<HTMLElement>
     components: {
       root: 'div',
       icon: 'span',
-      action: Button,
+      action: 'fui-button', // Button,
     },
     root: getNativeElementProps('div', {
       ref,

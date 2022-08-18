@@ -2,6 +2,11 @@ import * as React from 'react';
 
 import { Alert } from '@fluentui/react-alert';
 
+const EM = () => {
+  const [on, setOn] = React.useState(false);
+  return <em onClick={() => setOn(!on)}>{on ? 'on' : 'off'}</em>;
+};
+
 export const Intent = () => (
   <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
     <Alert
@@ -21,6 +26,7 @@ export const Intent = () => (
       }}
     >
       Error text
+      <EM />
     </Alert>
     <Alert
       intent="warning"

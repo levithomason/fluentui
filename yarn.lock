@@ -2965,7 +2965,7 @@
   resolved "https://registry.yarnpkg.com/@microsoft/fast-element/-/fast-element-1.10.2.tgz#34a2faa8a97608e1b7c8024b9aed3deddd5c6ad8"
   integrity sha512-Nh80AEx/caDe4jhFYNT75sTG4k6MWy1N6XfgyhmejAX0ylivYy0M78WI2JgQOqi2ZRozCiNcpAPLVhYyAVN9sA==
 
-"@microsoft/fast-foundation@^2.46.0":
+"@microsoft/fast-foundation@^2.46.0", "@microsoft/fast-foundation@^2.46.8":
   version "2.46.9"
   resolved "https://registry.yarnpkg.com/@microsoft/fast-foundation/-/fast-foundation-2.46.9.tgz#a4d4ce50861f71aaef5697746e87b8f66b280507"
   integrity sha512-jgkVT7bAWIV844eDj3V9cmYFsRIcJ8vMuB4h2SlkJ9EmFbCfimvh6RyAhsHv+bC6QZSS0N0bpZHm5A5QsWgi3Q==
@@ -2974,6 +2974,14 @@
     "@microsoft/fast-web-utilities" "^5.4.1"
     tabbable "^5.2.0"
     tslib "^1.13.0"
+
+"@microsoft/fast-react-wrapper@^0.3.9":
+  version "0.3.9"
+  resolved "https://domoreexp.pkgs.visualstudio.com/_packaging/npm-mirror/npm/registry/@microsoft/fast-react-wrapper/-/fast-react-wrapper-0.3.9.tgz#1ff4d799f6a050c18df21dfdb517175d71c01133"
+  integrity sha1-H/TXmfagUMGN8h39tRcXXXHAETM=
+  dependencies:
+    "@microsoft/fast-element" "^1.10.2"
+    "@microsoft/fast-foundation" "^2.46.8"
 
 "@microsoft/fast-web-utilities@^5.4.0", "@microsoft/fast-web-utilities@^5.4.1":
   version "5.4.1"
