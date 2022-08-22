@@ -2,36 +2,49 @@ import * as React from 'react';
 import { AvatarGroup } from './AvatarGroup';
 import { AvatarGroupItem } from '../AvatarGroupItem';
 import { isConformant } from '../../common/isConformant';
-import { render } from '@testing-library/react';
+import { AvatarGroupPopover } from '../AvatarGroupPopover/AvatarGroupPopover';
+import { render, screen } from '@testing-library/react';
 
 describe('AvatarGroup', () => {
-  // TODO: Remove component-has-static-classnames-object from disabled tests.
   isConformant({
     Component: AvatarGroup,
     displayName: 'AvatarGroup',
-    disabledTests: [
-      'component-has-static-classname',
-      'component-has-static-classname-exported',
-      'component-has-static-classnames-object',
-    ],
+    disabledTests: ['make-styles-overrides-win'],
+    requiredProps: {
+      children: (
+        <>
+          <AvatarGroupItem name="Mona Kane" />
+          <AvatarGroupItem name="Allan Munger" />
+          <AvatarGroupItem name="Daisy Phillips" />
+          <AvatarGroupItem name="Robert Tolbert" />
+          <AvatarGroupItem name="Kevin Sturgis" />
+          <AvatarGroupPopover>
+            <AvatarGroupItem name="Allan Munger" />
+            <AvatarGroupItem name="Daisy Phillips" />
+            <AvatarGroupItem name="Robert Tolbert" />
+            <AvatarGroupItem name="Kevin Sturgis" />
+          </AvatarGroupPopover>
+        </>
+      ),
+    },
   });
 
-  // TODO add more tests here, and create visual regression tests in /apps/vr-tests
-
-  it('renders a default state', () => {
-    const result = render(
-      <AvatarGroup>
-        <AvatarGroupItem name="Katri Athokas" />
-        <AvatarGroupItem name="Elvia Atkins" />
-        <AvatarGroupItem name="Cameron Evans" />
-        <AvatarGroupItem name="Wanda Howard" />
+  it('renders an icon overflow indicator when size is less than 24', () => {
+    render(
+      <AvatarGroup size={16}>
         <AvatarGroupItem name="Mona Kane" />
         <AvatarGroupItem name="Allan Munger" />
         <AvatarGroupItem name="Daisy Phillips" />
         <AvatarGroupItem name="Robert Tolbert" />
-        <AvatarGroupItem name="Kevin Sturgis" />
+        <AvatarGroupPopover>
+          <AvatarGroupItem name="Allan Munger" />
+          <AvatarGroupItem name="Daisy Phillips" />
+          <AvatarGroupItem name="Robert Tolbert" />
+          <AvatarGroupItem name="Kevin Sturgis" />
+        </AvatarGroupPopover>
       </AvatarGroup>,
     );
-    expect(result.container).toMatchSnapshot();
+
+    expect(screen.getByRole('button').textContent).toBe('');
   });
 });

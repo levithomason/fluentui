@@ -22,7 +22,7 @@ function tagPackages(npmToken: string) {
 function tagPackage(name: string, version: string, npmToken: string): boolean {
   const prerelease = semver.parse(version).prerelease;
   if (prerelease.length == 0) {
-    return false;
+    return true;
   }
 
   const prereleaseTag = prerelease[0];
@@ -43,7 +43,7 @@ function getPackagesToTag() {
   const packageInfos: AllPackageInfo = getAllPackageInfo();
   return Object.values(packageInfos)
     .map(packageInfo => {
-      if (!packageInfo.packageJson.private && isConvergedPackage(packageInfo.packageJson)) {
+      if (!packageInfo.packageJson.private && isConvergedPackage({ packagePathOrJson: packageInfo.packageJson })) {
         return {
           name: packageInfo.packageJson.name,
           version: packageInfo.packageJson.version,

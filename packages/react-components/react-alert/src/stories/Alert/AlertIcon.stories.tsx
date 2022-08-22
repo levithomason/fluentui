@@ -1,17 +1,10 @@
 import * as React from 'react';
-
 import { DeleteRegular } from '@fluentui/react-icons';
 
 import { Alert } from '@fluentui/react-alert';
 
 export const Icon = () => (
-  <Alert
-    icon={<DeleteRegular />}
-    action={{
-      appearance: 'transparent',
-      children: 'Undo',
-    }}
-  >
+  <Alert icon={<DeleteRegular />} action="Undo">
     Chat deleted
   </Alert>
 );

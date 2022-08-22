@@ -1,5 +1,3 @@
-/// <reference types="jest" />
-
 import { config as sharedConfig } from './shared.config';
 import v8Config from './release-v8.config';
 import vNextConfig from './release-vNext.config';
@@ -8,7 +6,7 @@ describe(`beachball configs`, () => {
   it(`should generate shared config`, () => {
     expect(sharedConfig).toEqual({
       changehint: "Run 'yarn change' to generate a change file",
-      disallowedChangeTypes: ['major', 'prerelease'],
+      disallowedChangeTypes: ['major'],
       generateChangelog: true,
       ignorePatterns: [
         '**/*.{shot,snap}',

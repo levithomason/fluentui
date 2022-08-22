@@ -5,25 +5,30 @@
 ```ts
 
 import type { ExtractSlotProps } from '@fluentui/react-utilities';
+import * as React_2 from 'react';
 import type { ResolveShorthandFunction } from '@fluentui/react-utilities';
 import type { Slot } from '@fluentui/react-utilities';
 
-// @public (undocumented)
-export type ARIAButtonSlotProps = ExtractSlotProps<Slot<'button', 'a'>> & {
+// @public
+export type ARIAButtonProps<Type extends ARIAButtonType = ARIAButtonType> = React_2.PropsWithRef<JSX.IntrinsicElements[Type]> & {
     disabled?: boolean;
     disabledFocusable?: boolean;
 };
 
-// Warning: (ae-internal-missing-underscore) The name "mergeARIADisabled" should be prefixed with an underscore because the declaration is marked as @internal
-//
-// @internal
-export function mergeARIADisabled(shorthand: {
-    'aria-disabled'?: string | boolean;
-    disabled?: boolean;
-}): boolean;
-
 // @public
-export const useARIAButton: ResolveShorthandFunction<ARIAButtonSlotProps>;
+export type ARIAButtonResultProps<Type extends ARIAButtonType, Props> = Props & UnionToIntersection<ARIAButtonAlteredProps<Type>>;
+
+// @public (undocumented)
+export type ARIAButtonSlotProps<AlternateAs extends 'a' | 'div' = 'a' | 'div'> = ExtractSlotProps<Slot<'button', AlternateAs>> & Pick<ARIAButtonProps<ARIAButtonType>, 'disabled' | 'disabledFocusable'>;
+
+// @public (undocumented)
+export type ARIAButtonType = 'button' | 'a' | 'div';
+
+// @internal
+export function useARIAButtonProps<Type extends ARIAButtonType, Props extends ARIAButtonProps<Type>>(type?: Type, props?: Props): ARIAButtonResultProps<Type, Props>;
+
+// @internal
+export const useARIAButtonShorthand: ResolveShorthandFunction<ARIAButtonSlotProps>;
 
 // (No @packageDocumentation comment for this package)
 

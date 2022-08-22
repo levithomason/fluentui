@@ -1,15 +1,16 @@
 // Utilities
 export {
-  RendererProvider,
+  __css,
   __styles,
   createDOMRenderer,
   makeStaticStyles,
   makeStyles,
   mergeClasses,
+  RendererProvider,
   renderToStyleElements,
   shorthands,
 } from '@griffel/react';
-export type { GriffelStyle } from '@griffel/react';
+export type { GriffelStyle, GriffelRenderer } from '@griffel/react';
 export {
   FluentProvider,
   fluentProviderClassNames,
@@ -51,6 +52,22 @@ export type {
   RadioSlots,
   RadioState,
 } from '@fluentui/react-radio';
+export {
+  SpinButton,
+  renderSpinButton_unstable,
+  spinButtonClassNames,
+  useSpinButtonStyles_unstable,
+  useSpinButton_unstable,
+} from '@fluentui/react-spinbutton';
+export type {
+  SpinButtonOnChangeData,
+  SpinButtonChangeEvent,
+  SpinButtonProps,
+  SpinButtonSlots,
+  SpinButtonState,
+  SpinButtonSpinState,
+  SpinButtonBounds,
+} from '@fluentui/react-spinbutton';
 export {
   createCustomFocusIndicatorStyle,
   createFocusOutlineStyle,
@@ -117,6 +134,7 @@ export {
   resolveShorthand,
   SSRProvider,
   useId,
+  useIsomorphicLayoutEffect,
   useIsSSR,
   useMergedRefs,
 } from '@fluentui/react-utilities';
@@ -508,6 +526,7 @@ export type {
   TabListSlots,
   TabListState,
 } from '@fluentui/react-tabs';
+
 export {
   Body1,
   Caption1,

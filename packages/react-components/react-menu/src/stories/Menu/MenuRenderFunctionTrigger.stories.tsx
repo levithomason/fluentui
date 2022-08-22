@@ -1,15 +1,8 @@
 import * as React from 'react';
 import { ChevronDownRegular } from '@fluentui/react-icons';
 
-import {
-  Menu,
-  MenuProps,
-  MenuTrigger,
-  MenuList,
-  MenuItem,
-  MenuPopover,
-  MenuTriggerChildProps,
-} from '@fluentui/react-menu';
+import { Menu, MenuTrigger, MenuList, MenuItem, MenuPopover } from '@fluentui/react-components';
+import type { MenuProps, MenuTriggerChildProps } from '@fluentui/react-components';
 
 const buttonStyle = { height: 22, verticalAlign: 'middle' };
 
@@ -22,7 +15,7 @@ export const RenderFunctionTrigger = () => {
   return (
     <Menu open={open} onOpenChange={onOpenChange}>
       <MenuTrigger>
-        {(props: MenuTriggerChildProps) => (
+        {(props: MenuTriggerChildProps<'button'>) => (
           <div>
             <button style={buttonStyle}>Custom Trigger</button>
             <button {...props} style={buttonStyle}>

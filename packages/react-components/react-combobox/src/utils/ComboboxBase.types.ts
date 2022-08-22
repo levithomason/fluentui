@@ -1,5 +1,6 @@
 import * as React from 'react';
 import type { PositioningShorthand } from '@fluentui/react-positioning';
+import type { ComboboxContextValue } from '../contexts/ComboboxContext';
 import type { OptionValue, OptionCollectionState } from '../utils/OptionCollection.types';
 import { SelectionEvents, SelectionProps, SelectionState } from '../utils/Selection.types';
 
@@ -33,7 +34,7 @@ export type ComboboxBaseProps = SelectionProps & {
   /**
    * Callback when the open/closed state of the dropdown changes
    */
-  onOpenChange?: (e: ComboboxOpenEvents, data: ComboboxOpenChangeData) => void;
+  onOpenChange?: (e: ComboboxBaseOpenEvents, data: ComboboxBaseOpenChangeData) => void;
 
   /**
    * Sets the open/closed state of the dropdown.
@@ -76,25 +77,36 @@ export type ComboboxBaseState = Required<Pick<ComboboxBaseProps, 'appearance' | 
     /* Option data for the currently highlighted option (not the selected option) */
     activeOption?: OptionValue;
 
-    /* Callback when an option is clicked, for internal use */
-    onOptionClick(event: React.MouseEvent, option: OptionValue): void;
+    // whether the combobox/dropdown currently has focus
+    hasFocus: boolean;
 
-    selectOption(event: SelectionEvents, optionValue: string): void;
+    /* Whether the next blur event should be ignored, and the combobox/dropdown will not close.*/
+    ignoreNextBlur: React.MutableRefObject<boolean>;
+
+    selectOption(event: SelectionEvents, option: OptionValue): void;
 
     setActiveOption(option?: OptionValue): void;
 
-    setOpen(event: ComboboxOpenEvents, newState: boolean): void;
+    setHasFocus(hasFocus: boolean): void;
+
+    setOpen(event: ComboboxBaseOpenEvents, newState: boolean): void;
+
+    setValue(newValue: string): void;
   };
 
 /**
  * Data for the Combobox onOpenChange event.
  */
-export type ComboboxOpenChangeData = {
+export type ComboboxBaseOpenChangeData = {
   open: boolean;
 };
 
 /* Possible event types for onOpen */
-export type ComboboxOpenEvents =
+export type ComboboxBaseOpenEvents =
   | React.MouseEvent<HTMLElement>
   | React.KeyboardEvent<HTMLElement>
   | React.FocusEvent<HTMLElement>;
+
+export type ComboboxBaseContextValues = {
+  combobox: ComboboxContextValue;
+};
