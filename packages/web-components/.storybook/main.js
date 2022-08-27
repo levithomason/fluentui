@@ -1,48 +1,50 @@
-const CircularDependencyPlugin = require('circular-dependency-plugin');
+const { readdirSync } = require('fs');
+const path = require('path');
+const ResolveTypescriptPlugin = require('resolve-typescript-plugin');
+
+const currentPath = path.resolve(__dirname);
+const root = path.resolve(currentPath, '../');
 
 module.exports = {
-  stories: ['../src/**/*.stories.@(ts|mdx)'],
-  staticDirs: ['../public'],
-  core: {
-    builder: 'webpack4',
+  stories: ['../src/**/*.stories.ts'],
+  addons: ['@storybook/addon-links', '@storybook/addon-essentials'],
+  staticDirs: ['../statics'],
+  framework: '@storybook/web-components',
+  features: {
+    babelModeV7: true,
+    buildStoriesJson: true,
   },
-  addons: [
-    {
-      name: '@storybook/addon-docs',
-    },
-    {
-      name: '@storybook/addon-essentials',
-      options: {
-        backgrounds: false,
-        viewport: false,
-        toolbars: false,
-        actions: false,
-      },
-    },
-  ],
   webpackFinal: async config => {
-    config.module.rules.push({
-      test: /\.ts$/,
-      use: [
-        {
-          loader: require.resolve('ts-loader'),
+    config.resolve.alias = {
+      ...config.resolve.alias,
+    };
+
+    config.resolve.plugins = [new ResolveTypescriptPlugin()];
+    config.module.rules.push(
+      {
+        test: /\.ts$/,
+        loader: 'ts-loader',
+        sideEffects: true,
+        options: {
+          transpileOnly: true,
         },
-      ],
-    });
-    config.resolve.extensions.push('.ts');
-    config.resolve.extensions.push('.js');
-    config.plugins.push(
-      new CircularDependencyPlugin({
-        exclude: /node_modules/,
-        failOnError: process.env.NODE_ENV === 'production',
-      }),
+      },
+      {
+        test: /.storybook\/preview.js/,
+        resolve: { fullySpecified: false },
+      },
     );
 
-    // Disable ProgressPlugin which logs verbose webpack build progress. Warnings and Errors are still logged.
-    if (process.env.TF_BUILD || process.env.LAGE_PACKAGE_NAME) {
-      config.plugins = config.plugins.filter(({ constructor }) => constructor.name !== 'ProgressPlugin');
-    }
+    // Webpack 5 asset/source
+    config.module.rules.push({
+      test: /\.(gif|jpg|jpeg|png|svg)$/,
+      type: 'asset/source',
+    });
 
     return config;
+  },
+  core: {
+    builder: 'webpack5',
+    disableTelemetry: true,
   },
 };
