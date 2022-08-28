@@ -1,8 +1,9 @@
 /**
  * Export all custom element definitions.
  */
-export * from './custom-elements';
-export * from './fluent-design-system';
+export * from './fluent-design-system.js';
 
 // export styles and utils
-export * from './design-tokens';
+export * from './design-tokens.js';
+
+export * from './badge/index.js';

@@ -3,13 +3,11 @@ const path = require('path');
 const ResolveTypescriptPlugin = require('resolve-typescript-plugin');
 
 const currentPath = path.resolve(__dirname);
-const root = path.resolve(currentPath, '../');
 
 module.exports = {
   stories: ['../src/**/*.stories.ts'],
   addons: ['@storybook/addon-links', '@storybook/addon-essentials'],
-  staticDirs: ['../statics'],
-  framework: '@storybook/web-components',
+  framework: '@storybook/html',
   features: {
     babelModeV7: true,
     buildStoriesJson: true,
