@@ -240,6 +240,7 @@ export type {
 } from '@fluentui/react-badge';
 export {
   Button,
+  ButtonWC,
   CompoundButton,
   MenuButton,
   SplitButton,

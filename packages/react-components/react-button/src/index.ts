@@ -1,5 +1,6 @@
 export {
   Button,
+  ButtonWC,
   buttonClassNames,
   renderButton_unstable,
   useButtonStyles_unstable,
