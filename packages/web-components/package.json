@@ -22,6 +22,10 @@
     "./badge/define": {
       "types": "./dist/esm/badge/define.d.ts",
       "default": "./dist/esm/badge/define.js"
+    },
+    "./text/define": {
+      "types": "./dist/esm/text/define.d.ts",
+      "default": "./dist/esm/text/define.js"
     }
   },
   "scripts": {
