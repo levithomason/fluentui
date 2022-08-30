@@ -5,6 +5,10 @@ import { fontFamilyBase, fontFamilyMonospace, fontFamilyNumeric, fontSizeBase100
  * @public
  */
 export const styles = css`
+:host {
+  display: contents;
+}
+
 ::slotted(*) {
   font-family: ${fontFamilyBase};
   font-size: ${fontSizeBase300};

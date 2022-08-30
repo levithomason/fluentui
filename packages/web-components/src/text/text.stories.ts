@@ -38,7 +38,17 @@ const generateSemanticElementTemplate = (as: string, content) => {
 };
 
 const storyTemplate = html<TextStoryArgs>`
-  <fluent-text align=${x => x.align} font=${x => x.font} size=${x => x.size} weight=${x => x.weight}
+  <fluent-text
+    align=${x => x.align}
+    font=${x => x.font}
+    size=${x => x.size}
+    weight=${x => x.weight}
+    ?nowrap=${x => x.nowrap}
+    ?truncate=${x => x.truncate}
+    ?italic=${x => x.italic}
+    ?underline=${x => x.underline}
+    ?strikethrough=${x => x.strikethrough}
+    ?block=${x => x.block}
     >${x => generateSemanticElementTemplate(x.as, x.content)}</fluent-text
   >
 `;
@@ -47,6 +57,12 @@ export default {
   title: 'Components/Text',
   args: {
     content: 'Text',
+    nowrap: false,
+    truncate: false,
+    italic: false,
+    underline: false,
+    strikethrough: false,
+    block: false,
   },
   argTypes: {
     as: {
@@ -78,6 +94,24 @@ export default {
       control: {
         type: 'select',
       },
+    },
+    nowrap: {
+      control: 'boolean',
+    },
+    truncate: {
+      control: 'boolean',
+    },
+    italic: {
+      control: 'boolean',
+    },
+    underline: {
+      control: 'boolean',
+    },
+    strikethrough: {
+      control: 'boolean',
+    },
+    block: {
+      control: 'boolean',
     },
   },
 } as TextStoryMeta;
