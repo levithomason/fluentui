@@ -47,3 +47,44 @@ export default {
 } as BadgeStoryMeta;
 
 export const Badge = renderComponent(storyTemplate).bind({});
+
+export const BadgeAppearance = renderComponent(html<BadgeStoryArgs>`
+  <fluent-badge appearance="filled">filled</fluent-badge>
+  <fluent-badge appearance="ghost">ghost</fluent-badge>
+  <fluent-badge appearance="outline">outline</fluent-badge>
+  <fluent-badge appearance="tint">tint</fluent-badge>
+`);
+
+export const BadgeColor = renderComponent(html<BadgeStoryArgs>`
+  <fluent-badge color="brand">brand</fluent-badge>
+  <fluent-badge color="danger">danger</fluent-badge>
+  <fluent-badge color="important">important</fluent-badge>
+  <fluent-badge color="informative">informative</fluent-badge>
+  <fluent-badge color="severe">severe</fluent-badge>
+  <fluent-badge color="subtle">subtle</fluent-badge>
+  <fluent-badge color="success">success</fluent-badge>
+  <fluent-badge color="warning">warning</fluent-badge>
+`);
+
+export const BadgeShape = renderComponent(html<BadgeStoryArgs>`
+  <fluent-badge shape="circular">circular</fluent-badge>
+  <fluent-badge shape="rounded">rounded</fluent-badge>
+  <fluent-badge shape="square">square</fluent-badge>
+`);
+
+export const BadgeSize = renderComponent(html<BadgeStoryArgs>`
+  <fluent-badge size="tiny">X</fluent-badge> tiny<br />
+  <fluent-badge size="extra-small">X</fluent-badge> extra-small<br />
+  <fluent-badge size="small">X</fluent-badge> small<br />
+  <fluent-badge size="medium">X</fluent-badge> medium<br />
+  <fluent-badge size="large">X</fluent-badge> large<br />
+  <fluent-badge size="extra-large">X</fluent-badge> extra-large<br />
+`) as BadgeStoryMeta;
+
+BadgeSize.parameters = {
+  docs: {
+    description: {
+      story: 'TODO: vertical align misbehaves if tags are empty. Included an "X" to workaround.',
+    },
+  },
+};
