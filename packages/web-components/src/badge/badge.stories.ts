@@ -73,18 +73,18 @@ export const BadgeShape = renderComponent(html<BadgeStoryArgs>`
 `);
 
 export const BadgeSize = renderComponent(html<BadgeStoryArgs>`
-  <fluent-badge size="tiny">X</fluent-badge> tiny<br />
-  <fluent-badge size="extra-small">X</fluent-badge> extra-small<br />
-  <fluent-badge size="small">X</fluent-badge> small<br />
-  <fluent-badge size="medium">X</fluent-badge> medium<br />
-  <fluent-badge size="large">X</fluent-badge> large<br />
-  <fluent-badge size="extra-large">X</fluent-badge> extra-large<br />
+  <fluent-badge size="tiny"></fluent-badge> tiny<br />
+  <fluent-badge size="extra-small"></fluent-badge> extra-small<br />
+  <fluent-badge size="small"></fluent-badge> small<br />
+  <fluent-badge size="medium"></fluent-badge> medium<br />
+  <fluent-badge size="large"></fluent-badge> large<br />
+  <fluent-badge size="extra-large"></fluent-badge> extra-large<br />
 `) as BadgeStoryMeta;
 
 BadgeSize.parameters = {
   docs: {
     description: {
-      story: 'TODO: vertical align misbehaves if tags are empty. Included an "X" to workaround.',
+      story: 'TODO: 1) tiny is borked 2) fix vertical align',
     },
   },
 };
