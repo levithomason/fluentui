@@ -69,8 +69,8 @@
     "webpack": "^4.43.0"
   },
   "dependencies": {
-    "@microsoft/fast-element": "^2.0.0-beta.5",
-    "@microsoft/fast-foundation": "^3.0.0-alpha.8",
+    "@microsoft/fast-element": "^2.0.0-beta.6",
+    "@microsoft/fast-foundation": "^3.0.0-alpha.9",
     "@microsoft/fast-web-utilities": "^6.0.0",
     "tslib": "^1.13.0"
   }

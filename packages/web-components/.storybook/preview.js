@@ -4,7 +4,7 @@ import webcomponentsTheme from './theme';
 
 Fluent;
 
-DesignToken.registerRoot();
+DesignToken.registerDefaultStyleTarget();
 
 export const parameters = {
   layout: 'fullscreen',
