@@ -1,0 +1,7 @@
+{
+  "type": "none",
+  "comment": "Update web component design tokens, merging to feature branch",
+  "packageName": "@fluentui/web-components",
+  "email": "me@levithomason.com",
+  "dependentChangeType": "none"
+}
