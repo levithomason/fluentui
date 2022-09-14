@@ -2059,42 +2059,42 @@ export const colorPaletteAnchorBorderActive = create<string>('colorPaletteAnchor
  * @public
  */
 export const shadow2 = create<string>('shadow2').withDefault(
-  `0 0 2px ${colorNeutralShadowAmbient.$value}, 0 1px 2px ${colorNeutralShadowKey.$value}`,
+  `0 0 2px ${colorNeutralShadowAmbient}, 0 1px 2px ${colorNeutralShadowKey}`,
 );
 
 /**
  * @public
  */
 export const shadow4 = create<string>('shadow4').withDefault(
-  `0 0 2px ${colorNeutralShadowAmbient.$value}, 0 2px 4px ${colorNeutralShadowKey.$value}`,
+  `0 0 2px ${colorNeutralShadowAmbient}, 0 2px 4px ${colorNeutralShadowKey}`,
 );
 
 /**
  * @public
  */
 export const shadow8 = create<string>('shadow8').withDefault(
-  `0 0 2px ${colorNeutralShadowAmbient.$value}, 0 4px 8px ${colorNeutralShadowKey.$value}`,
+  `0 0 2px ${colorNeutralShadowAmbient}, 0 4px 8px ${colorNeutralShadowKey}`,
 );
 
 /**
  * @public
  */
 export const shadow16 = create<string>('shadow16').withDefault(
-  `0 0 2px ${colorNeutralShadowAmbient.$value}, 0 8px 16px ${colorNeutralShadowKey.$value}`,
+  `0 0 2px ${colorNeutralShadowAmbient}, 0 8px 16px ${colorNeutralShadowKey}`,
 );
 
 /**
  * @public
  */
 export const shadow28 = create<string>('shadow28').withDefault(
-  `0 0 8px ${colorNeutralShadowAmbient.$value}, 0 14px 28px ${colorNeutralShadowKey.$value}`,
+  `0 0 8px ${colorNeutralShadowAmbient}, 0 14px 28px ${colorNeutralShadowKey}`,
 );
 
 /**
  * @public
  */
 export const shadow64 = create<string>('shadow64').withDefault(
-  `0 0 8px ${colorNeutralShadowAmbient.$value}, 0 32px 64px ${colorNeutralShadowKey.$value}`,
+  `0 0 8px ${colorNeutralShadowAmbient}, 0 32px 64px ${colorNeutralShadowKey}`,
 );
 
 // ----------------------------------------
@@ -2105,40 +2105,40 @@ export const shadow64 = create<string>('shadow64').withDefault(
  * @public
  */
 export const shadow2Brand = create<string>('shadow2Brand').withDefault(
-  `0 0 2px ${colorBrandShadowAmbient.$value}, 0 1px 2px ${colorBrandShadowKey.$value}`,
+  `0 0 2px ${colorBrandShadowAmbient}, 0 1px 2px ${colorBrandShadowKey}`,
 );
 
 /**
  * @public
  */
 export const shadow4Brand = create<string>('shadow4Brand').withDefault(
-  `0 0 2px ${colorBrandShadowAmbient.$value}, 0 2px 4px ${colorBrandShadowKey.$value}`,
+  `0 0 2px ${colorBrandShadowAmbient}, 0 2px 4px ${colorBrandShadowKey}`,
 );
 
 /**
  * @public
  */
 export const shadow8Brand = create<string>('shadow8Brand').withDefault(
-  `0 0 2px ${colorBrandShadowAmbient.$value}, 0 4px 8px ${colorBrandShadowKey.$value}`,
+  `0 0 2px ${colorBrandShadowAmbient}, 0 4px 8px ${colorBrandShadowKey}`,
 );
 
 /**
  * @public
  */
 export const shadow16Brand = create<string>('shadow16Brand').withDefault(
-  `0 0 2px ${colorBrandShadowAmbient.$value}, 0 8px 16px ${colorBrandShadowKey.$value}`,
+  `0 0 2px ${colorBrandShadowAmbient}, 0 8px 16px ${colorBrandShadowKey}`,
 );
 
 /**
  * @public
  */
 export const shadow28Brand = create<string>('shadow28Brand').withDefault(
-  `0 0 8px ${colorBrandShadowAmbient.$value}, 0 14px 28px ${colorBrandShadowKey.$value}`,
+  `0 0 8px ${colorBrandShadowAmbient}, 0 14px 28px ${colorBrandShadowKey}`,
 );
 
 /**
  * @public
  */
 export const shadow64Brand = create<string>('shadow64Brand').withDefault(
-  `0 0 8px ${colorBrandShadowAmbient.$value}, 0 32px 64px ${colorBrandShadowKey.$value}`,
+  `0 0 8px ${colorBrandShadowAmbient}, 0 32px 64px ${colorBrandShadowKey}`,
 );
