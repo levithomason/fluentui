@@ -2,10 +2,14 @@ import { DesignToken } from '@microsoft/fast-foundation';
 
 const { create } = DesignToken;
 
+// ----------------------------------------
+// Border Radius
+// ----------------------------------------
+
 /**
  * @public
  */
-export const borderRadiusNone = create<number>('borderRadiusNone').withDefault(0);
+export const borderRadiusNone = create<string>('borderRadiusNone').withDefault('0');
 
 /**
  * @public
@@ -15,22 +19,26 @@ export const borderRadiusSmall = create<string>('borderRadiusSmall').withDefault
 /**
  * @public
  */
-export const borderRadiusMedium = create<string>('borderRadiusSmall').withDefault('4px');
+export const borderRadiusMedium = create<string>('borderRadiusMedium').withDefault('4px');
 
 /**
  * @public
  */
-export const borderRadiusLarge = create<string>('borderRadiusSmall').withDefault('6px');
+export const borderRadiusLarge = create<string>('borderRadiusLarge').withDefault('6px');
 
 /**
  * @public
  */
-export const borderRadiusXLarge = create<string>('borderRadiusSmall').withDefault('8px');
+export const borderRadiusXLarge = create<string>('borderRadiusXLarge').withDefault('8px');
 
 /**
  * @public
  */
-export const borderRadiusCircular = create<string>('borderRadiusSmall').withDefault('10000px');
+export const borderRadiusCircular = create<string>('borderRadiusCircular').withDefault('10000px');
+
+// ----------------------------------------
+// Font Sizes
+// ----------------------------------------
 
 /**
  * @public
@@ -82,6 +90,10 @@ export const fontSizeHero900 = create<string>('fontSizeHero900').withDefault('40
  */
 export const fontSizeHero1000 = create<string>('fontSizeHero1000').withDefault('68px');
 
+// ----------------------------------------
+// Line Heights
+// ----------------------------------------
+
 /**
  * @public
  */
@@ -132,6 +144,29 @@ export const lineHeightHero900 = create<string>('lineHeightHero900').withDefault
  */
 export const lineHeightHero1000 = create<string>('lineHeightHero1000').withDefault('92px');
 
+// ----------------------------------------
+// Font Weights
+// ----------------------------------------
+
+/**
+ * @public
+ */
+export const fontWeightRegular = create<number>('fontWeightRegular').withDefault(400);
+
+/**
+ * @public
+ */
+export const fontWeightMedium = create<number>('fontWeightMedium').withDefault(500);
+
+/**
+ * @public
+ */
+export const fontWeightSemibold = create<number>('fontWeightSemibold').withDefault(600);
+
+// ----------------------------------------
+// Font Families
+// ----------------------------------------
+
 /**
  * @public
  */
@@ -153,20 +188,9 @@ export const fontFamilyNumeric = create<string>('fontFamilyNumeric').withDefault
   'Bahnschrift, "Segoe UI", "Segoe UI Web (West European)", -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", sans-serif',
 );
 
-/**
- * @public
- */
-export const fontWeightRegular = create<number>('fontWeightRegular').withDefault(400);
-
-/**
- * @public
- */
-export const fontWeightMedium = create<number>('fontWeightMedium').withDefault(500);
-
-/**
- * @public
- */
-export const fontWeightSemibold = create<number>('fontWeightSemibold').withDefault(600);
+// ----------------------------------------
+// Stroke Widths
+// ----------------------------------------
 
 /**
  * @public
@@ -187,6 +211,10 @@ export const strokeWidthTicker = create<string>('strokeWidthThicker').withDefaul
  * @public
  */
 export const strokeWidthThickest = create<string>('strokeWidthThickest').withDefault('4px');
+
+// ----------------------------------------
+// Horizontal Spacings
+// ----------------------------------------
 
 /**
  * @public
@@ -243,6 +271,10 @@ export const spacingHorizontalXXL = create<string>('spacingHorizontalXXL').withD
  */
 export const spacingHorizontalXXXL = create<string>('spacingHorizontalXXXL').withDefault('32px');
 
+// ----------------------------------------
+// Vertical Spacings
+// ----------------------------------------
+
 /**
  * @public
  */
@@ -298,6 +330,10 @@ export const spacingVerticalXXL = create<string>('spacingVerticalXXL').withDefau
  */
 export const spacingVerticalXXXL = create<string>('spacingVerticalXXXL').withDefault('32px');
 
+// ----------------------------------------
+// Durations
+// ----------------------------------------
+
 /**
  * @public
  */
@@ -332,6 +368,10 @@ export const durationSlower = create<string>('durationSlower').withDefault('400m
  * @public
  */
 export const durationUltraSlow = create<string>('durationUltraSlow').withDefault('500ms');
+
+// ----------------------------------------
+// Curves
+// ----------------------------------------
 
 /**
  * @public
@@ -377,6 +417,10 @@ export const curveEasyEase = create<string>('curveEasyEase').withDefault('cubic-
  * @public
  */
 export const curveLinear = create<string>('curveLinear').withDefault('cubic-bezier(0,0,1,1)');
+
+// ----------------------------------------
+// Colors
+// ----------------------------------------
 
 /**
  * @public
@@ -1204,6 +1248,10 @@ export const colorBrandShadowAmbient = create<string>('colorBrandShadowAmbient')
  */
 export const colorBrandShadowKey = create<string>('colorBrandShadowKey').withDefault('rgba(0,0,0,0.25)');
 
+// ----------------------------------------
+// Color Palettes
+// ----------------------------------------
+
 /**
  * @public
  */
@@ -2003,78 +2051,94 @@ export const colorPaletteAnchorForeground2 = create<string>('colorPaletteAnchorF
  */
 export const colorPaletteAnchorBorderActive = create<string>('colorPaletteAnchorBorderActive').withDefault('#394146');
 
-/**
- * @public
- */
-export const shadow2 = create<string>('shadow2').withDefault('0 0 2px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.14)');
+// ----------------------------------------
+// Shadow
+// ----------------------------------------
 
 /**
  * @public
  */
-export const shadow4 = create<string>('shadow4').withDefault('0 0 2px rgba(0,0,0,0.12), 0 2px 4px rgba(0,0,0,0.14)');
+export const shadow2 = create<string>('shadow2').withDefault(
+  `0 0 2px ${colorNeutralShadowAmbient}, 0 1px 2px ${colorNeutralShadowKey}`,
+);
 
 /**
  * @public
  */
-export const shadow8 = create<string>('shadow8').withDefault('0 0 2px rgba(0,0,0,0.12), 0 4px 8px rgba(0,0,0,0.14)');
+export const shadow4 = create<string>('shadow4').withDefault(
+  `0 0 2px ${colorNeutralShadowAmbient}, 0 2px 4px ${colorNeutralShadowKey}`,
+);
 
 /**
  * @public
  */
-export const shadow16 = create<string>('shadow16').withDefault('0 0 2px rgba(0,0,0,0.12), 0 8px 16px rgba(0,0,0,0.14)');
+export const shadow8 = create<string>('shadow8').withDefault(
+  `0 0 2px ${colorNeutralShadowAmbient}, 0 4px 8px ${colorNeutralShadowKey}`,
+);
+
+/**
+ * @public
+ */
+export const shadow16 = create<string>('shadow16').withDefault(
+  `0 0 2px ${colorNeutralShadowAmbient}, 0 8px 16px ${colorNeutralShadowKey}`,
+);
 
 /**
  * @public
  */
 export const shadow28 = create<string>('shadow28').withDefault(
-  '0 0 8px rgba(0,0,0,0.12), 0 14px 28px rgba(0,0,0,0.14)',
+  `0 0 8px ${colorNeutralShadowAmbient}, 0 14px 28px ${colorNeutralShadowKey}`,
 );
 
 /**
  * @public
  */
 export const shadow64 = create<string>('shadow64').withDefault(
-  '0 0 8px rgba(0,0,0,0.12), 0 32px 64px rgba(0,0,0,0.14)',
+  `0 0 8px ${colorNeutralShadowAmbient}, 0 32px 64px ${colorNeutralShadowKey}`,
 );
+
+// ----------------------------------------
+// Shadow Brand
+// ----------------------------------------
 
 /**
  * @public
  */
 export const shadow2Brand = create<string>('shadow2Brand').withDefault(
-  '0 0 2px rgba(0,0,0,0.3), 0 1px 2px rgba(0,0,0,0.25)',
+  `0 0 2px ${colorBrandShadowAmbient}, 0 1px 2px ${colorBrandShadowKey}`,
 );
 
 /**
  * @public
  */
 export const shadow4Brand = create<string>('shadow4Brand').withDefault(
-  '0 0 2px rgba(0,0,0,0.3), 0 2px 4px rgba(0,0,0,0.25)',
+  `0 0 2px ${colorBrandShadowAmbient}, 0 2px 4px ${colorBrandShadowKey}`,
 );
 
 /**
  * @public
  */
 export const shadow8Brand = create<string>('shadow8Brand').withDefault(
-  '0 0 2px rgba(0,0,0,0.3), 0 4px 8px rgba(0,0,0,0.25)',
+  `0 0 2px ${colorBrandShadowAmbient}, 0 4px 8px ${colorBrandShadowKey}`,
 );
 
 /**
  * @public
  */
 export const shadow16Brand = create<string>('shadow16Brand').withDefault(
-  '0 0 2px rgba(0,0,0,0.3), 0 8px 16px rgba(0,0,0,0.25)',
+  `0 0 2px ${colorBrandShadowAmbient}, 0 8px 16px ${colorBrandShadowKey}`,
 );
 
 /**
  * @public
  */
 export const shadow28Brand = create<string>('shadow28Brand').withDefault(
-  '0 0 8px rgba(0,0,0,0.3), 0 14px 28px rgba(0,0,0,0.25)',
+  `0 0 8px ${colorBrandShadowAmbient}, 0 14px 28px ${colorBrandShadowKey}`,
 );
 
 /**
  * @public
  */
 export const shadow64Brand = create<string>('shadow64Brand').withDefault(
-  '0 0 8px rgba(0,0,0,0.3), 0 32px 64px rgba(0,0,0,0.25)',
+  `0 0 8px ${colorBrandShadowAmbient}, 0 32px 64px ${colorBrandShadowKey}`,
 );
