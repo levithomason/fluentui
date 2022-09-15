@@ -1,7 +1,5 @@
 import { attr, FASTElement } from '@microsoft/fast-element';
-// TODO(@levithomason): NOT proposing a dep on a React package.
-//                      Showing the duplication we could reduce with a shared definition.
-import { BadgeProps } from '../../../react-components/react-badge/src/components/Badge/Badge.types';
+import { BadgeAppearance, BadgeColor, BadgeShape, BadgeSize } from './badge.options';
 
 /**
  * @internal
@@ -15,7 +13,7 @@ export class Badge extends FASTElement {
    * HTML Attribute: appearance
    */
   @attr
-  public appearance: BadgeProps['appearance'] = 'filled';
+  public appearance: BadgeAppearance = 'filled';
 
   /**
    * The color the badge should have.
@@ -25,7 +23,7 @@ export class Badge extends FASTElement {
    * HTML Attribute: color
    */
   @attr
-  public color: BadgeProps['color'] = 'brand';
+  public color: BadgeColor = 'brand';
   /**
    * The shape the badge should have.
    *
@@ -34,7 +32,7 @@ export class Badge extends FASTElement {
    * HTML Attribute: shape
    */
   @attr
-  public shape: BadgeProps['shape'] = 'circular';
+  public shape: BadgeShape = 'circular';
 
   /**
    * The size the badge should have.
@@ -44,5 +42,5 @@ export class Badge extends FASTElement {
    * HTML Attribute: size
    */
   @attr
-  public size: BadgeProps['size'] = 'medium';
+  public size: BadgeSize = 'medium';
 }
