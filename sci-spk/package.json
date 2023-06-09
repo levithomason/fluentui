@@ -1,0 +1,20 @@
+{
+  "name": "ai",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "ts-node src/index.ts",
+    "dev": "nodemon -e ts --exec \"ts-node src/index.ts\"",
+    "ai": "ts-node src/index.ts"
+  },
+  "devDependencies": {
+    "nodemon": "2.0.22",
+    "ts-node": "10.9.1"
+  },
+  "dependencies": {
+    "faiss-node": "0.2.1",
+    "hnswlib-node": "1.4.2",
+    "langchain": "0.0.92"
+  }
+}
