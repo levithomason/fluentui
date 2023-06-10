@@ -8,22 +8,22 @@ We created SCI by hand to test our methodology.
 
 **File Context**
 
-```yml
+```yaml
 package: '@fluentui/react-link'
 path: packages/react-components/react-link/src/components/Link/Link.tsx
 imports:
-  - from: 'react'
+  - from: react
     name: * as React
-  - from: './useLink';
+  - from: ./useLink
     name: useLink_unstable
-  - from: './useLinkStyles.styles';
+  - from: ./useLinkStyles.styles
     name: useLinkStyles_unstable
-  - from: './renderLink';
+  - from: ./renderLink
     name: renderLink_unstable
-  - from: './Link.types';
-    type: { LinkProps }
+  - from: ./Link.types
+    type: LinkProps
   - from: '@fluentui/react-utilities';
-    type: { ForwardRefComponent }
+    type: ForwardRefComponent
 exports:
     - name: Link
       type: ForwardRefComponent<LinkProps>
@@ -33,12 +33,12 @@ definitions:
     name: Link
 dependants:
   - name: @fluentui/react-components
-    path: packages/react-components/react-components/package.json
+    path: packages/react-components/react-components
   - name: @fluentui/react-breadcrumb
-    path: packages/react-components/react-breadcrumb/package.json
+    path: packages/react-components/react-breadcrumb
   - name: @fluentui/vr-tests-react-components
-    path: apps/vr-tests-react-components/package.json
-references:
+    path: apps/vr-tests-react-components
+referenced_in:
   - rfcs/react-components/convergence/fixed-versions-for-prerelease.md
 contributors:
 git_history_summary:
@@ -67,7 +67,7 @@ todo_configs: |
 
 In may be enough to include the package.json as the context:
 
-```yml
+```yaml
 part_of: @fluentui/react-components
 todo_name: '@fluentui/react-link'
 todo_path: packages/react-components/react-link/package.json
