@@ -10,11 +10,11 @@ There is not yet a successful autonomous or semi-autonomous AI agent for softwar
 
 ## Semantic Codebase Intelligence (SCI)
 
-Semantic Codebase Intelligence (SCI) is both data a method that involves understanding and interpreting a codebase at a deep, meaningful level, beyond the mere syntactic structure of the code. This involves extracting and using high-level concepts, relationships, and patterns from the codebase, as well as inferring the intentions, strategies, and design patterns of the programmers who wrote the code.
+Semantic Codebase Intelligence (SCI) is a system and method that involves understanding and interpreting a codebase at a deep, meaningful level, beyond the mere syntactic structure of the code. This involves extracting and using high-level concepts, relationships, and patterns from the codebase, as well as inferring the intentions, strategies, and design patterns of the programmers who wrote the code.
 
 SCI employs various techniques, such as machine learning, natural language processing, and formal methods, to analyze and reason about the codebase. The insights gained from SCI can be used for a variety of purposes, such as improving code quality, facilitating code reviews, guiding refactoring efforts, detecting bugs, and supporting software maintenance and evolution.
 
-SCI is foreground, situational, and rapidly changing information that should be made accessible and interactive to a model(s). It is also a method that produces this data.
+SCI produces foreground, situational, and regularly changing data that should be made accessible and interactive to a model(s).
 
 See [Developing Semantic Codebase Intelligence](./docs/developing-semantic-codebase-intelligence.md).
 
@@ -26,7 +26,7 @@ This understanding extends beyond raw data or simple facts to encompass the mean
 
 In a software development project, SPK includes understanding the codebase, the software architecture, the project timeline, the team's skills and roles, the project's requirements and constraints, the user's of the project, and how all these elements interact with each other. This knowledge is used to manage the project more effectively, make better decisions, and predict and mitigate potential problems.
 
-SPK is background, contextual, and slowly moving information making it ideal for fine-tuning into a model(s). It is also the method that produces this data.
+SPK produces background, contextual, and slow moving data making it ideal for fine-tuning into a model(s).
 
 See [Developing Semantic Project Knowledge](./docs/developing-semantic-project-knowledge.md).
 
